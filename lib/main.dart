@@ -1,0 +1,162 @@
+// import 'package:device_preview/device_preview.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:graduation_progect/core/di/dependency_injection.dart';
+// import 'package:graduation_progect/core/helpers/constants.dart';
+// import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+// import 'package:graduation_progect/core/notifications/notification_service.dart';
+// import 'package:graduation_progect/core/routing/app_router.dart';
+// import 'package:graduation_progect/core/routing/routes.dart';
+// import 'package:graduation_progect/core/theming/theme_cash_helper.dart';
+// import 'package:graduation_progect/graduation_project.dart';
+// // import 'package:overlay_support/overlay_support.dart';
+
+// String initialAppRoute = Routes.onboardingScreens;
+// final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+// void main() async {
+//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+//   // await Future.wait([
+//   //   Firebase.initializeApp(),
+//   //   SharedPrefHelper.init(),
+//   //   setupGetIt(),
+//   // ]);
+//   final results = await Future.wait([
+//     Firebase.initializeApp(),
+//     SharedPrefHelper.init(),
+//     ThemeCacheHelper.getTheme(),
+//     setupGetIt(),
+//     checkIfLoggedInUser(),
+//   ]);
+//   // await Firebase.initializeApp();
+//   // await SharedPrefHelper.init();
+
+//   // final results = await Future.wait([
+//   //   ThemeCacheHelper.getTheme(),
+//   //   checkIfLoggedInUser(),
+//   // ]);
+
+//   final ThemeMode savedTheme = results[2] as ThemeMode;
+
+//   // await setupGetIt();
+
+//   // final ThemeMode savedTheme = await ThemeCacheHelper.getTheme();
+//   // await checkIfLoggedInUser();
+
+//   FlutterNativeSplash.remove();
+
+//   runApp(
+//     // DevicePreview(
+//     //   enabled: !kReleaseMode,
+//     //   builder: (_) =>
+//     MyGraduationProject(
+//       appRouter: AppRouter(),
+//       initialTheme: savedTheme,
+//       startRoute: initialAppRoute,
+//     ),
+//     // ),
+//   );
+
+//   NotificationService.init().catchError((e) {
+//     print("❌ خطأ أثناء تهيئة الإشعارات في الخلفية: $e");
+//   });
+// }
+
+// Future<void> checkIfLoggedInUser() async {
+//   final token = await SharedPrefHelper.getSecuredString(
+//     SharedPrefKeys.userToken,
+//   );
+//   final role = SharedPrefHelper.getString(SharedPrefKeys.userRole);
+//   final isFirstLogin = SharedPrefHelper.getBool(SharedPrefKeys.isFirstLogin);
+
+//   if (token.isNotEmpty) {
+//     if (isFirstLogin == true) {
+//       initialAppRoute = Routes.login;
+//     } else {
+//       print(role);
+
+//       initialAppRoute = (role == 'driver')
+//           ? Routes.driverHomeScreen
+//           : Routes.clientHomeScreen;
+//     }
+//   } else {
+//     initialAppRoute = Routes.onboardingScreens;
+//   }
+// }
+
+
+
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/helpers/constants.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+import 'package:graduation_progect/core/notifications/notification_service.dart';
+import 'package:graduation_progect/core/routing/app_router.dart';
+import 'package:graduation_progect/core/routing/routes.dart';
+import 'package:graduation_progect/core/theming/theme_cash_helper.dart';
+import 'package:graduation_progect/graduation_project.dart';
+
+String initialAppRoute = Routes.onboardingScreens;
+ThemeMode _savedTheme = ThemeMode.system;
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // ✅ sync - بتخلص فوراً بدون أي انتظار
+  setupGetIt();
+
+  // ✅ بس هاد بيحتاج await
+  await Future.wait([
+    Firebase.initializeApp(),
+    SharedPrefHelper.init(),
+    ThemeCacheHelper.getTheme().then((theme) => _savedTheme = theme),
+    checkIfLoggedInUser(),
+  ]);
+
+  // ✅ شيل الـ splash
+  FlutterNativeSplash.remove();
+
+  // ✅ شغّل الإشعارات بالخلفية بعد runApp
+  NotificationService.init().catchError((e) {
+    if (kDebugMode) print("❌ خطأ في الإشعارات: $e");
+  });
+
+  runApp(
+    MyGraduationProject(
+      appRouter: AppRouter(),
+      initialTheme: _savedTheme,
+      startRoute: initialAppRoute,
+    ),
+  );
+}
+
+Future<void> checkIfLoggedInUser() async {
+  final token = await SharedPrefHelper.getSecuredString(
+    SharedPrefKeys.userToken,
+  );
+  final role = SharedPrefHelper.getString(SharedPrefKeys.userRole);
+  final isFirstLogin = SharedPrefHelper.getBool(SharedPrefKeys.isFirstLogin);
+
+  if (token.isNotEmpty) {
+    if (isFirstLogin == true) {
+      initialAppRoute = Routes.login;
+    } else {
+      if (kDebugMode) print("User role: $role");
+      initialAppRoute = (role == 'driver')
+          ? Routes.driverHomeScreen
+          : Routes.clientHomeScreen;
+    }
+  } else {
+    initialAppRoute = Routes.onboardingScreens;
+  }
+}

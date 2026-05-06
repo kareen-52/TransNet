@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565595319377",
+    "project_id": "transnet-a06df",
+    "storage_bucket": "transnet-a06df.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565595319377:android:216ca8c59e03bae1135c70",
+        "android_client_info": {
+          "package_name": "com.example.graduation_progect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQsFz8vzZE_tr3jf0QuXDBzOV_aNblaaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
