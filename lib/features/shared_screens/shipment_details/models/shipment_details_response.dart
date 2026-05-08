@@ -7,15 +7,15 @@ class ShipmentDetailsResponse {
   final ShipmentDetail shipment;
   final RouteGeometry? route_geometry;
   final dynamic live_tracking;
-  final PartyInfo driver;
-  final PartyInfo client;
+  final PartyInfo? driver;  
+  final PartyInfo? client;  
 
   ShipmentDetailsResponse({
     required this.shipment,
     this.route_geometry,
     this.live_tracking,
-    required this.driver,
-    required this.client,
+    this.driver,
+    this.client,
   });
 
   factory ShipmentDetailsResponse.fromJson(Map<String, dynamic> json) =>
@@ -47,7 +47,7 @@ class ShipmentDetail {
   final String endPositionLng;
   final int? price;
   final String? status;
-  final int? success; // 1 = completed
+  final int? success;
   @JsonKey(name: 'delivery_deadline')
   final String? deliveryDeadline;
   final int? paid;
