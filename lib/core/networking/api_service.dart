@@ -13,6 +13,7 @@ import 'package:graduation_progect/features/shared_screens/login/data/models/log
 import 'package:graduation_progect/features/shared_screens/login/logic/refresh_token_models.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/models/notification_model.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/models/shipment_details_response.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_search/data/models/search_shipments_request.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/models/verification_request_body.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/models/verification_response.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/models/driver_model.dart';
@@ -94,8 +95,6 @@ abstract class ApiService {
   @POST(ApiConstants.saveDeviceToken)
   Future<dynamic> saveDeviceToken(@Body() Map<String, dynamic> body);
 
-
-
   @GET(ApiConstants.getNewNotificationsCount)
   Future<dynamic> getNewNotificationsCount();
 
@@ -146,4 +145,9 @@ abstract class ApiService {
 
   @GET('${ApiConstants.shipmentDetails}/{id}')
   Future<ShipmentDetailsResponse> getShipmentDetails(@Path('id') int id);
+
+@POST(ApiConstants.searchShipmentsByDate)
+Future<List<ShipmentModel>> searchShipmentsByDate(
+  @Body() SearchShipmentsRequest request,
+);
 }

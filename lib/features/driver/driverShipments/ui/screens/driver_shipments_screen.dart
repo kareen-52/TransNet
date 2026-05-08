@@ -68,6 +68,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_state.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_search/ui/screens/search_shipments_screen.dart';
 
 class DriverShipmentsScreen extends StatefulWidget {
   const DriverShipmentsScreen({super.key});
@@ -111,9 +112,20 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("شحناتي", style: Theme.of(context).textTheme.headlineSmall),
-      ),
+     appBar: AppBar(
+  title: Text("شحناتي", style: Theme.of(context).textTheme.headlineSmall),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.search),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const SearchShipmentsScreen()),
+        );
+      },
+    ),
+  ],
+),
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.primary,
         backgroundColor: Theme.of(context).colorScheme.surface,

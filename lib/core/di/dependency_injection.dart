@@ -158,6 +158,8 @@ import 'package:graduation_progect/features/shared_screens/login/logic/login_cub
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/logic/shipment_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/models/repo/shipment_details_repo.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_search/data/repo/shipment_search_repo.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_search/logic/search_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/repos/verification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/logic/verification_cubit.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/repos/available_drivers_repo.dart';
@@ -278,4 +280,13 @@ void setupGetIt() {
     () => DriverReviewsRepo(getIt()),
   );
   getIt.registerFactory<DriverReviewsCubit>(() => DriverReviewsCubit(getIt()));
+
+
+    getIt.registerLazySingleton<ShipmentSearchRepo>(
+    () => ShipmentSearchRepo(getIt()),
+  );
+  getIt.registerFactory<SearchShipmentsCubit>(() => SearchShipmentsCubit(getIt()));
+
+
+  
 }

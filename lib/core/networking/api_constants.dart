@@ -53,4 +53,5 @@ class ApiConstants {
   static const String deleteShipment = 'shipment/delete';
   static const String updateShipment = 'shipment/update';
   static const String getShipment = 'shipment/active';
+  static const String searchShipmentsByDate = 'shipments/searchByDate';
 }

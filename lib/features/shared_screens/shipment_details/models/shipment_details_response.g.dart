@@ -14,8 +14,12 @@ ShipmentDetailsResponse _$ShipmentDetailsResponseFromJson(
       ? null
       : RouteGeometry.fromJson(json['route_geometry'] as Map<String, dynamic>),
   live_tracking: json['live_tracking'],
-  driver: PartyInfo.fromJson(json['driver'] as Map<String, dynamic>),
-  client: PartyInfo.fromJson(json['client'] as Map<String, dynamic>),
+  driver: json['driver'] == null
+      ? null
+      : PartyInfo.fromJson(json['driver'] as Map<String, dynamic>),
+  client: json['client'] == null
+      ? null
+      : PartyInfo.fromJson(json['client'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ShipmentDetailsResponseToJson(
@@ -53,6 +57,8 @@ ShipmentDetail _$ShipmentDetailFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updated_at'] as String,
       startGovernorate: json['start_governorate'] as String,
       endGovernorate: json['end_governorate'] as String,
+      pin: json['pin'] as String?,
+      qrPin: json['qr_pin'] as String?,
     );
 
 Map<String, dynamic> _$ShipmentDetailToJson(ShipmentDetail instance) =>
@@ -61,6 +67,9 @@ Map<String, dynamic> _$ShipmentDetailToJson(ShipmentDetail instance) =>
       'user_id': instance.userId,
       'driver_id': instance.driverId,
       'shipment_number': instance.shipmentNumber,
+      'pin': instance.pin,
+      'qr_pin': instance.qrPin,
+      'created_at': instance.createdAt,
       'weight': instance.weight,
       'height': instance.height,
       'width': instance.width,
@@ -76,7 +85,6 @@ Map<String, dynamic> _$ShipmentDetailToJson(ShipmentDetail instance) =>
       'success': instance.success,
       'delivery_deadline': instance.deliveryDeadline,
       'paid': instance.paid,
-      'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'start_governorate': instance.startGovernorate,
       'end_governorate': instance.endGovernorate,

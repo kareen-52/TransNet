@@ -31,6 +31,14 @@ class ShipmentDetail {
   final int? driverId;
   @JsonKey(name: 'shipment_number')
   final int shipmentNumber;
+    @JsonKey(name: 'pin')
+  final String? pin;           
+
+  @JsonKey(name: 'qr_pin')
+  final String? qrPin;         
+
+  @JsonKey(name: 'created_at')
+  final String createdAt;   
   final String? weight;
   final String? height;
   final String? width;
@@ -51,8 +59,7 @@ class ShipmentDetail {
   @JsonKey(name: 'delivery_deadline')
   final String? deliveryDeadline;
   final int? paid;
-  @JsonKey(name: 'created_at')
-  final String createdAt;
+
   @JsonKey(name: 'updated_at')
   final String updatedAt;
   @JsonKey(name: 'start_governorate')
@@ -83,7 +90,7 @@ class ShipmentDetail {
     required this.createdAt,
     required this.updatedAt,
     required this.startGovernorate,
-    required this.endGovernorate,
+    required this.endGovernorate, this.pin, this.qrPin,
   });
 
   factory ShipmentDetail.fromJson(Map<String, dynamic> json) =>
