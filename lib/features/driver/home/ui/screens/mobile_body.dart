@@ -29,7 +29,7 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
   final List<Widget> _screens = const [
     HomeContent(isTablet: false),
     AdsScreen(),
-    LogsScreen(),
+    MyOrdersScreen(),
     AcountDriverScreen(),
   ];
 
@@ -155,8 +155,8 @@ class AdsScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Center(child: Text('الإعلانات '));
 }
 
-class LogsScreen extends StatelessWidget {
-  const LogsScreen({super.key});
+class MyOrdersScreen extends StatelessWidget {
+  const MyOrdersScreen({super.key});
   @override
   Widget build(BuildContext context) => Center(
     child: BlocProvider(

@@ -25,6 +25,8 @@ class NotificationModel {
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => _$NotificationModelFromJson(json);
+  
+  Map<String, dynamic> toJson() => _$NotificationModelToJson(this);
 }
 
 @JsonSerializable()
@@ -32,4 +34,6 @@ class NotificationListResponse {
   final List<NotificationModel> notifications;
   NotificationListResponse({required this.notifications});
   factory NotificationListResponse.fromJson(Map<String, dynamic> json) => _$NotificationListResponseFromJson(json);
+  
+  Map<String, dynamic> toJson() => _$NotificationListResponseToJson(this);
 }

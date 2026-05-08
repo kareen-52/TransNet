@@ -1,5 +1,7 @@
+
 import 'dart:async';
-import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
@@ -18,22 +20,16 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
   int get shipmentCount => _shipmentCount;
   Uint8List? get profileImage => _cachedProfileImage;
 
-
   List<InstantOrderModel> incomingOrders = [];
   StreamSubscription? _ordersSubscription;
 
-
   DriverHomeCubit(this._driverHomeRepo) : super(const DriverHomeState.initial()) {
-    // _fetchPendingInstantOrders();
     _listenToInstantOrders();
   }
-
-
 
   void _listenToInstantOrders() {
     _ordersSubscription = NotificationService.instantOrderStreamController.stream.listen((fcmData) {
       final newOrder = InstantOrderModel.fromFcmPayload(fcmData);
-      
       if (!incomingOrders.any((o) => o.userId == newOrder.userId)) {
         incomingOrders.insert(0, newOrder);
         if (!isClosed) emit(DriverHomeState.newOrderReceived(List.from(incomingOrders)));
@@ -41,27 +37,17 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
     });
   }
 
-
   void removeOrder(int userId) {
     incomingOrders.removeWhere((order) => order.userId == userId);
     if (!isClosed) emit(DriverHomeState.orderRemoved(List.from(incomingOrders)));
   }
 
-
   Future<void> forceRefreshOrders() async {
     if (isClosed) return;
-    
-    await fetchShipmentCountAndStatus();
-
-    // await _fetchPendingInstantOrders();
-    
-    // 3. TODO: هنا ستضع API جلب الطلبات الفورية الجديد عندما يجهز.
-   
+    await fetchShipmentCountAndStatus(); // استخدام الدالة الموحّدة
+    // TODO: إضافة API الطلبات الفورية لاحقاً
   }
 
-
-
-  
   Future<void> toggleAvailability() async {
     if (isClosed) return;
     final result = await _driverHomeRepo.changeAvailability();
@@ -78,7 +64,6 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
     );
   }
 
- 
   Future<void> fetchShipmentCountAndStatus() async {
     if (isClosed) return;
     final response = await _driverHomeRepo.getShipmentCount();
@@ -87,7 +72,7 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
       success: (countResponse) {
         _shipmentCount = countResponse.count;
         final backendAvailability = countResponse.availability == 1;
-  
+
         if (_isAvailable != backendAvailability) {
           _isAvailable = backendAvailability;
           emit(DriverHomeState.availabilityChanged(
@@ -101,7 +86,7 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
     );
   }
 
-
+  // تم حذف refreshShipmentCount() بالكامل
 
   Future<void> getDriverImage(int driverId) async {
     if (isClosed) return;
@@ -116,43 +101,24 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
     );
   }
 
- Future<void> loadAllData(int driverId) async {
+  Future<void> loadAllData(int driverId) async {
     await Future.wait([
       getDriverImage(driverId),
-      fetchShipmentCountAndStatus(), 
+      fetchShipmentCountAndStatus(),
     ]);
-    
-    print("🚀 بدء التشغيل: الحالة النهائية = $_isAvailable");
+    if (kDebugMode) {
+      debugPrint('🚀 بدء التشغيل: الحالة النهائية = $_isAvailable');
+    }
   }
 
-
-
-
-  Future<void> refreshShipmentCount() async {
-    if (isClosed) return;
-    final response = await _driverHomeRepo.getShipmentCount();
-    if (isClosed) return;
-    response.when(
-      success: (countResponse) {
-        _shipmentCount = countResponse.count;
-        emit(DriverHomeState.shipmentCountLoaded(_shipmentCount));
-   
-      },
-      failure: (error) => emit(DriverHomeState.error(error)),
-    );
-  }
-
- 
   Future<bool> toggleAvailabilityWithOptimisticUpdate() async {
     await toggleAvailability();
     return _isAvailable;
   }
 
-  
- Future<void> setOfflineAndClose() async {
-    if (!_isAvailable) return; 
-    
-  
+  Future<void> setOfflineAndClose() async {
+    if (!_isAvailable) return;
+
     final result = await _driverHomeRepo.changeAvailability();
     result.when(
       success: (response) {
@@ -163,7 +129,6 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
         ));
       },
       failure: (error) {
-     
         _isAvailable = false;
         emit(DriverHomeState.availabilityChanged(
           message: "تم تعيين الحالة محلياً إلى غير متاح",
@@ -172,7 +137,6 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
       },
     );
   }
-
 
   Future<bool> respondToRequest(int userId, bool isAccept) async {
     if (isClosed) return false;
@@ -186,15 +150,9 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
     );
   }
 
-  
-
   @override
   Future<void> close() {
-    _ordersSubscription?.cancel(); 
+    _ordersSubscription?.cancel();
     return super.close();
   }
-
 }
-
-
-

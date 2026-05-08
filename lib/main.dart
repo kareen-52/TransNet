@@ -88,13 +88,12 @@
 //   }
 // }
 
-
-
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:graduation_progect/app_bloc_observer.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
@@ -103,45 +102,49 @@ import 'package:graduation_progect/core/routing/app_router.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/theme_cash_helper.dart';
 import 'package:graduation_progect/graduation_project.dart';
+import 'package:graduation_progect/connectivity_helper.dart';
+import 'package:graduation_progect/hive_cache_service.dart';
 
-String initialAppRoute = Routes.onboardingScreens;
+String _initialRoute = Routes.onboardingScreens;
 ThemeMode _savedTheme = ThemeMode.system;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // ✅ sync - بتخلص فوراً بدون أي انتظار
+
+
   setupGetIt();
 
-  // ✅ بس هاد بيحتاج await
+  Bloc.observer = AppBlocObserver();
+
   await Future.wait([
     Firebase.initializeApp(),
     SharedPrefHelper.init(),
-    ThemeCacheHelper.getTheme().then((theme) => _savedTheme = theme),
-    checkIfLoggedInUser(),
+    HiveCacheService.init(),
+    ConnectivityHelper.init(),
+    ThemeCacheHelper.getTheme().then((t) => _savedTheme = t),
+    _determineInitialRoute(),
   ]);
 
-  // ✅ شيل الـ splash
   FlutterNativeSplash.remove();
 
-  // ✅ شغّل الإشعارات بالخلفية بعد runApp
   NotificationService.init().catchError((e) {
-    if (kDebugMode) print("❌ خطأ في الإشعارات: $e");
+    if (kDebugMode) debugPrint('❌ خطأ في الإشعارات: $e');
   });
 
   runApp(
     MyGraduationProject(
       appRouter: AppRouter(),
       initialTheme: _savedTheme,
-      startRoute: initialAppRoute,
+      startRoute: _initialRoute,
+      
     ),
   );
 }
 
-Future<void> checkIfLoggedInUser() async {
-  final token = await SharedPrefHelper.getSecuredString(
+Future<void> _determineInitialRoute() async {
+    final token = await SharedPrefHelper.getSecuredString(
     SharedPrefKeys.userToken,
   );
   final role = SharedPrefHelper.getString(SharedPrefKeys.userRole);
@@ -149,14 +152,15 @@ Future<void> checkIfLoggedInUser() async {
 
   if (token.isNotEmpty) {
     if (isFirstLogin == true) {
-      initialAppRoute = Routes.login;
+      _initialRoute = Routes.login;
     } else {
-      if (kDebugMode) print("User role: $role");
-      initialAppRoute = (role == 'driver')
+      print(role);
+
+      _initialRoute = (role == 'driver')
           ? Routes.driverHomeScreen
           : Routes.clientHomeScreen;
     }
   } else {
-    initialAppRoute = Routes.onboardingScreens;
+    _initialRoute = Routes.onboardingScreens;
   }
 }

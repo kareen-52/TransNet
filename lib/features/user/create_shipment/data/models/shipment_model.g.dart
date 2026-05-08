@@ -13,7 +13,7 @@ ShipmentModel _$ShipmentModelFromJson(Map<String, dynamic> json) =>
       width: (json['width'] as num).toDouble(),
       length: (json['length'] as num).toDouble(),
       object: json['object'] as String,
-      insurance: json['insurance'] as bool,
+      insurance: _parseBool(json['insurance']),
       startPositionLat: json['start_position_lat'],
       startPositionLng: json['start_position_lng'],
       endPositionLat: json['end_position_lat'],
@@ -21,6 +21,9 @@ ShipmentModel _$ShipmentModelFromJson(Map<String, dynamic> json) =>
       startGovernorateId: json['start_governorate_id'],
       endGovernorateId: json['end_governorate_id'],
       expiresAt: json['expires_at'] as String,
+      driver: json['driver'] == null
+          ? null
+          : PendingDriverModel.fromJson(json['driver'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ShipmentModelToJson(ShipmentModel instance) =>
@@ -37,5 +40,22 @@ Map<String, dynamic> _$ShipmentModelToJson(ShipmentModel instance) =>
       'end_position_lng': instance.endPositionLng,
       'start_governorate_id': instance.startGovernorateId,
       'end_governorate_id': instance.endGovernorateId,
+      'expires_at': instance.expiresAt,
+      'driver': instance.driver,
+    };
+
+PendingDriverModel _$PendingDriverModelFromJson(Map<String, dynamic> json) =>
+    PendingDriverModel(
+      driverId: (json['driver_id'] as num).toInt(),
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      expiresAt: json['expires_at'] as String,
+    );
+
+Map<String, dynamic> _$PendingDriverModelToJson(PendingDriverModel instance) =>
+    <String, dynamic>{
+      'driver_id': instance.driverId,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
       'expires_at': instance.expiresAt,
     };

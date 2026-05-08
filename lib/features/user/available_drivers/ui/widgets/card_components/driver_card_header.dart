@@ -14,14 +14,14 @@ class DriverCardHeader extends StatefulWidget {
   final int driverId;
   final String firstName;
   final String lastName;
-  final double rating;
+  final double? rating;
 
   const DriverCardHeader({
     super.key,
     required this.driverId,
     required this.firstName,
     required this.lastName,
-    required this.rating,
+     this.rating,
   });
 
   @override

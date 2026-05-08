@@ -65,4 +65,14 @@ class CreateShipmentRepo {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
+
+
+  Future<ApiResult<String>> cancelRequestForDriver(int driverId) async {
+    try {
+      final response = await _apiService.cancelRequestForDriver(driverId);
+      return ApiResult.success(response['message'] ?? 'تم إلغاء الطلب بنجاح');
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
 }

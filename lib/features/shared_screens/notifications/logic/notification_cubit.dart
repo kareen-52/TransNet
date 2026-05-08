@@ -6,6 +6,7 @@ import 'notification_state.dart';
 class NotificationCubit extends Cubit<NotificationState> {
   final NotificationRepo _repo;
   int unreadCount = 0;
+  bool isShowingAll = false;
 
   NotificationCubit(this._repo) : super(const NotificationState.initial());
 
@@ -20,22 +21,18 @@ class NotificationCubit extends Cubit<NotificationState> {
         emit(NotificationState.countUpdated(count));
       },
       failure: (error) {
-        // في حال فشل جلب العدد (مثلاً نت ضعيف)، نتجاهل بصمت كي لا نزعج المستخدم في الرئيسية
       },
     );
   }
 
-
-  void fetchAllNotifications() async {
+  Future<void> fetchRecentNotifications() async {
     emit(const NotificationState.loading());
-    final result = await _repo.getAllNotifications();
+    final result = await _repo.getNotifications(latest: 0);
     if (isClosed) return;
 
     result.when(
       success: (notifications) {
-
-        unreadCount = 0; 
-        
+        isShowingAll = false;
         if (notifications.isEmpty) {
           emit(const NotificationState.empty());
         } else {
@@ -45,4 +42,23 @@ class NotificationCubit extends Cubit<NotificationState> {
       failure: (error) => emit(NotificationState.error(error)),
     );
   }
+
+  Future<void> fetchAllNotifications() async {
+    emit(const NotificationState.loading());
+    final result = await _repo.getNotifications(latest: 1);
+    if (isClosed) return;
+
+    result.when(
+      success: (notifications) {
+        isShowingAll = true;
+        if (notifications.isEmpty) {
+          emit(const NotificationState.empty());
+        } else {
+          emit(NotificationState.success(notifications));
+        }
+      },
+      failure: (error) => emit(NotificationState.error(error)),
+    );
+  }
+
 }

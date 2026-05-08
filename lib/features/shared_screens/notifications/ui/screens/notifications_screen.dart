@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
@@ -15,7 +16,7 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: getIt<NotificationCubit>()..fetchAllNotifications(),
+      value: getIt<NotificationCubit>()..fetchRecentNotifications(),
       // create: (context) => getIt<NotificationCubit>()..fetchAllNotifications(),
       child: Scaffold(
         appBar: AppBar(
@@ -46,12 +47,27 @@ class NotificationsScreen extends StatelessWidget {
 
 
               success: (notifications) {
-                return ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) {
-                    return NotificationCard(notification: notifications[index]);
-                  },
+                final cubit = context.read<NotificationCubit>();
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(top: 16.w, bottom: 48.w, left: 16.h, right: 16.h),
+                        itemCount: notifications.length,
+                        itemBuilder: (context, index) {
+                          return NotificationCard(notification: notifications[index]);
+                        },
+                      ),
+                    ),
+                    if (!cubit.isShowingAll)
+                      Padding(
+                        padding: EdgeInsets.only(top: 16.w, bottom: 56.w, left: 16.h, right: 16.h),
+                        child: AppTextButton(
+                          onPressed: () => cubit.fetchAllNotifications(),
+                           text: 'عرض جميع الإشعارات',
+                        ),
+                      ),
+                  ],
                 );
               },
 

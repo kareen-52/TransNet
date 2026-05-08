@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/logic/vehicle_types_cubit.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/logic/vehicle_types_state.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/ui/widgets/transport_grid.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/ui/widgets/transport_grid_shimmer.dart';
+import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
+import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_state.dart';
+import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/transport_grid.dart';
+import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/transport_grid_shimmer.dart';
 import '../../../../../../core/helpers/spacing.dart';
 import '../../../../../../core/responsive/responsive_layout.dart';
 

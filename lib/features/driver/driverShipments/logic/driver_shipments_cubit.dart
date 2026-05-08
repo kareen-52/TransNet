@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_progect/core/helpers/constants.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
@@ -6,21 +9,29 @@ import 'package:graduation_progect/features/driver/driverShipments/logic/driver_
 
 class DriverShipmentsCubit extends Cubit<DriverShipmentsState> {
   final DriverShipmentsRepo _repo;
+
   int currentPage = 1;
   bool isFetchingMore = false;
   bool hasReachedMax = false;
+  bool _isReloading = false;
   List<ShipmentModel> allShipments = [];
 
-  DriverShipmentsCubit(this._repo) : super(const DriverShipmentsState.initial());
+  DriverShipmentsCubit(this._repo)
+    : super(const DriverShipmentsState.initial());
 
   Future<void> getShipments({bool isReload = false}) async {
-  
-    if (isFetchingMore) return;
+    // ── Guards ────────────────────────────────────────────────────────────────
+    if (isReload) {
+      if (_isReloading) return;
+    } else {
+      if (isFetchingMore || hasReachedMax) return;
+    }
 
-  
-    if (hasReachedMax && !isReload) return;
+    // قراءة الـ role من SharedPrefs — لا استيراد من main.dart
+    final role = SharedPrefHelper.getString(SharedPrefKeys.userRole);
 
     if (isReload) {
+      _isReloading = true;
       currentPage = 1;
       hasReachedMax = false;
       allShipments.clear();
@@ -29,37 +40,54 @@ class DriverShipmentsCubit extends Cubit<DriverShipmentsState> {
 
     isFetchingMore = true;
 
-    final response = await _repo.getShipments(currentPage);
+    if (kDebugMode) {
+      debugPrint(
+        '🚚 getShipments page=$currentPage isReload=$isReload role=$role',
+      );
+    }
 
-    response.when(
-      success: (data) {
-        final shipments = data.data ?? [];
-        final lastPage = data.lastPage;
+    try {
+      final ApiResult<DriverShipmentsResponse> response;
+      if (role == 'driver') {
+        response = await _repo.getShipments(currentPage);
+      } else {
+        response = await _repo.getClientrShipments(currentPage);
+      }
 
-   
-        if (lastPage != null && currentPage >= lastPage) {
-          hasReachedMax = true;
-        } else {
-          hasReachedMax = false;
-        }
+      if (isClosed) return;
 
-        allShipments.addAll(shipments);
+      response.when(
+        success: (data) {
+          final shipments = data.data ?? [];
+          final lastPage = data.lastPage;
 
-        if (!hasReachedMax) currentPage++;
+          hasReachedMax = (lastPage != null && currentPage >= lastPage);
+          allShipments.addAll(shipments);
+          if (!hasReachedMax) currentPage++;
 
-        emit(DriverShipmentsState.success(List.from(allShipments), hasReachedMax));
-        isFetchingMore = false;
-      },
-      failure: (error) {
-        isFetchingMore = false;
-
-        if (allShipments.isNotEmpty) {
-          emit(DriverShipmentsState.success(List.from(allShipments), hasReachedMax));
-        
-        } else {
-          emit(DriverShipmentsState.error(error));
-        }
-      },
-    );
+          emit(
+            DriverShipmentsState.success(
+              List.from(allShipments),
+              hasReachedMax,
+            ),
+          );
+        },
+        failure: (error) {
+          if (allShipments.isNotEmpty) {
+            emit(
+              DriverShipmentsState.success(
+                List.from(allShipments),
+                hasReachedMax,
+              ),
+            );
+          } else {
+            emit(DriverShipmentsState.error(error));
+          }
+        },
+      );
+    } finally {
+      isFetchingMore = false;
+      _isReloading = false;
+    }
   }
 }

@@ -7,7 +7,7 @@ import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.d
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_state.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/logic/vehicle_types_cubit.dart';
+import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/screens/tablet_body.dart';
 
@@ -25,22 +25,12 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => getIt<HomeCubit>()..checkActiveShipment(),
-        ),
-
-        BlocProvider(
-          create: (context) => getIt<VehicleTypesCubit>()..fetchVehicleTypes(),
-        ),
-
-        BlocProvider.value(
-          value: getIt<NotificationCubit>()..fetchUnreadCount(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<ProfileCubit>()..getProfileData(),
-        ),
+        BlocProvider.value(value: getIt<HomeCubit>()..checkActiveShipment()),
+        BlocProvider(create: (context) => getIt<VehicleTypesCubit>()..fetchVehicleTypes()),
+        BlocProvider.value(value: getIt<NotificationCubit>()..fetchUnreadCount()),
+        BlocProvider(create: (context) => getIt<ProfileCubit>()..getProfileData()),
       ],
-      // create: (context) => getIt<HomeCubit>()..checkActiveShipment(),
+
       child: BlocListener<HomeCubit, HomeState>(
         listenWhen: (previous, current) =>
             current is HasActiveShipment || current is NoActiveShipment,
@@ -60,6 +50,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   }
                 });
               },
+              
               orElse: () {},
             );
           }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/core/routing/routes.dart';
+import 'package:graduation_progect/connectivity_helper.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/shared_screens/login/logic/logout_service.dart';
 import 'package:graduation_progect/main.dart';
@@ -14,7 +14,7 @@ void showLogoutConfirmDialog(BuildContext context) {
     barrierDismissible: false,
     builder: (dialogContext) {
       return StatefulBuilder(
-        builder: (context, setState) {
+        builder: (dialogContext, setState) {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: AlertDialog(
@@ -36,67 +36,40 @@ void showLogoutConfirmDialog(BuildContext context) {
                     style: TextStyle(color: colorScheme.onSurfaceVariant),
                   ),
                 ),
-
                 TextButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.error,
                     foregroundColor: Colors.white,
-                    // padding: EdgeInsets.symmetric(
-                    //   horizontal: 12.w,
-                    //   vertical: 8.h,
-                    // ),
                   ),
                   onPressed: isLoading
                       ? null
                       : () async {
+                          // تحقق من الاتصال بالإنترنت
+                          if (!ConnectivityHelper.isOnline) {
+                            SnackbarHelper.showError(
+                                message: 'لا يوجد اتصال بالإنترنت');
+                            return;
+                          }
+
                           setState(() => isLoading = true);
 
-                          final success = await LogoutService.logout();
+                          // انتظر نتيجة عملية الخروج (true = نجاح, false = فشل)
+                          final success =
+                              await LogoutService.execute(context);
 
-                          if (!dialogContext.mounted) return;
-
-                          if (success) {
-                            Navigator.pop(dialogContext);
-
-                            SnackBarHelper.showSuccess(
-                              context,
-                              'تم تسجيل الخروج بنجاح',
-                            );
-
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(
-                            //     content: Text('تم تسجيل الخروج بنجاح'),
-                            //     backgroundColor: Colors.green,
-                            //   ),
-                            // );
-
-                            navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                              Routes.login,
-                              (route) => false,
-                            );
-                          } else {
+                          // إذا فشلت العملية، أرجع التحميل إلى حالته الأصلية
+                          if (!success && dialogContext.mounted) {
                             setState(() => isLoading = false);
-
-                            SnackBarHelper.showError(
-                              context,
-                              'فشل تسجيل الخروج',
-                            );
-
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(
-                            //     content: Text('فشل تسجيل الخروج'),
-                            //     backgroundColor: Colors.red,
-                            //   ),
-                            // );
                           }
+                          // إذا نجحت، سينتقل المستخدم تلقائيًا وتختفي الحوارات
                         },
                   child: isLoading
                       ? SizedBox(
                           height: 18.h,
                           width: 18.h,
                           child: const CircularProgressIndicator(
-                            // color: Colors.white,
                             strokeWidth: 2,
+                            color: Colors.white,
                           ),
                         )
                       : const Text(
@@ -111,4 +84,35 @@ void showLogoutConfirmDialog(BuildContext context) {
       );
     },
   );
+}
+
+
+
+class SnackbarHelper {
+  // رسالة خطأ
+  static void showError({required String message}) {
+    final context = navigatorKey.currentContext;
+    if (context == null) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  // رسالة نجاح
+  static void showSuccess({required String message}) {
+    final context = navigatorKey.currentContext;
+    if (context == null) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 }

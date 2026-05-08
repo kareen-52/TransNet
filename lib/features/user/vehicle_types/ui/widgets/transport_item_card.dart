@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/shadow_card.dart';
-import 'package:graduation_progect/features/user/vehicle_types.dart/ui/widgets/vehicle_ui_helper.dart';
+import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/vehicle_ui_helper.dart';
 import '../../data/models/vehicle_type_model.dart';
 import 'vehicle_details_bottom_sheet.dart';
 

@@ -1,47 +1,72 @@
+// ============================================================
+// lib/core/networking/token_refresher.dart
+// ============================================================
+// إصلاحات:
+// 1. Dio instance له timeout محدد (لا يتعلق للأبد)
+// 2. معالجة أخطاء واضحة ترجع false بدل throw
+// ============================================================
+
 import 'package:dio/dio.dart';
-import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
-import 'package:graduation_progect/core/networking/api_service.dart';
-import 'package:graduation_progect/core/networking/dio_factory.dart';
-import 'package:graduation_progect/features/shared_screens/login/logic/refresh_token_models.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+import 'package:graduation_progect/core/networking/app_config.dart';
 
 class TokenRefresher {
+  TokenRefresher._();
+
   static Future<bool> refreshToken() async {
-    try {
-      final refreshToken = await SharedPrefHelper.getSecuredString('refreshToken');
-      if (refreshToken.isEmpty) return false;
+    final refreshToken = await SharedPrefHelper.getSecuredString(
+      SharedPrefKeys.refreshToken,
+    );
 
-      final refreshDio = Dio();
-      final apiService = ApiService(refreshDio);
-
-      final response = await apiService.refreshToken(
-        RefreshTokenRequest(refreshToken: refreshToken),
-      );
-
-      if (response.accessToken != null) {
-        await SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, response.accessToken!);
-        await SharedPrefHelper.setSecuredString('refreshToken', response.refreshToken ?? refreshToken);
-        DioFactory.setTokenInHeaderAfterLogin(response.accessToken!);
-        return true;
-      }
-      return false;
-    } catch (e) {
+    if (refreshToken.isEmpty) {
+      if (kDebugMode) debugPrint('[TokenRefresher] No refresh token found');
       return false;
     }
-  }
 
-  static Future<void> retryOriginalRequest(
-    DioException e,
-    ErrorInterceptorHandler handler,
-  ) async {
-    final newToken = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
-    e.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+    // Dio منفصل بدون interceptors للتجنب التكرار اللانهائي
+    final refreshDio = Dio(
+      BaseOptions(
+        baseUrl: AppConfig.apiBaseUrl,
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+        sendTimeout: const Duration(seconds: 15),
+        headers: {'Accept': 'application/json'},
+      ),
+    );
+
     try {
-      final dio = await DioFactory.getDio();
-      final response = await dio.fetch(e.requestOptions);
-      handler.resolve(response);
-    } catch (err) {
-      handler.next(e);
+      final response = await refreshDio.post(
+        'auth/refresh',
+        data: {'refresh_token': refreshToken},
+      );
+
+      final newToken = response.data?['access_token'] as String?;
+      final newRefresh = response.data?['refresh_token'] as String?;
+
+      if (newToken == null || newToken.isEmpty) {
+        if (kDebugMode) debugPrint('[TokenRefresher] Empty token in response');
+        return false;
+      }
+
+      await Future.wait([
+        SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, newToken),
+        if (newRefresh != null && newRefresh.isNotEmpty)
+          SharedPrefHelper.setSecuredString(
+              SharedPrefKeys.refreshToken, newRefresh),
+      ]);
+
+      if (kDebugMode) debugPrint('[TokenRefresher] Token refreshed ✓');
+      return true;
+    } on DioException catch (e) {
+      if (kDebugMode) debugPrint('[TokenRefresher] DioError: ${e.type}');
+      return false;
+    } catch (e) {
+      if (kDebugMode) debugPrint('[TokenRefresher] Unexpected error: $e');
+      return false;
+    } finally {
+      refreshDio.close();
     }
   }
 }

@@ -1,3 +1,4 @@
+
 import 'package:json_annotation/json_annotation.dart';
 part 'driver_shipments_response.g.dart';
 
@@ -34,6 +35,9 @@ class DriverShipmentsResponse {
 
   factory DriverShipmentsResponse.fromJson(Map<String, dynamic> json) =>
       _$DriverShipmentsResponseFromJson(json);
+
+      Map<String, dynamic> toJson() => _$DriverShipmentsResponseToJson(this);
+
 }
 
 @JsonSerializable()
@@ -43,7 +47,6 @@ class ShipmentModel {
   final int? userId;
   @JsonKey(name: 'driver_id')
   final int? driverId;
-
   @JsonKey(name: 'shipment_number')
   final int? shipmentNumber;
   final String? width, height, length, weight;
@@ -77,4 +80,5 @@ class ShipmentModel {
 
   factory ShipmentModel.fromJson(Map<String, dynamic> json) =>
       _$ShipmentModelFromJson(json);
+Map<String, dynamic> toJson() => _$ShipmentModelToJson(this);
 }

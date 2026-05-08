@@ -15,7 +15,6 @@ import 'package:graduation_progect/features/user/available_drivers/ui/widgets/dr
 import 'package:graduation_progect/features/user/available_drivers/ui/screens/drivers_shimmer_loading.dart';
 import 'package:graduation_progect/features/user/available_drivers/ui/screens/empty_drivers_widget.dart';
 
-
 class AvailableDriversScreen extends StatefulWidget {
   const AvailableDriversScreen({super.key});
 
@@ -72,7 +71,7 @@ class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
                 current is ShipmentExpired ||
                 current is Error ||
                 current is ActionError ||
-                current is SendToDriverSuccess ,
+                current is SendToDriverSuccess,
             listener: (context, state) {
               state.maybeWhen(
                 actionError: (errorModel) {
@@ -92,8 +91,14 @@ class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
 
                 sendToDriverSuccess: (message) {
                   SnackBarHelper.showSuccess(context, message);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.clientHomeScreen,
+                    (route) => false,
+                  );
+                
 
-                  // TODO: توجيه المستخدم لشاشة "انتظار موافقة السائق
+                 
                 },
 
                 deleteSuccess: () {
@@ -126,7 +131,6 @@ class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
                     'تم تمديد وقت البحث بنجاح',
                   );
                 },
-                
 
                 orElse: () {},
               );
@@ -138,7 +142,6 @@ class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
                 current is Error ||
                 current is DeleteLoading,
             builder: (context, state) {
-             
               return Column(
                 children: [
                   Divider(
@@ -171,9 +174,7 @@ class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
                         itemCount: drivers.length,
                         itemBuilder: (context, index) {
                           final drv = drivers[index];
-                          return DriverCardWidget(
-                            driver: drv,
-                          );
+                          return DriverCardWidget(driver: drv);
                         },
                       ),
 

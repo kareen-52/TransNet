@@ -55,15 +55,19 @@ extension HomeStatePatterns on HomeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( HasActiveShipment value)?  hasActiveShipment,TResult Function( NoActiveShipment value)?  noActiveShipment,TResult Function( Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( HasActiveShipment value)?  hasActiveShipment,TResult Function( WaitingForDriver value)?  waitingForDriver,TResult Function( NoActiveShipment value)?  noActiveShipment,TResult Function( Error value)?  error,TResult Function( _DeleteLoading value)?  deleteLoading,TResult Function( CancelDriverLoading value)?  cancelDriverLoading,TResult Function( CancelDriverSuccess value)?  cancelDriverSuccess,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case HasActiveShipment() when hasActiveShipment != null:
-return hasActiveShipment(_that);case NoActiveShipment() when noActiveShipment != null:
+return hasActiveShipment(_that);case WaitingForDriver() when waitingForDriver != null:
+return waitingForDriver(_that);case NoActiveShipment() when noActiveShipment != null:
 return noActiveShipment(_that);case Error() when error != null:
-return error(_that);case _:
+return error(_that);case _DeleteLoading() when deleteLoading != null:
+return deleteLoading(_that);case CancelDriverLoading() when cancelDriverLoading != null:
+return cancelDriverLoading(_that);case CancelDriverSuccess() when cancelDriverSuccess != null:
+return cancelDriverSuccess(_that);case _:
   return orElse();
 
 }
@@ -81,15 +85,19 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( HasActiveShipment value)  hasActiveShipment,required TResult Function( NoActiveShipment value)  noActiveShipment,required TResult Function( Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( HasActiveShipment value)  hasActiveShipment,required TResult Function( WaitingForDriver value)  waitingForDriver,required TResult Function( NoActiveShipment value)  noActiveShipment,required TResult Function( Error value)  error,required TResult Function( _DeleteLoading value)  deleteLoading,required TResult Function( CancelDriverLoading value)  cancelDriverLoading,required TResult Function( CancelDriverSuccess value)  cancelDriverSuccess,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case HasActiveShipment():
-return hasActiveShipment(_that);case NoActiveShipment():
+return hasActiveShipment(_that);case WaitingForDriver():
+return waitingForDriver(_that);case NoActiveShipment():
 return noActiveShipment(_that);case Error():
-return error(_that);case _:
+return error(_that);case _DeleteLoading():
+return deleteLoading(_that);case CancelDriverLoading():
+return cancelDriverLoading(_that);case CancelDriverSuccess():
+return cancelDriverSuccess(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -106,15 +114,19 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( HasActiveShipment value)?  hasActiveShipment,TResult? Function( NoActiveShipment value)?  noActiveShipment,TResult? Function( Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( HasActiveShipment value)?  hasActiveShipment,TResult? Function( WaitingForDriver value)?  waitingForDriver,TResult? Function( NoActiveShipment value)?  noActiveShipment,TResult? Function( Error value)?  error,TResult? Function( _DeleteLoading value)?  deleteLoading,TResult? Function( CancelDriverLoading value)?  cancelDriverLoading,TResult? Function( CancelDriverSuccess value)?  cancelDriverSuccess,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case HasActiveShipment() when hasActiveShipment != null:
-return hasActiveShipment(_that);case NoActiveShipment() when noActiveShipment != null:
+return hasActiveShipment(_that);case WaitingForDriver() when waitingForDriver != null:
+return waitingForDriver(_that);case NoActiveShipment() when noActiveShipment != null:
 return noActiveShipment(_that);case Error() when error != null:
-return error(_that);case _:
+return error(_that);case _DeleteLoading() when deleteLoading != null:
+return deleteLoading(_that);case CancelDriverLoading() when cancelDriverLoading != null:
+return cancelDriverLoading(_that);case CancelDriverSuccess() when cancelDriverSuccess != null:
+return cancelDriverSuccess(_that);case _:
   return null;
 
 }
@@ -131,14 +143,18 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( ShipmentModel shipment)?  hasActiveShipment,TResult Function()?  noActiveShipment,TResult Function( ApiErrorModel error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( ShipmentModel shipment)?  hasActiveShipment,TResult Function( ShipmentModel shipment)?  waitingForDriver,TResult Function()?  noActiveShipment,TResult Function( ApiErrorModel error)?  error,TResult Function()?  deleteLoading,TResult Function()?  cancelDriverLoading,TResult Function( String message)?  cancelDriverSuccess,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case HasActiveShipment() when hasActiveShipment != null:
-return hasActiveShipment(_that.shipment);case NoActiveShipment() when noActiveShipment != null:
+return hasActiveShipment(_that.shipment);case WaitingForDriver() when waitingForDriver != null:
+return waitingForDriver(_that.shipment);case NoActiveShipment() when noActiveShipment != null:
 return noActiveShipment();case Error() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case _DeleteLoading() when deleteLoading != null:
+return deleteLoading();case CancelDriverLoading() when cancelDriverLoading != null:
+return cancelDriverLoading();case CancelDriverSuccess() when cancelDriverSuccess != null:
+return cancelDriverSuccess(_that.message);case _:
   return orElse();
 
 }
@@ -156,14 +172,18 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( ShipmentModel shipment)  hasActiveShipment,required TResult Function()  noActiveShipment,required TResult Function( ApiErrorModel error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( ShipmentModel shipment)  hasActiveShipment,required TResult Function( ShipmentModel shipment)  waitingForDriver,required TResult Function()  noActiveShipment,required TResult Function( ApiErrorModel error)  error,required TResult Function()  deleteLoading,required TResult Function()  cancelDriverLoading,required TResult Function( String message)  cancelDriverSuccess,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case HasActiveShipment():
-return hasActiveShipment(_that.shipment);case NoActiveShipment():
+return hasActiveShipment(_that.shipment);case WaitingForDriver():
+return waitingForDriver(_that.shipment);case NoActiveShipment():
 return noActiveShipment();case Error():
-return error(_that.error);case _:
+return error(_that.error);case _DeleteLoading():
+return deleteLoading();case CancelDriverLoading():
+return cancelDriverLoading();case CancelDriverSuccess():
+return cancelDriverSuccess(_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -180,14 +200,18 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( ShipmentModel shipment)?  hasActiveShipment,TResult? Function()?  noActiveShipment,TResult? Function( ApiErrorModel error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( ShipmentModel shipment)?  hasActiveShipment,TResult? Function( ShipmentModel shipment)?  waitingForDriver,TResult? Function()?  noActiveShipment,TResult? Function( ApiErrorModel error)?  error,TResult? Function()?  deleteLoading,TResult? Function()?  cancelDriverLoading,TResult? Function( String message)?  cancelDriverSuccess,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case HasActiveShipment() when hasActiveShipment != null:
-return hasActiveShipment(_that.shipment);case NoActiveShipment() when noActiveShipment != null:
+return hasActiveShipment(_that.shipment);case WaitingForDriver() when waitingForDriver != null:
+return waitingForDriver(_that.shipment);case NoActiveShipment() when noActiveShipment != null:
 return noActiveShipment();case Error() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case _DeleteLoading() when deleteLoading != null:
+return deleteLoading();case CancelDriverLoading() when cancelDriverLoading != null:
+return cancelDriverLoading();case CancelDriverSuccess() when cancelDriverSuccess != null:
+return cancelDriverSuccess(_that.message);case _:
   return null;
 
 }
@@ -328,6 +352,72 @@ as ShipmentModel,
 /// @nodoc
 
 
+class WaitingForDriver implements HomeState {
+  const WaitingForDriver(this.shipment);
+  
+
+ final  ShipmentModel shipment;
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$WaitingForDriverCopyWith<WaitingForDriver> get copyWith => _$WaitingForDriverCopyWithImpl<WaitingForDriver>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WaitingForDriver&&(identical(other.shipment, shipment) || other.shipment == shipment));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,shipment);
+
+@override
+String toString() {
+  return 'HomeState.waitingForDriver(shipment: $shipment)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $WaitingForDriverCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory $WaitingForDriverCopyWith(WaitingForDriver value, $Res Function(WaitingForDriver) _then) = _$WaitingForDriverCopyWithImpl;
+@useResult
+$Res call({
+ ShipmentModel shipment
+});
+
+
+
+
+}
+/// @nodoc
+class _$WaitingForDriverCopyWithImpl<$Res>
+    implements $WaitingForDriverCopyWith<$Res> {
+  _$WaitingForDriverCopyWithImpl(this._self, this._then);
+
+  final WaitingForDriver _self;
+  final $Res Function(WaitingForDriver) _then;
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? shipment = null,}) {
+  return _then(WaitingForDriver(
+null == shipment ? _self.shipment : shipment // ignore: cast_nullable_to_non_nullable
+as ShipmentModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class NoActiveShipment implements HomeState {
   const NoActiveShipment();
   
@@ -417,6 +507,136 @@ class _$ErrorCopyWithImpl<$Res>
   return _then(Error(
 null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as ApiErrorModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _DeleteLoading implements HomeState {
+  const _DeleteLoading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeleteLoading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeState.deleteLoading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class CancelDriverLoading implements HomeState {
+  const CancelDriverLoading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CancelDriverLoading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeState.cancelDriverLoading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class CancelDriverSuccess implements HomeState {
+  const CancelDriverSuccess(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CancelDriverSuccessCopyWith<CancelDriverSuccess> get copyWith => _$CancelDriverSuccessCopyWithImpl<CancelDriverSuccess>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CancelDriverSuccess&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'HomeState.cancelDriverSuccess(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CancelDriverSuccessCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory $CancelDriverSuccessCopyWith(CancelDriverSuccess value, $Res Function(CancelDriverSuccess) _then) = _$CancelDriverSuccessCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class _$CancelDriverSuccessCopyWithImpl<$Res>
+    implements $CancelDriverSuccessCopyWith<$Res> {
+  _$CancelDriverSuccessCopyWithImpl(this._self, this._then);
+
+  final CancelDriverSuccess _self;
+  final $Res Function(CancelDriverSuccess) _then;
+
+/// Create a copy of HomeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(CancelDriverSuccess(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

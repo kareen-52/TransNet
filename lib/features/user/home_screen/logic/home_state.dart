@@ -7,7 +7,14 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState {
   const factory HomeState.initial() = _Initial;
   const factory HomeState.loading() = _Loading;
+  
   const factory HomeState.hasActiveShipment(ShipmentModel shipment) = HasActiveShipment;
+  const factory HomeState.waitingForDriver(ShipmentModel shipment) = WaitingForDriver;
+  
   const factory HomeState.noActiveShipment() = NoActiveShipment;
   const factory HomeState.error(ApiErrorModel error) = Error;
+  const factory HomeState.deleteLoading() = _DeleteLoading;
+
+  const factory HomeState.cancelDriverLoading() = CancelDriverLoading;
+  const factory HomeState.cancelDriverSuccess(String message) = CancelDriverSuccess;
 }

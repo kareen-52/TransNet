@@ -27,12 +27,9 @@
 
 //   static final StreamController<Map<String, dynamic>> instantOrderStreamController = StreamController<Map<String, dynamic>>.broadcast();
 
-
-
 //   static Future<void> init() async {
 
 //     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
 
 //     _firebaseMessaging
 //         .requestPermission(
@@ -72,7 +69,6 @@
 //             requestSoundPermission: true,
 //           ),
 //         );
-
 
 //     await _localNotifications.initialize(
 //       settings: initializationSettings,
@@ -144,8 +140,6 @@
 //       }
 //     });
 //   }
-
-
 
 //   static Future<void> handleDeviceTokenSync({int retryCount = 0}) async {
 //     try {
@@ -220,8 +214,6 @@
 //   }
 // }
 
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
@@ -234,6 +226,7 @@ import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/notifications/notification_route_helper.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 
 // ✅ هاد الـ background handler لازم يبقى هون برا الكلاس
 // لأن Firebase بيستدعيه في isolate منفصل
@@ -255,7 +248,7 @@ class NotificationService {
   static const String _fcmTokenKey = 'fcm_device_token';
 
   static final StreamController<Map<String, dynamic>>
-      instantOrderStreamController =
+  instantOrderStreamController =
       StreamController<Map<String, dynamic>>.broadcast();
 
   static Future<void> init() async {
@@ -295,18 +288,19 @@ class NotificationService {
     // ✅ [5] بدون await لأن createNotificationChannel مش ضرورية تنتهي قبل المتابعة
     _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: AndroidInitializationSettings('@drawable/ic_notification'),
-      iOS: DarwinInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
-      ),
-    );
+          android: AndroidInitializationSettings('@drawable/ic_notification'),
+          iOS: DarwinInitializationSettings(
+            requestAlertPermission: true,
+            requestBadgePermission: true,
+            requestSoundPermission: true,
+          ),
+        );
 
     // ✅ [6] هاد الـ await ضروري لأننا محتاجين الـ local notifications
     // تكون جاهزة قبل ما نبدأ نستقبل messages
@@ -357,6 +351,17 @@ class NotificationService {
             print("⚠️ NotificationCubit not registered yet: $e");
           }
         }
+
+        try {
+          final String title = message.notification?.title ?? '';
+          if (title.contains('رفض') || title.contains('قبول')) {
+            getIt<HomeCubit>().checkActiveShipment();
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print("⚠️ HomeCubit not registered yet: $e");
+          }
+        }
       }
     });
 
@@ -366,8 +371,8 @@ class NotificationService {
 
     // ✅ [8] microtask تمام - بتشتغل بعد ما يكتمل الـ frame الأول
     Future.microtask(() async {
-      final RemoteMessage? initialMessage =
-          await _firebaseMessaging.getInitialMessage();
+      final RemoteMessage? initialMessage = await _firebaseMessaging
+          .getInitialMessage();
       if (initialMessage != null) {
         _handleNotificationClick(jsonEncode(initialMessage.data));
       }

@@ -9,7 +9,7 @@ class DriverHomeRepo {
   final ApiService _apiService;
   DriverHomeRepo(this._apiService);
 
-  // تبديل الحالة (يعيد AvailabilityResponse)
+
   Future<ApiResult<AvailabilityResponse>> changeAvailability() async {
     try {
       final response = await _apiService.changeDriverAvailability();
@@ -20,7 +20,7 @@ class DriverHomeRepo {
     }
   }
 
-  // جلب عدد الشحنات مع الحالة الحالية من السيرفر
+
   Future<ApiResult<ShipmentCountResponse>> getShipmentCount() async {
     try {
       final  response = await _apiService.countContinuousSuccessfulShipments();
