@@ -6,8 +6,8 @@ import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
-import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
-import 'package:graduation_progect/features/driver/home/data/models/instant_order_model.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
+import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 
 class InstantOrderCard extends StatefulWidget {
   final InstantOrderModel orderData;
@@ -56,11 +56,7 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
         setState(() => _remainingSeconds--);
       } else {
         timer.cancel();
-        context.read<DriverHomeCubit>().respondToRequest(
-          widget.orderData.userId,
-          false,
-        );
-        context.read<DriverHomeCubit>().removeOrder(widget.orderData.userId);
+        widget.onOrderProcessed();
       }
     });
   }
@@ -127,7 +123,7 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
   Future<void> _executeAccept() async {
     setState(() => _isLoadingAccept = true);
-    final success = await context.read<DriverHomeCubit>().respondToRequest(
+    final success = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       true,
     );
@@ -145,7 +141,7 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
   Future<void> _executeReject({bool autoExpired = false}) async {
     setState(() => _isLoadingReject = true);
-    final success = await context.read<DriverHomeCubit>().respondToRequest(
+    final success = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       false,
     );

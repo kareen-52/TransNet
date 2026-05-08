@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/availability_toggle.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/challenge_card.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/home/logic/driver_home_state.dart';
 
-import 'package:graduation_progect/features/driver/home/ui/sections/instant_orders_section.dart';
 import 'package:graduation_progect/features/driver/home/ui/sections/scheduled_orders_section.dart';
+import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
+import 'package:graduation_progect/features/driver/instant_orders/ui/screens/instant_orders_section.dart';
+import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
 
 class HomeContent extends StatelessWidget {
   final bool isTablet;
@@ -36,7 +39,15 @@ class HomeContent extends StatelessWidget {
           color: theme.colorScheme.primary,
           backgroundColor: theme.colorScheme.surface,
           onRefresh: () async {
-            await cubit.forceRefreshOrders();
+            context.read<ProfileCubit>().getProfileData();
+
+            context.read<DriverHomeCubit>().fetchShipmentCountAndStatus();
+
+            if (isAvailable) {
+              await context.read<InstantOrdersCubit>().fetchPendingOrders(
+                showLoading: false,
+              );
+            }
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -59,9 +70,15 @@ class HomeContent extends StatelessWidget {
                   switchInCurve: Curves.easeInOut,
                   switchOutCurve: Curves.easeInOut,
                   child: isAvailable
-                      ? InstantOrdersSection(key: const ValueKey('instant'))
-                      : ScheduledOrdersSection(
-                          key: const ValueKey('scheduled'),
+                      ? BlocProvider.value(
+                          value: getIt<InstantOrdersCubit>()
+                            ..fetchPendingOrders(),
+                          child: const InstantOrdersSection(
+                            key: ValueKey('instant'),
+                          ),
+                        )
+                      : const ScheduledOrdersSection(
+                          key: ValueKey('scheduled'),
                         ),
                 ),
                 verticalSpace(60),

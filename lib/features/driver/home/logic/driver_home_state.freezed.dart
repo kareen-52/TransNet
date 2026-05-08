@@ -55,7 +55,7 @@ extension DriverHomeStatePatterns on DriverHomeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( Loading value)?  loading,TResult Function( AvailabilityChanged value)?  availabilityChanged,TResult Function( ShipmentCountLoaded value)?  shipmentCountLoaded,TResult Function( DriverImageLoaded value)?  driverImageLoaded,TResult Function( Error value)?  error,TResult Function( NewOrderReceived value)?  newOrderReceived,TResult Function( OrderRemoved value)?  orderRemoved,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( Loading value)?  loading,TResult Function( AvailabilityChanged value)?  availabilityChanged,TResult Function( ShipmentCountLoaded value)?  shipmentCountLoaded,TResult Function( DriverImageLoaded value)?  driverImageLoaded,TResult Function( Error value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -64,9 +64,7 @@ return loading(_that);case AvailabilityChanged() when availabilityChanged != nul
 return availabilityChanged(_that);case ShipmentCountLoaded() when shipmentCountLoaded != null:
 return shipmentCountLoaded(_that);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that);case Error() when error != null:
-return error(_that);case NewOrderReceived() when newOrderReceived != null:
-return newOrderReceived(_that);case OrderRemoved() when orderRemoved != null:
-return orderRemoved(_that);case _:
+return error(_that);case _:
   return orElse();
 
 }
@@ -84,7 +82,7 @@ return orderRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( Loading value)  loading,required TResult Function( AvailabilityChanged value)  availabilityChanged,required TResult Function( ShipmentCountLoaded value)  shipmentCountLoaded,required TResult Function( DriverImageLoaded value)  driverImageLoaded,required TResult Function( Error value)  error,required TResult Function( NewOrderReceived value)  newOrderReceived,required TResult Function( OrderRemoved value)  orderRemoved,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( Loading value)  loading,required TResult Function( AvailabilityChanged value)  availabilityChanged,required TResult Function( ShipmentCountLoaded value)  shipmentCountLoaded,required TResult Function( DriverImageLoaded value)  driverImageLoaded,required TResult Function( Error value)  error,}){
 final _that = this;
 switch (_that) {
 case _Initial():
@@ -93,9 +91,7 @@ return loading(_that);case AvailabilityChanged():
 return availabilityChanged(_that);case ShipmentCountLoaded():
 return shipmentCountLoaded(_that);case DriverImageLoaded():
 return driverImageLoaded(_that);case Error():
-return error(_that);case NewOrderReceived():
-return newOrderReceived(_that);case OrderRemoved():
-return orderRemoved(_that);case _:
+return error(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -112,7 +108,7 @@ return orderRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( Loading value)?  loading,TResult? Function( AvailabilityChanged value)?  availabilityChanged,TResult? Function( ShipmentCountLoaded value)?  shipmentCountLoaded,TResult? Function( DriverImageLoaded value)?  driverImageLoaded,TResult? Function( Error value)?  error,TResult? Function( NewOrderReceived value)?  newOrderReceived,TResult? Function( OrderRemoved value)?  orderRemoved,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( Loading value)?  loading,TResult? Function( AvailabilityChanged value)?  availabilityChanged,TResult? Function( ShipmentCountLoaded value)?  shipmentCountLoaded,TResult? Function( DriverImageLoaded value)?  driverImageLoaded,TResult? Function( Error value)?  error,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -121,9 +117,7 @@ return loading(_that);case AvailabilityChanged() when availabilityChanged != nul
 return availabilityChanged(_that);case ShipmentCountLoaded() when shipmentCountLoaded != null:
 return shipmentCountLoaded(_that);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that);case Error() when error != null:
-return error(_that);case NewOrderReceived() when newOrderReceived != null:
-return newOrderReceived(_that);case OrderRemoved() when orderRemoved != null:
-return orderRemoved(_that);case _:
+return error(_that);case _:
   return null;
 
 }
@@ -140,7 +134,7 @@ return orderRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String message,  bool isAvailable)?  availabilityChanged,TResult Function( int count)?  shipmentCountLoaded,TResult Function( Uint8List imageBytes)?  driverImageLoaded,TResult Function( ApiErrorModel apiErrorModel)?  error,TResult Function( List<InstantOrderModel> orders)?  newOrderReceived,TResult Function( List<InstantOrderModel> orders)?  orderRemoved,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String message,  bool isAvailable)?  availabilityChanged,TResult Function( int count)?  shipmentCountLoaded,TResult Function( Uint8List imageBytes)?  driverImageLoaded,TResult Function( ApiErrorModel apiErrorModel)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case Loading() when loading != null:
@@ -148,9 +142,7 @@ return loading();case AvailabilityChanged() when availabilityChanged != null:
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded() when shipmentCountLoaded != null:
 return shipmentCountLoaded(_that.count);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that.imageBytes);case Error() when error != null:
-return error(_that.apiErrorModel);case NewOrderReceived() when newOrderReceived != null:
-return newOrderReceived(_that.orders);case OrderRemoved() when orderRemoved != null:
-return orderRemoved(_that.orders);case _:
+return error(_that.apiErrorModel);case _:
   return orElse();
 
 }
@@ -168,7 +160,7 @@ return orderRemoved(_that.orders);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String message,  bool isAvailable)  availabilityChanged,required TResult Function( int count)  shipmentCountLoaded,required TResult Function( Uint8List imageBytes)  driverImageLoaded,required TResult Function( ApiErrorModel apiErrorModel)  error,required TResult Function( List<InstantOrderModel> orders)  newOrderReceived,required TResult Function( List<InstantOrderModel> orders)  orderRemoved,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String message,  bool isAvailable)  availabilityChanged,required TResult Function( int count)  shipmentCountLoaded,required TResult Function( Uint8List imageBytes)  driverImageLoaded,required TResult Function( ApiErrorModel apiErrorModel)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case Loading():
@@ -176,9 +168,7 @@ return loading();case AvailabilityChanged():
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded():
 return shipmentCountLoaded(_that.count);case DriverImageLoaded():
 return driverImageLoaded(_that.imageBytes);case Error():
-return error(_that.apiErrorModel);case NewOrderReceived():
-return newOrderReceived(_that.orders);case OrderRemoved():
-return orderRemoved(_that.orders);case _:
+return error(_that.apiErrorModel);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,7 +185,7 @@ return orderRemoved(_that.orders);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String message,  bool isAvailable)?  availabilityChanged,TResult? Function( int count)?  shipmentCountLoaded,TResult? Function( Uint8List imageBytes)?  driverImageLoaded,TResult? Function( ApiErrorModel apiErrorModel)?  error,TResult? Function( List<InstantOrderModel> orders)?  newOrderReceived,TResult? Function( List<InstantOrderModel> orders)?  orderRemoved,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String message,  bool isAvailable)?  availabilityChanged,TResult? Function( int count)?  shipmentCountLoaded,TResult? Function( Uint8List imageBytes)?  driverImageLoaded,TResult? Function( ApiErrorModel apiErrorModel)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case Loading() when loading != null:
@@ -203,9 +193,7 @@ return loading();case AvailabilityChanged() when availabilityChanged != null:
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded() when shipmentCountLoaded != null:
 return shipmentCountLoaded(_that.count);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that.imageBytes);case Error() when error != null:
-return error(_that.apiErrorModel);case NewOrderReceived() when newOrderReceived != null:
-return newOrderReceived(_that.orders);case OrderRemoved() when orderRemoved != null:
-return orderRemoved(_that.orders);case _:
+return error(_that.apiErrorModel);case _:
   return null;
 
 }
@@ -537,150 +525,6 @@ class _$ErrorCopyWithImpl<$Res>
   return _then(Error(
 null == apiErrorModel ? _self.apiErrorModel : apiErrorModel // ignore: cast_nullable_to_non_nullable
 as ApiErrorModel,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class NewOrderReceived implements DriverHomeState {
-  const NewOrderReceived(final  List<InstantOrderModel> orders): _orders = orders;
-  
-
- final  List<InstantOrderModel> _orders;
- List<InstantOrderModel> get orders {
-  if (_orders is EqualUnmodifiableListView) return _orders;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_orders);
-}
-
-
-/// Create a copy of DriverHomeState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$NewOrderReceivedCopyWith<NewOrderReceived> get copyWith => _$NewOrderReceivedCopyWithImpl<NewOrderReceived>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewOrderReceived&&const DeepCollectionEquality().equals(other._orders, _orders));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_orders));
-
-@override
-String toString() {
-  return 'DriverHomeState.newOrderReceived(orders: $orders)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $NewOrderReceivedCopyWith<$Res> implements $DriverHomeStateCopyWith<$Res> {
-  factory $NewOrderReceivedCopyWith(NewOrderReceived value, $Res Function(NewOrderReceived) _then) = _$NewOrderReceivedCopyWithImpl;
-@useResult
-$Res call({
- List<InstantOrderModel> orders
-});
-
-
-
-
-}
-/// @nodoc
-class _$NewOrderReceivedCopyWithImpl<$Res>
-    implements $NewOrderReceivedCopyWith<$Res> {
-  _$NewOrderReceivedCopyWithImpl(this._self, this._then);
-
-  final NewOrderReceived _self;
-  final $Res Function(NewOrderReceived) _then;
-
-/// Create a copy of DriverHomeState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? orders = null,}) {
-  return _then(NewOrderReceived(
-null == orders ? _self._orders : orders // ignore: cast_nullable_to_non_nullable
-as List<InstantOrderModel>,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class OrderRemoved implements DriverHomeState {
-  const OrderRemoved(final  List<InstantOrderModel> orders): _orders = orders;
-  
-
- final  List<InstantOrderModel> _orders;
- List<InstantOrderModel> get orders {
-  if (_orders is EqualUnmodifiableListView) return _orders;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_orders);
-}
-
-
-/// Create a copy of DriverHomeState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$OrderRemovedCopyWith<OrderRemoved> get copyWith => _$OrderRemovedCopyWithImpl<OrderRemoved>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderRemoved&&const DeepCollectionEquality().equals(other._orders, _orders));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_orders));
-
-@override
-String toString() {
-  return 'DriverHomeState.orderRemoved(orders: $orders)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $OrderRemovedCopyWith<$Res> implements $DriverHomeStateCopyWith<$Res> {
-  factory $OrderRemovedCopyWith(OrderRemoved value, $Res Function(OrderRemoved) _then) = _$OrderRemovedCopyWithImpl;
-@useResult
-$Res call({
- List<InstantOrderModel> orders
-});
-
-
-
-
-}
-/// @nodoc
-class _$OrderRemovedCopyWithImpl<$Res>
-    implements $OrderRemovedCopyWith<$Res> {
-  _$OrderRemovedCopyWithImpl(this._self, this._then);
-
-  final OrderRemoved _self;
-  final $Res Function(OrderRemoved) _then;
-
-/// Create a copy of DriverHomeState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? orders = null,}) {
-  return _then(OrderRemoved(
-null == orders ? _self._orders : orders // ignore: cast_nullable_to_non_nullable
-as List<InstantOrderModel>,
   ));
 }
 

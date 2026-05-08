@@ -7,6 +7,7 @@ import 'package:graduation_progect/core/responsive/responsive_layout.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/tablet_body.dart';
+import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
 import 'package:graduation_progect/features/driver/setLocation/logic/driver_location_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
@@ -64,6 +65,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             BlocProvider.value(
               value: getIt<NotificationCubit>()..fetchUnreadCount(),
             ),
+            BlocProvider.value(value: getIt<InstantOrdersCubit>())
           ],
           child: Container(
             // Scafflod(

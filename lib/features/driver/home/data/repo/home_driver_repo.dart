@@ -40,15 +40,5 @@ class DriverHomeRepo {
     }
   }
 
-  Future<ApiResult<String>> respondToRequest({required int userId, required bool accept}) async {
-    try {
-      final response = await _apiService.respondToRequest({
-        'user_id': userId,
-        'action': accept ? 1 : 0,
-      });
-      return ApiResult.success(response['message'] ?? 'تم العملية بنجاح');
-    } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
-    }
-  }
+ 
 }

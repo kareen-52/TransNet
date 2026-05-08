@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:graduation_progect/core/networking/app_config.dart';
 import 'package:graduation_progect/features/driver/driverReviews/model/review_response.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/edit_profile_request.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/features/driver/setLocation/data/models/driver_set_location_request.dart';
@@ -136,6 +137,9 @@ abstract class ApiService {
 
   @POST(ApiConstants.respondToRequest)
   Future<dynamic> respondToRequest(@Body() Map<String, dynamic> body);
+
+  @GET(ApiConstants.instantOrdersForDriver)
+  Future<List<InstantOrderModel>> getRequestsForDriver();
 
   @GET("${ApiConstants.cancelDriverRequest}/{driver_id}")
   Future<dynamic> cancelRequestForDriver(@Path('driver_id') int driverId);

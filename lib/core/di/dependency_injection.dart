@@ -147,6 +147,8 @@ import 'package:graduation_progect/features/driver/driverShipments/data/repo/dri
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/repo/instant_orders_repo.dart';
+import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/driver/profile/data/repo/profile_repo.dart';
 import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
 import 'package:graduation_progect/features/driver/setLocation/data/repo/driver_location_repo.dart';
@@ -250,6 +252,10 @@ void setupGetIt() {
   // ── Driver Home ─────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
   getIt.registerLazySingleton<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
+
+
+  getIt.registerLazySingleton<InstantOrdersRepo>(() => InstantOrdersRepo(getIt()));
+  getIt.registerLazySingleton<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
 
   // ── Driver Location ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(

@@ -47,6 +47,7 @@ class ApiConstants {
   static const String clientShipments = 'shipments/client';
   static const String reviews = 'reviews';
   static const String respondToRequest = 'shipment/respond';
+  static const String instantOrdersForDriver = 'shipmentRequest/driver';
   static const String cancelDriverRequest =
       'shipment/cancel-request-for-driver';
   static const String shipmentDetails = 'shipment/id/';

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
@@ -18,7 +17,6 @@ class NotificationRepo {
     }
   }
 
-  /// جلب الإشعارات مع التخزين المؤقت
   Future<ApiResult<List<NotificationModel>>> getNotifications({
     required int latest,
   }) async {
@@ -32,7 +30,6 @@ class NotificationRepo {
 
       return ApiResult.success(notifications);
     } catch (error) {
-      // محاولة الاسترجاع من الكاش عند الفشل
       final cached = _getCachedNotifications();
       if (cached != null) {
         return ApiResult.success(cached);
@@ -41,12 +38,10 @@ class NotificationRepo {
     }
   }
 
-  /// جلب عدد الإشعارات غير المقروءة مع الكاش
   Future<ApiResult<int>> getNewNotificationsCount() async {
     try {
       final response = await _apiService.getNewNotificationsCount();
       final count = response['count'] ?? 0;
-      // حفظ العدد
       await HiveCacheService.cacheNotificationCount(count);
       return ApiResult.success(count);
     } catch (error) {
@@ -58,7 +53,6 @@ class NotificationRepo {
     }
   }
 
-  // --- دوال مساعدة ---
   List<NotificationModel>? _getCachedNotifications() {
     final cachedList = HiveCacheService.getCachedNotifications();
     if (cachedList == null) return null;
