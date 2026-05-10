@@ -35,7 +35,7 @@ class InstantOrderModel {
     return _buildFromMap(parsedData, shipment);
   }
 
-  factory InstantOrderModel.fromApi(Map<String, dynamic> apiData) {
+  factory InstantOrderModel.fromJson(Map<String, dynamic> apiData) {
     final Map<String, dynamic> shipment = apiData['shipment'] ?? {};
     return _buildFromMap(apiData, shipment);
   }

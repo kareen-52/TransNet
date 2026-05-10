@@ -26,7 +26,6 @@ class InstantOrdersSection extends StatelessWidget {
           builder: (context, state) {
             return state.maybeWhen(
               
-              // 1. حالة التحميل (عند فتح الشاشة)
               loading: () => Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.h),
@@ -34,10 +33,8 @@ class InstantOrdersSection extends StatelessWidget {
                 ),
               ),
               
-              // 2. حالة الفراغ (لا يوجد طلبات، نعرض הרادار)
               empty: () => _buildEmptyState(theme),
               
-              // 3. حالة الخطأ (فشل الـ API)
               error: (errorModel) => Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.h),
@@ -51,7 +48,7 @@ class InstantOrdersSection extends StatelessWidget {
                 ),
               ),
 
-              // 4. حالة النجاح (وصول طلب من الـ Stream أو הـ API)
+
               success: (orders) => ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -77,7 +74,8 @@ class InstantOrdersSection extends StatelessWidget {
     );
   }
 
-  // דالة مساعدة للرادار
+
+
   Widget _buildEmptyState(ThemeData theme) {
     return Center(
       child: Padding(

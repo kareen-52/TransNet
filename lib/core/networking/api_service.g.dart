@@ -831,7 +831,7 @@ class _ApiService implements ApiService {
       _value = _result.data!
           .map(
             (dynamic i) =>
-                InstantOrderModel.fromApi(i as Map<String, dynamic>),
+                InstantOrderModel.fromJson(i as Map<String, dynamic>),
           )
           .toList();
     } on Object catch (e, s) {

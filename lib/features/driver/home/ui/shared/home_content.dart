@@ -39,9 +39,8 @@ class HomeContent extends StatelessWidget {
           color: theme.colorScheme.primary,
           backgroundColor: theme.colorScheme.surface,
           onRefresh: () async {
+            await context.read<DriverHomeCubit>().fetchShipmentCountAndStatus();
             context.read<ProfileCubit>().getProfileData();
-
-            context.read<DriverHomeCubit>().fetchShipmentCountAndStatus();
 
             if (isAvailable) {
               await context.read<InstantOrdersCubit>().fetchPendingOrders(
@@ -71,15 +70,10 @@ class HomeContent extends StatelessWidget {
                   switchOutCurve: Curves.easeInOut,
                   child: isAvailable
                       ? BlocProvider.value(
-                          value: getIt<InstantOrdersCubit>()
-                            ..fetchPendingOrders(),
-                          child: const InstantOrdersSection(
-                            key: ValueKey('instant'),
-                          ),
+                          value: getIt<InstantOrdersCubit>()..fetchPendingOrders(),
+                          child: const InstantOrdersSection(key: ValueKey('instant'),),
                         )
-                      : const ScheduledOrdersSection(
-                          key: ValueKey('scheduled'),
-                        ),
+                      : const ScheduledOrdersSection(key: ValueKey('scheduled'),),
                 ),
                 verticalSpace(60),
               ],

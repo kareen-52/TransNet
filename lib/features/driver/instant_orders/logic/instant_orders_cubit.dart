@@ -38,17 +38,9 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     if (isClosed) return;
 
     result.when(
-      success: (dataList) {
+      success: (ordersList) {
         currentOrders.clear();
-        
-        for (var data in dataList) {
-          try {
-            final order = InstantOrderModel.fromApi(data);
-            currentOrders.add(order);
-          } catch (e) {
-             if (kDebugMode) print("⚠️ خطأ في قراءة طلب מـ הـ API: $e");
-          }
-        }
+        currentOrders = List.from(ordersList);
         _filterAndEmitValidOrders();
       },
       failure: (error) {
@@ -78,6 +70,7 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     final DateTime now = DateTime.now();
     currentOrders.removeWhere((order) {
       if (order.expiresAt.isEmpty) return false;
+      
       DateTime expiresAt = DateTime.parse(order.expiresAt).toLocal();
       return expiresAt.isBefore(now) || expiresAt.isAtSameMomentAs(now);
     });

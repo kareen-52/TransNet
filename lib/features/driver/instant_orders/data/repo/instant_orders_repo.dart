@@ -1,12 +1,13 @@
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 
 class InstantOrdersRepo {
   final ApiService _apiService;
   InstantOrdersRepo(this._apiService);
 
-  Future<ApiResult<List<dynamic>>> getPendingRequests() async {
+  Future<ApiResult<List<InstantOrderModel>>> getPendingRequests() async {
     try {
       final response = await _apiService.getRequestsForDriver();
       return ApiResult.success(response);
