@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
@@ -29,6 +30,34 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
       }
     });
   }
+  // void _listenToFcmOrders() {
+  //   _fcmSubscription = NotificationService.instantOrderStreamController.stream.listen((fcmData) {
+  //     try {
+  //       final rawPayload = fcmData['notification'] ?? '{}';
+  //       final parsedData = jsonDecode(rawPayload);
+        
+  //       // التحقق من نوع الحدث القادم من الباك إند (يجب التنسيق مع الباك إند لإرسال هذا المتغير)
+  //       final String actionType = parsedData['action_type'] ?? 'new_order';
+
+  //       if (actionType == 'cancel_order') {
+  //         // في حال كان الحدث هو إلغاء الطلب، نستخرج الـ user_id ونحذفه فوراً
+  //         final int canceledUserId = int.tryParse(parsedData['user_id'].toString()) ?? 0;
+  //         if (canceledUserId != 0) {
+  //           removeOrderLocally(canceledUserId);
+  //         }
+  //       } else {
+  //         // إضافة طلب جديد (الكود الخاص بك)
+  //         final newOrder = InstantOrderModel.fromFcmPayload(fcmData);
+  //         if (!currentOrders.any((o) => o.userId == newOrder.userId)) {
+  //           currentOrders.insert(0, newOrder);
+  //           _filterAndEmitValidOrders();
+  //         }
+  //       }
+  //     } catch (e) {
+  //       if (kDebugMode) print("❌ فشل معالجة إشعار الطلب الفوري: $e");
+  //     }
+  //   });
+  // }
 
   Future<void> fetchPendingOrders({bool showLoading = true}) async {
     if (isClosed) return;

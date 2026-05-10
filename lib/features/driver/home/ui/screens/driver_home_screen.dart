@@ -66,6 +66,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
               value: getIt<NotificationCubit>()..fetchUnreadCount(),
             ),
             BlocProvider.value(value: getIt<InstantOrdersCubit>())
+            
           ],
           child: Container(
             // Scafflod(
