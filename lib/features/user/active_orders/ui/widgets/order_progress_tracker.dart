@@ -55,7 +55,7 @@ class OrderProgressTracker extends StatelessWidget {
                   final isCompleted = i < _currentStepIndex;
                   final isCurrent = i == _currentStepIndex;
                   final isActive = i <= _currentStepIndex;
-                  return _buildDot(
+                   return _buildDot(
                     isActive,
                     isCurrent,
                     isCompleted,

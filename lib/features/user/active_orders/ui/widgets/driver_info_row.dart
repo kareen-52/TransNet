@@ -26,32 +26,44 @@ class DriverInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fullName = '${driver.firstName} ${driver.lastName}';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 22.r,
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-              child: Icon(
-                Icons.person_rounded,
-                color: theme.colorScheme.primary,
-                size: 24.sp,
+        Expanded(
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 22.r,
+                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                child: Icon(
+                  Icons.person_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 24.sp,
+                ),
               ),
-            ),
-            horizontalSpace(8),
-            Text(
-              '${driver.firstName} ${driver.lastName}',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14.sp,
-                color: theme.colorScheme.onSurface,
+              horizontalSpace(8),
+              Expanded(
+                child: Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  message: fullName,
+                  child: Text(
+                    fullName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.sp,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        horizontalSpace(8),
         GestureDetector(
           onTap: () => _callDriver(context, driver.phoneNumber),
           child: Container(

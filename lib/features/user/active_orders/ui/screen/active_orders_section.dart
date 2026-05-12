@@ -36,7 +36,7 @@ class ActiveOrdersSection extends StatelessWidget {
               initial: () => const SizedBox.shrink(),
               loading: () => const ActiveOrdersShimmer(),
               loaded: (orders) => SizedBox(
-                height: 270.h,
+                height: 280.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
 

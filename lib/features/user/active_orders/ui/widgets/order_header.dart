@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 
 class OrderHeader extends StatelessWidget {
   final String status;
@@ -24,20 +25,6 @@ class OrderHeader extends StatelessWidget {
     }
   }
 
-
-  Future<void> _copyShipmentNumber(BuildContext context) async {
-    await Clipboard.setData(ClipboardData(text: shipmentNumber.toString()));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('تم نسخ رقم الشحنة'),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -58,12 +45,36 @@ class OrderHeader extends StatelessWidget {
               ),
             ),
             verticalSpace(4),
-            Text(
-              '#$shipmentNumber',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
+            GestureDetector(
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: '$shipmentNumber'));
+                SnackBarHelper.showSuccess(context, 'تم نسخ رقم الشحنة');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  // color: theme.colorScheme.primary.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      '#$shipmentNumber',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    horizontalSpace(4),
+                    Icon(
+                      Icons.copy_rounded,
+                      size: 14.sp,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
