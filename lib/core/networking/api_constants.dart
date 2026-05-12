@@ -55,4 +55,5 @@ class ApiConstants {
   static const String updateShipment = 'shipment/update';
   static const String getShipment = 'shipment/active';
   static const String searchShipmentsByDate = 'shipments/searchByDate';
+  static const String activeOrdersClient = 'activeShipments/client';
 }

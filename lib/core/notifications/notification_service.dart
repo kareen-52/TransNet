@@ -226,6 +226,7 @@ import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/notifications/notification_route_helper.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 
 // ✅ هاد الـ background handler لازم يبقى هون برا الكلاس
@@ -314,10 +315,23 @@ class NotificationService {
     // ✅ [7] استمع للمسجات وهيّأ باقي الـ listeners
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
+      final data = message.data;
+      final String title = notification?.title ?? data['title'] ?? '';
 
-      if (message.data.isNotEmpty) {
+
+      if (data.isNotEmpty) {
         instantOrderStreamController.sink.add(message.data);
       }
+
+      // ── قبول الطلب → refresh فوري للطلبات النشطة ──────────────────────
+      if (title == 'قبول الطلب') {
+        try {
+          getIt<ActiveOrdersCubit>().silentRefresh();
+        } catch (e) {
+          if (kDebugMode) print("⚠️ ActiveOrdersCubit not ready: $e");
+        }
+      }
+
 
       if (notification != null) {
         _localNotifications.show(
@@ -352,8 +366,9 @@ class NotificationService {
           }
         }
 
+
+        // ── تحديث حالة الهوم عند رفض أو قبول الطلب ──────────────────────
         try {
-          final String title = message.notification?.title ?? '';
           if (title.contains('رفض') || title.contains('قبول')) {
             getIt<HomeCubit>().checkActiveShipment();
           }
@@ -444,6 +459,8 @@ class NotificationService {
       if (kDebugMode) print("❌ Error routing from notification: $e");
     }
   }
+
+  
 
   static Future<void> handleLogout() async {
     try {

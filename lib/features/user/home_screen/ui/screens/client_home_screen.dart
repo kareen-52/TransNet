@@ -5,6 +5,7 @@ import 'package:graduation_progect/core/responsive/responsive_layout.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_state.dart';
 import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
@@ -26,6 +27,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: getIt<HomeCubit>()..checkActiveShipment()),
+        BlocProvider.value(value: getIt<ActiveOrdersCubit>()..fetchActiveOrders()),
         BlocProvider(create: (context) => getIt<VehicleTypesCubit>()..fetchVehicleTypes()),
         BlocProvider.value(value: getIt<NotificationCubit>()..fetchUnreadCount()),
         BlocProvider(create: (context) => getIt<ProfileCubit>()..getProfileData()),
@@ -47,6 +49,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 ).then((_) {
                   if (context.mounted) {
                     context.read<HomeCubit>().checkActiveShipment();
+                    context.read<ActiveOrdersCubit>().fetchActiveOrders();
                   }
                 });
               },

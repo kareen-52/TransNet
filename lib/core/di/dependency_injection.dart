@@ -164,6 +164,8 @@ import 'package:graduation_progect/features/shared_screens/shipment_search/data/
 import 'package:graduation_progect/features/shared_screens/shipment_search/logic/search_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/repos/verification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/logic/verification_cubit.dart';
+import 'package:graduation_progect/features/user/active_orders/data/repos/active_orders_repo.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/repos/available_drivers_repo.dart';
 import 'package:graduation_progect/features/user/driver_details/data/repo/driver_details_repo.dart';
 import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
@@ -294,5 +296,15 @@ void setupGetIt() {
   getIt.registerFactory<SearchShipmentsCubit>(() => SearchShipmentsCubit(getIt()));
 
 
+
+
+
+// ── Active Orders (Client) ─────────────────────────────────────────────────
+  getIt.registerLazySingleton<ActiveOrdersRepo>(
+    () => ActiveOrdersRepo(getIt()),
+  );
+  getIt.registerLazySingleton<ActiveOrdersCubit>(
+    () => ActiveOrdersCubit(getIt()),
+  );
   
 }

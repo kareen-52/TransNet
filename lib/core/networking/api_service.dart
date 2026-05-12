@@ -154,4 +154,7 @@ abstract class ApiService {
 Future<List<ShipmentModel>> searchShipmentsByDate(
   @Body() SearchShipmentsRequest request,
 );
+
+  @GET(ApiConstants.activeOrdersClient)
+  Future<dynamic> getActiveOrders();
 }
