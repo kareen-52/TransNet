@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/models/respond_response_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/repo/instant_orders_repo.dart';
 import 'instant_orders_state.dart';
 
@@ -87,11 +88,13 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     _filterAndEmitValidOrders();
   }
 
-  Future<bool> respondToRequest(int userId, bool isAccept) async {
+
+
+  Future<RespondResponseModel?> respondToRequest(int userId, bool isAccept) async {
     final result = await _repo.respondToRequest(userId: userId, accept: isAccept);
     return result.when(
-      success: (message) => true,
-      failure: (error) => false,
+      success: (data) => data,
+      failure: (error) => null,
     );
   }
 

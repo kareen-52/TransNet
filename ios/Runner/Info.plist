@@ -13,7 +13,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>TransNet</string>
+		<string>TransNet</string>NSCameraUsageDescription
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -58,5 +58,7 @@
 		</array>
 		<key>FirebaseAppDelegateProxyEnabled</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>يحتاج التطبيق إلى صلاحية الكاميرا لمسح رمز الـ QR لتأكيد استلام الشحنة.</string>
 	</dict>
 </plist>

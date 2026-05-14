@@ -48,12 +48,15 @@ class ApiConstants {
   static const String reviews = 'reviews';
   static const String respondToRequest = 'shipment/respond';
   static const String instantOrdersForDriver = 'shipmentRequest/driver';
-  static const String cancelDriverRequest =
-      'shipment/cancel-request-for-driver';
+  static const String cancelDriverRequest = 'shipment/cancel-request-for-driver';
   static const String shipmentDetails = 'shipment/id/';
   static const String deleteShipment = 'shipment/delete';
   static const String updateShipment = 'shipment/update';
   static const String getShipment = 'shipment/active';
   static const String searchShipmentsByDate = 'shipments/searchByDate';
   static const String activeOrdersClient = 'activeShipments/client';
+
+  static const String confirmPickup = 'shipment/confirm-pickup';
+  static const String confirmDelivery = 'shipment/confirm-delivery';
+
 }

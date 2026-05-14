@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:graduation_progect/core/networking/app_config.dart';
-import 'package:graduation_progect/features/driver/driverReviews/model/review_response.dart';
+import 'package:graduation_progect/features/driver/driverReviews/data/model/review_response.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/edit_profile_request.dart';
@@ -157,4 +157,13 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
 
   @GET(ApiConstants.activeOrdersClient)
   Future<dynamic> getActiveOrders();
+
+
+  // @POST(ApiConstants.confirmPickup)
+  // Future<dynamic> confirmPickup(@Body() Map<String, dynamic> body);
+
+  // @POST(ApiConstants.confirmDelivery)
+  // Future<dynamic> confirmDelivery(@Body() Map<String, dynamic> body);
+
+
 }

@@ -23,6 +23,7 @@ class Routes {
   static const String getAllNotifications = '/getAllNotifications';
 
   static const String waitingDriverScreen = '/waitingDriverScreen';
-  
+  static const String driverTrackingScreen = '/driverTrackingScreen';
+
   
 }

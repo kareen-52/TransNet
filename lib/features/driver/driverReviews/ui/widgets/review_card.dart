@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
-import 'package:graduation_progect/features/driver/driverReviews/model/review_response.dart';
+import 'package:graduation_progect/features/driver/driverReviews/data/model/review_response.dart';
 
 class ReviewCard extends StatelessWidget {
   final Review review;

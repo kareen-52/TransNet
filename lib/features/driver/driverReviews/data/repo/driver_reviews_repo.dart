@@ -3,7 +3,7 @@ import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_error_model.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
-import 'package:graduation_progect/features/driver/driverReviews/model/review_response.dart';
+import 'package:graduation_progect/features/driver/driverReviews/data/model/review_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
 class DriverReviewsRepo {

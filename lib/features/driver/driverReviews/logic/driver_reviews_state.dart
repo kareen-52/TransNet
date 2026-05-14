@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:graduation_progect/core/networking/api_error_model.dart';
-import 'package:graduation_progect/features/driver/driverReviews/model/review_response.dart';
+import 'package:graduation_progect/features/driver/driverReviews/data/model/review_response.dart';
 
 part 'driver_reviews_state.freezed.dart';
 

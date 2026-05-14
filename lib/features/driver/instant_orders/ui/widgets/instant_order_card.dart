@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
@@ -121,27 +122,36 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     );
   }
 
+
   Future<void> _executeAccept() async {
     setState(() => _isLoadingAccept = true);
-    final success = await context.read<InstantOrdersCubit>().respondToRequest(
+    final response = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       true,
     );
 
     if (!mounted) return;
 
-    if (success) {
-      SnackBarHelper.showSuccess(context, "تم قبول الطلب بنجاح. انطلق للموقع!");
+    if (response != null) {
+      SnackBarHelper.showSuccess(context, response.message);
       widget.onOrderProcessed();
-      // TODO: التوجه الى الخريطة
+      
+      if (response.shipmentData != null) {
+        Navigator.pushNamed(
+          context, 
+          Routes.driverTrackingScreen, 
+          arguments: response.shipmentData
+        );
+      }
     } else {
       setState(() => _isLoadingAccept = false);
+      SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
     }
   }
 
   Future<void> _executeReject({bool autoExpired = false}) async {
     setState(() => _isLoadingReject = true);
-    final success = await context.read<InstantOrdersCubit>().respondToRequest(
+    final response = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       false,
     );
@@ -150,12 +160,17 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
     if (autoExpired) {
       SnackBarHelper.showError(context, "انتهت مهلة الرد، تم تجاهل الطلب.");
-    } else if (success) {
-      SnackBarHelper.showSuccess(context, "تم رفض الطلب.");
+    } else if (response != null) {
+      SnackBarHelper.showSuccess(context, response.message);
+    } else {
+       SnackBarHelper.showError(context, "حدث خطأ أثناء الرفض.");
     }
 
     widget.onOrderProcessed();
   }
+
+
+  
 
   @override
   Widget build(BuildContext context) {

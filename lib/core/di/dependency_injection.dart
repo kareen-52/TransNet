@@ -142,7 +142,7 @@ import 'package:get_it/get_it.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
-import 'package:graduation_progect/features/driver/driverReviews/model/repo/driver_reviews_repo.dart';
+import 'package:graduation_progect/features/driver/driverReviews/data/repo/driver_reviews_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
@@ -306,5 +306,10 @@ void setupGetIt() {
   getIt.registerLazySingleton<ActiveOrdersCubit>(
     () => ActiveOrdersCubit(getIt()),
   );
+  
+
+
+  // getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
+  // getIt.registerFactory(() => DriverTrackingCubit(getIt()));
   
 }
