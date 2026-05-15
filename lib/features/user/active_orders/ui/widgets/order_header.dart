@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
+import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 
 class OrderHeader extends StatelessWidget {
   final String status;
@@ -14,21 +15,12 @@ class OrderHeader extends StatelessWidget {
     required this.shipmentNumber,
   });
 
-  Color _getStatusColor(ThemeData theme) {
-    switch (status) {
-      case 'جارية':
-        return Colors.green;
-      case 'قيد التوصيل':
-        return Colors.orange;
-      default:
-        return theme.colorScheme.primary;
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusColor = _getStatusColor(theme);
+    final statusColor = ShipmentStatusHelper.getColor(status);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

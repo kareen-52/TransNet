@@ -5,12 +5,9 @@ import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.d
 import 'package:graduation_progect/features/user/active_orders/data/models/active_order_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DriverInfoRow extends StatelessWidget {
-  final ActiveOrderDriverModel driver;
 
-  const DriverInfoRow({super.key, required this.driver});
 
-  Future<void> _callDriver(BuildContext context, String phone) async {
+  Future<void> callDriver(BuildContext context, String phone) async {
     final uri = Uri.parse('tel:$phone');
     try {
       if (await canLaunchUrl(uri)) {
@@ -22,6 +19,14 @@ class DriverInfoRow extends StatelessWidget {
       SnackBarHelper.showError(context, 'حدث خطأ أثناء محاولة الاتصال');
     }
   }
+
+
+  
+class DriverInfoRow extends StatelessWidget {
+  final ActiveOrderDriverModel driver;
+
+  const DriverInfoRow({super.key, required this.driver});
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,7 @@ class DriverInfoRow extends StatelessWidget {
         ),
         horizontalSpace(8),
         GestureDetector(
-          onTap: () => _callDriver(context, driver.phoneNumber),
+          onTap: () => callDriver(context, driver.phoneNumber),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(

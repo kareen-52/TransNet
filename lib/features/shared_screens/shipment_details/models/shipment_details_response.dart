@@ -7,8 +7,8 @@ class ShipmentDetailsResponse {
   final ShipmentDetail shipment;
   final RouteGeometry? route_geometry;
   final dynamic live_tracking;
-  final PartyInfo? driver;  
-  final PartyInfo? client;  
+  final PartyInfo? driver;
+  final PartyInfo? client;
 
   ShipmentDetailsResponse({
     required this.shipment,
@@ -31,14 +31,14 @@ class ShipmentDetail {
   final int? driverId;
   @JsonKey(name: 'shipment_number')
   final int shipmentNumber;
-    @JsonKey(name: 'pin')
-  final String? pin;           
+  @JsonKey(name: 'pin')
+  final String? pin;
 
   @JsonKey(name: 'qr_pin')
-  final String? qrPin;         
+  final String? qrPin;
 
   @JsonKey(name: 'created_at')
-  final String createdAt;   
+  final String createdAt;
   final String? weight;
   final String? height;
   final String? width;
@@ -90,7 +90,9 @@ class ShipmentDetail {
     required this.createdAt,
     required this.updatedAt,
     required this.startGovernorate,
-    required this.endGovernorate, this.pin, this.qrPin,
+    required this.endGovernorate,
+    this.pin,
+    this.qrPin,
   });
 
   factory ShipmentDetail.fromJson(Map<String, dynamic> json) =>

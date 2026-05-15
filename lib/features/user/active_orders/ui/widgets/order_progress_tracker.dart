@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 
 class OrderProgressTracker extends StatelessWidget {
   final String status;
@@ -13,22 +14,12 @@ class OrderProgressTracker extends StatelessWidget {
     'تم التسليم',
   ];
 
-  int get _currentStepIndex {
-    switch (status) {
-      case 'جارية':
-        return 1;
-      case 'قيد التوصيل':
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primary = theme.colorScheme.primary;
     final inactive = theme.colorScheme.onSurface.withOpacity(0.25);
+    final currentStepIndex = ShipmentStatusHelper.getStepIndex(status);
 
     return Column(
       children: [
@@ -43,7 +34,7 @@ class OrderProgressTracker extends StatelessWidget {
                   return Expanded(
                     child: Container(
                       height: 3.h,
-                      color: i < _currentStepIndex ? primary : inactive,
+                      color: i < currentStepIndex ? primary : inactive,
                     ),
                   );
                 }),
@@ -52,9 +43,9 @@ class OrderProgressTracker extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(_steps.length, (i) {
-                  final isCompleted = i < _currentStepIndex;
-                  final isCurrent = i == _currentStepIndex;
-                  final isActive = i <= _currentStepIndex;
+                  final isCompleted = i < currentStepIndex;
+                  final isCurrent = i == currentStepIndex;
+                  final isActive = i <= currentStepIndex;
                    return _buildDot(
                     isActive,
                     isCurrent,
@@ -72,7 +63,7 @@ class OrderProgressTracker extends StatelessWidget {
 
         Row(
           children: List.generate(_steps.length, (i) {
-            final isCurrent = i == _currentStepIndex;
+            final isCurrent = i == currentStepIndex;
             return Expanded(
               child: Center(
                 child: Text(
