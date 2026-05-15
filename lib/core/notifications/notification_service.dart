@@ -224,6 +224,7 @@ import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/notifications/notification_route_helper.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
 import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
@@ -327,6 +328,7 @@ class NotificationService {
       if (title == 'قبول الطلب') {
         try {
           getIt<ActiveOrdersCubit>().silentRefresh();
+          getIt<ActiveDriverShipmentsCubit>().silentRefresh();
         } catch (e) {
           if (kDebugMode) print("⚠️ ActiveOrdersCubit not ready: $e");
         }

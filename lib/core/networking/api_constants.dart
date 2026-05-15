@@ -56,6 +56,8 @@ class ApiConstants {
   static const String searchShipmentsByDate = 'shipments/searchByDate';
   static const String activeOrdersClient = 'activeShipments/client';
 
+  static const String activeShipmentsDriver = 'activeShipments/driver';
+
   static const String confirmPickup = 'shipment/confirm-pickup';
   static const String confirmDelivery = 'shipment/confirm-delivery';
 

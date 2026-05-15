@@ -158,12 +158,12 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
   @GET(ApiConstants.activeOrdersClient)
   Future<dynamic> getActiveOrders();
 
+  @GET(ApiConstants.activeShipmentsDriver) Future<dynamic> getActiveShipmentsForDriver();
 
-  // @POST(ApiConstants.confirmPickup)
-  // Future<dynamic> confirmPickup(@Body() Map<String, dynamic> body);
+  @POST(ApiConstants.confirmPickup)
+  Future<dynamic> confirmPickup(@Body() Map<String, dynamic> body);
 
-  // @POST(ApiConstants.confirmDelivery)
-  // Future<dynamic> confirmDelivery(@Body() Map<String, dynamic> body);
-
-
+  @POST(ApiConstants.confirmDelivery)
+  Future<dynamic> confirmDelivery(@Body() Map<String, dynamic> body);
+  
 }

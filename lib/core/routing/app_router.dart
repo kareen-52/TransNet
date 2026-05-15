@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/driver_home_screen.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/respond_response_model.dart';
-import 'package:graduation_progect/features/driver/tracking/ui/driver_tracking_screen.dart';
+import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_cubit.dart';
+import 'package:graduation_progect/features/driver/tracking/ui/screen/driver_tracking_screen.dart';
 import 'package:graduation_progect/features/driver/profile/ui/screen/profile_driver_screen.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/logic/forgot_password_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/ui/screen/enter_email_screen.dart';
@@ -140,9 +142,12 @@ class AppRouter {
 
 
       case Routes.driverTrackingScreen:
-        final mapData = arguments as ShipmentMapData;
+        final shipment = arguments as ActiveDriverShipmentModel;
         return MaterialPageRoute(
-          builder: (_) => DriverTrackingScreen(mapData: mapData),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<DriverTrackingCubit>(),
+            child: DriverTrackingScreen(shipment: shipment),
+          ),
         );
       
 

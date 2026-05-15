@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/ui/sections/active_driver_shipments_section.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/availability_toggle.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/challenge_card.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
@@ -39,8 +41,11 @@ class HomeContent extends StatelessWidget {
           color: theme.colorScheme.primary,
           backgroundColor: theme.colorScheme.surface,
           onRefresh: () async {
-            await context.read<DriverHomeCubit>().fetchShipmentCountAndStatus();
-            context.read<ProfileCubit>().getProfileData();
+            await Future.wait([
+              context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
+              context.read<ProfileCubit>().getProfileData(),
+              getIt<ActiveDriverShipmentsCubit>().silentRefresh(),
+            ]);
 
             if (isAvailable) {
               await context.read<InstantOrdersCubit>().fetchPendingOrders(
@@ -63,6 +68,13 @@ class HomeContent extends StatelessWidget {
                 ),
 
                 verticalSpace(32),
+                
+                BlocProvider.value(
+                  value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
+                  child: const ActiveDriverShipmentsSection(),
+                ),
+                verticalSpace(32),
+
 
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),

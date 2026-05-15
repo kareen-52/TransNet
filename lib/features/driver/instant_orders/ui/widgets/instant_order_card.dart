@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 
@@ -124,30 +126,32 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
 
   Future<void> _executeAccept() async {
-    setState(() => _isLoadingAccept = true);
-    final response = await context.read<InstantOrdersCubit>().respondToRequest(
-      widget.orderData.userId,
-      true,
-    );
+  setState(() => _isLoadingAccept = true);
+  final response = await context.read<InstantOrdersCubit>().respondToRequest(
+    widget.orderData.userId,
+    true,
+  );
 
-    if (!mounted) return;
+  if (!mounted) return;
 
-    if (response != null) {
-      SnackBarHelper.showSuccess(context, response.message);
-      widget.onOrderProcessed();
-      
-      if (response.shipmentData != null) {
-        Navigator.pushNamed(
-          context, 
-          Routes.driverTrackingScreen, 
-          arguments: response.shipmentData
-        );
-      }
-    } else {
-      setState(() => _isLoadingAccept = false);
-      SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
+  if (response != null) {
+    SnackBarHelper.showSuccess(context, response.message);
+    widget.onOrderProcessed();
+
+    getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+
+    if (response.shipmentData != null) {
+      Navigator.pushNamed(
+        context,
+        Routes.driverTrackingScreen,
+        arguments: response.shipmentData,
+      );
     }
+  } else {
+    setState(() => _isLoadingAccept = false);
+    SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
   }
+}
 
   Future<void> _executeReject({bool autoExpired = false}) async {
     setState(() => _isLoadingReject = true);

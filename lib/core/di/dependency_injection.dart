@@ -141,6 +141,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/data/repos/active_driver_shipments_repo.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverReviews/data/repo/driver_reviews_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
@@ -153,6 +155,8 @@ import 'package:graduation_progect/features/driver/profile/data/repo/profile_rep
 import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
 import 'package:graduation_progect/features/driver/setLocation/data/repo/driver_location_repo.dart';
 import 'package:graduation_progect/features/driver/setLocation/logic/driver_location_cubit.dart';
+import 'package:graduation_progect/features/driver/tracking/data/repo/driver_tracking_repo.dart';
+import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/data/repo/forgot_password_repo.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/logic/forgot_password_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/login/data/repo/login_repo.dart';
@@ -307,9 +311,14 @@ void setupGetIt() {
     () => ActiveOrdersCubit(getIt()),
   );
   
-
-
-  // getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
-  // getIt.registerFactory(() => DriverTrackingCubit(getIt()));
+   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
+  () => ActiveDriverShipmentsRepo(getIt()),
+  );
+  getIt.registerLazySingleton<ActiveDriverShipmentsCubit>(
+    () => ActiveDriverShipmentsCubit(getIt()),
+  );
+  
+  getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
+  getIt.registerFactory(() => DriverTrackingCubit(getIt()));
   
 }
