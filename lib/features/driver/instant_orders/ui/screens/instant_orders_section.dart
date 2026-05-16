@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/ui/sections/active_driver_shipments_section.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_state.dart';
 import 'package:graduation_progect/features/driver/instant_orders/ui/widgets/instant_order_card.dart';
@@ -16,6 +19,12 @@ class InstantOrdersSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        BlocProvider.value(
+                  value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
+                  child: const ActiveDriverShipmentsSection(),
+                ),
+                verticalSpace(32),
+
         Text(
           'الطلبات الفورية',
           style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),

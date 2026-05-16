@@ -68,12 +68,6 @@ class HomeContent extends StatelessWidget {
                 ),
 
                 verticalSpace(32),
-                
-                BlocProvider.value(
-                  value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
-                  child: const ActiveDriverShipmentsSection(),
-                ),
-                verticalSpace(32),
 
 
                 AnimatedSwitcher(

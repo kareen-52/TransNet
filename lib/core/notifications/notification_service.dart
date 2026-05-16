@@ -398,7 +398,9 @@ class NotificationService {
 
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
       if (kDebugMode) print("🔄 Token Refreshed: $newToken");
-      await SharedPrefHelper.setData(_fcmTokenKey, newToken);
+      
+      await SharedPrefHelper.setSecuredString(_fcmTokenKey, newToken);
+
       final String userAuthToken = await SharedPrefHelper.getSecuredString(
         SharedPrefKeys.userToken,
       );
@@ -422,9 +424,16 @@ class NotificationService {
         return;
       }
 
+      final String? savedToken = await _getStoredToken();
+      if (savedToken == currentToken) {
+        if (kDebugMode) print("ℹ️ Token unchanged — skipping sync.");
+        return; // ✅ تحسين: لا ترسل للسيرفر إذا لم يتغير التوكن
+      }
+
       if (kDebugMode) print("🚀 Sending token to backend...");
       await getIt<NotificationRepo>().saveDeviceToken(currentToken);
-      await SharedPrefHelper.setData(_fcmTokenKey, currentToken);
+      await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
+
       if (kDebugMode) print("✅ Token synced successfully.");
     } catch (e) {
       if (kDebugMode) print("❌ Failed to sync Device Token: $e");
@@ -467,11 +476,18 @@ class NotificationService {
   static Future<void> handleLogout() async {
     try {
       await _firebaseMessaging.deleteToken();
-      await SharedPrefHelper.removeData(_fcmTokenKey);
+      await SharedPrefHelper.removeSecuredData(_fcmTokenKey);
       if (kDebugMode) print("🚪 Firebase Token Deleted for Logout!");
     } catch (e) {
       if (kDebugMode) print("❌ Failed to handle logout token deletion: $e");
     }
+  }
+
+
+  // ── Helper: قراءة التوكن المخزَّن ─────────────────────────────────────────
+  static Future<String?> _getStoredToken() async {
+    final stored = await SharedPrefHelper.getSecuredString(_fcmTokenKey);
+    return stored.isEmpty ? null : stored;
   }
 
   static void dispose() {

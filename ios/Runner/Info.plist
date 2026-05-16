@@ -60,5 +60,13 @@
 		<false/>
 		<key>NSCameraUsageDescription</key>
 		<string>يحتاج التطبيق إلى صلاحية الكاميرا لمسح رمز الـ QR لتأكيد استلام الشحنة.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>يحتاج التطبيق لمعرفة موقعك الحالي لعرضه على الخريطة وتتبع مسار الشحنة.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>يحتاج التطبيق لمعرفة موقعك في الخلفية لضمان تحديث مسار الشحنة أثناء التوصيل.</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>tel</string>
+		</array>
 	</dict>
 </plist>
