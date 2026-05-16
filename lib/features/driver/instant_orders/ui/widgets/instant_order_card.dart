@@ -8,6 +8,7 @@ import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
@@ -124,34 +125,51 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     );
   }
 
-
   Future<void> _executeAccept() async {
-  setState(() => _isLoadingAccept = true);
-  final response = await context.read<InstantOrdersCubit>().respondToRequest(
-    widget.orderData.userId,
-    true,
-  );
+    setState(() => _isLoadingAccept = true);
+    final response = await context.read<InstantOrdersCubit>().respondToRequest(
+      widget.orderData.userId,
+      true,
+    );
 
-  if (!mounted) return;
+    if (!mounted) return;
 
-  if (response != null) {
-    SnackBarHelper.showSuccess(context, response.message);
-    widget.onOrderProcessed();
+    if (response != null) {
+      SnackBarHelper.showSuccess(context, response.message);
+      widget.onOrderProcessed();
 
-    getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+      getIt<ActiveDriverShipmentsCubit>().silentRefresh();
 
-    if (response.shipmentData != null) {
-      Navigator.pushNamed(
-        context,
-        Routes.driverTrackingScreen,
-        arguments: response.shipmentData,
+      // 🛠️ الحل هنا: نقوم بتحويل البيانات إلى المودل الذي تنتظره شاشة التتبع
+      final activeShipment = ActiveDriverShipmentModel(
+        id: response.shipmentData!.id,
+        userId: widget.orderData.userId,
+        driverId: widget.orderData.driverId,
+        shipmentNumber: 0, // يتم توليده في الباك إند
+        price: widget.orderData.price,
+        status: 'جارية',
+        startLat: response.shipmentData!.startLat,
+        startLng: response.shipmentData!.startLng,
+        endLat: response.shipmentData!.endLat,
+        endLng: response.shipmentData!.endLng,
+        startGovernorate: widget.orderData.fromLocation,
+        endGovernorate: widget.orderData.toLocation,
+        pathCoordinates: response.shipmentData!.pathCoordinates,
+        client: null, // سيعرض "غير معروف" مؤقتاً في شاشة التتبع
       );
+
+      if (response.shipmentData != null) {
+        Navigator.pushNamed(
+          context,
+          Routes.driverTrackingScreen,
+          arguments: activeShipment,
+        );
+      }
+    } else {
+      setState(() => _isLoadingAccept = false);
+      SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
     }
-  } else {
-    setState(() => _isLoadingAccept = false);
-    SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
   }
-}
 
   Future<void> _executeReject({bool autoExpired = false}) async {
     setState(() => _isLoadingReject = true);
@@ -167,14 +185,11 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     } else if (response != null) {
       SnackBarHelper.showSuccess(context, response.message);
     } else {
-       SnackBarHelper.showError(context, "حدث خطأ أثناء الرفض.");
+      SnackBarHelper.showError(context, "حدث خطأ أثناء الرفض.");
     }
 
     widget.onOrderProcessed();
   }
-
-
-  
 
   @override
   Widget build(BuildContext context) {

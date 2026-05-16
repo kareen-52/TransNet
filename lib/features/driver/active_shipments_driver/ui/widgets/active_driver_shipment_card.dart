@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
-import 'package:graduation_progect/features/driver/instant_orders/data/models/respond_response_model.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,14 +56,11 @@ class ActiveDriverShipmentCard extends StatelessWidget {
               _buildRoute(theme),
               verticalSpace(12),
 
-              Divider(
-                height: 1,
-                color: theme.colorScheme.outline.withOpacity(0.2),
-              ),
-              verticalSpace(10),
+              Divider(height: 1, color: theme.colorScheme.outline),
+              verticalSpace(12),
 
               // ── السعر + معلومات العميل ──────────────────────────────────
-              _buildBottomRow(theme, statusColor),
+              _buildBottomRow(theme),
             ],
           ),
         ),
@@ -176,19 +172,19 @@ class ActiveDriverShipmentCard extends StatelessWidget {
   }
 
   // ─── Bottom row: السعر + العميل ───────────────────────────────────────────
-  Widget _buildBottomRow(ThemeData theme, Color statusColor) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // زر الاتصال بالعميل
-          if (shipment.client != null)
-            GestureDetector(
+  Widget _buildBottomRow(ThemeData theme) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // زر الاتصال بالعميل
+        if (shipment.client != null)
+          Flexible(
+            child: GestureDetector(
               onTap: () => _callClient(shipment.client!.phoneNumber),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF22C55E).withOpacity(0.1),
+                  color: theme.colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Row(
@@ -197,46 +193,52 @@ class ActiveDriverShipmentCard extends StatelessWidget {
                     Icon(
                       Icons.phone_rounded,
                       size: 13.sp,
-                      color: const Color(0xFF16A34A),
+                      color: theme.colorScheme.primary,
                     ),
                     horizontalSpace(4),
-                    Text(
-                      shipment.client!.firstName,
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        color: const Color(0xFF16A34A),
-                        fontWeight: FontWeight.w600,
+                    Flexible(
+                      child: Text(
+                        shipment.client!.fullName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            )
-          else
-            const SizedBox.shrink(),
-
-          // السعر
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: _formatPrice(shipment.price),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: statusColor,
-                  ),
-                ),
-                TextSpan(
-                  text: ' ل.س',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: statusColor.withOpacity(0.7),
-                  ),
-                ),
-              ],
             ),
+          )
+        else
+          const SizedBox.shrink(),
+
+        horizontalSpace(8),
+
+        // السعر
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: _formatPrice(shipment.price),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              TextSpan(
+                text: ' ل.س',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.primary.withOpacity(0.7),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

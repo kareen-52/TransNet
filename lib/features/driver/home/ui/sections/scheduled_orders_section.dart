@@ -20,7 +20,7 @@ class ScheduledOrdersSection extends StatelessWidget {
           children: [
             Text(
               'الطلبات المجدولة',
-              style: textTheme.titleLarge?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),

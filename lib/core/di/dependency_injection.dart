@@ -161,6 +161,7 @@ import 'package:graduation_progect/features/shared_screens/change_password/data/
 import 'package:graduation_progect/features/shared_screens/change_password/logic/forgot_password_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/login/data/repo/login_repo.dart';
 import 'package:graduation_progect/features/shared_screens/login/logic/login_cubit.dart';
+import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/logic/shipment_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/models/repo/shipment_details_repo.dart';
@@ -259,9 +260,12 @@ void setupGetIt() {
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
   getIt.registerLazySingleton<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
 
-
-  getIt.registerLazySingleton<InstantOrdersRepo>(() => InstantOrdersRepo(getIt()));
-  getIt.registerLazySingleton<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
+  getIt.registerLazySingleton<InstantOrdersRepo>(
+    () => InstantOrdersRepo(getIt()),
+  );
+  getIt.registerLazySingleton<InstantOrdersCubit>(
+    () => InstantOrdersCubit(getIt()),
+  );
 
   // ── Driver Location ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(
@@ -293,32 +297,35 @@ void setupGetIt() {
   );
   getIt.registerFactory<DriverReviewsCubit>(() => DriverReviewsCubit(getIt()));
 
-
-    getIt.registerLazySingleton<ShipmentSearchRepo>(
+  getIt.registerLazySingleton<ShipmentSearchRepo>(
     () => ShipmentSearchRepo(getIt()),
   );
-  getIt.registerFactory<SearchShipmentsCubit>(() => SearchShipmentsCubit(getIt()));
+  getIt.registerFactory<SearchShipmentsCubit>(
+    () => SearchShipmentsCubit(getIt()),
+  );
 
 
 
+  // ── Map Service ─────────────────────────────────────────────────
+  getIt.registerLazySingleton<MapService>(() => MapService()); 
 
 
-// ── Active Orders (Client) ─────────────────────────────────────────────────
+
+  // ── Active Orders (Client) ─────────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveOrdersRepo>(
     () => ActiveOrdersRepo(getIt()),
   );
   getIt.registerLazySingleton<ActiveOrdersCubit>(
     () => ActiveOrdersCubit(getIt()),
   );
-  
-   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
-  () => ActiveDriverShipmentsRepo(getIt()),
+
+  getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
+    () => ActiveDriverShipmentsRepo(getIt()),
   );
   getIt.registerLazySingleton<ActiveDriverShipmentsCubit>(
     () => ActiveDriverShipmentsCubit(getIt()),
   );
-  
+
   getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
   getIt.registerFactory(() => DriverTrackingCubit(getIt()));
-  
 }

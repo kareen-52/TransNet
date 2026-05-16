@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/respond_response_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/repo/instant_orders_repo.dart';
@@ -18,24 +20,25 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
   }
 
   void _listenToFcmOrders() {
-    _fcmSubscription = NotificationService.instantOrderStreamController.stream.listen((fcmData) {
-      try {
-        final newOrder = InstantOrderModel.fromFcmPayload(fcmData);
-        if (!currentOrders.any((o) => o.userId == newOrder.userId)) {
-          currentOrders.insert(0, newOrder);
-            _filterAndEmitValidOrders();
-        }
-      } catch (e) {
-        if (kDebugMode) print("❌ فشل تحويل إشعار الطلب הפوري: $e");
-      }
-    });
+    _fcmSubscription = NotificationService.instantOrderStreamController.stream
+        .listen((fcmData) {
+          try {
+            final newOrder = InstantOrderModel.fromFcmPayload(fcmData);
+            if (!currentOrders.any((o) => o.userId == newOrder.userId)) {
+              currentOrders.insert(0, newOrder);
+              _filterAndEmitValidOrders();
+            }
+          } catch (e) {
+            if (kDebugMode) print("❌ فشل تحويل إشعار الطلب הפوري: $e");
+          }
+        });
   }
   // void _listenToFcmOrders() {
   //   _fcmSubscription = NotificationService.instantOrderStreamController.stream.listen((fcmData) {
   //     try {
   //       final rawPayload = fcmData['notification'] ?? '{}';
   //       final parsedData = jsonDecode(rawPayload);
-        
+
   //       // التحقق من نوع الحدث القادم من الباك إند (يجب التنسيق مع الباك إند لإرسال هذا المتغير)
   //       final String actionType = parsedData['action_type'] ?? 'new_order';
 
@@ -74,7 +77,7 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
       },
       failure: (error) {
         if (currentOrders.isNotEmpty) {
-          _filterAndEmitValidOrders(); 
+          _filterAndEmitValidOrders();
         } else {
           emit(InstantOrdersState.error(error));
         }
@@ -87,12 +90,25 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     _filterAndEmitValidOrders();
   }
 
-
-
-  Future<RespondResponseModel?> respondToRequest(int userId, bool isAccept) async {
-    final result = await _repo.respondToRequest(userId: userId, accept: isAccept);
+  Future<RespondResponseModel?> respondToRequest(
+    int userId,
+    bool isAccept,
+  ) async {
+    final result = await _repo.respondToRequest(
+      userId: userId,
+      accept: isAccept,
+    );
     return result.when(
-      success: (data) => data,
+      // success: (data) => data,
+      success: (data) {
+        removeOrderLocally(userId);
+
+        if (isAccept) {
+          getIt<ActiveDriverShipmentsCubit>().fetch();
+        }
+
+        return data;
+      },
       failure: (error) => null,
     );
   }
@@ -101,7 +117,7 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     final DateTime now = DateTime.now();
     currentOrders.removeWhere((order) {
       if (order.expiresAt.isEmpty) return false;
-      
+
       DateTime expiresAt = DateTime.parse(order.expiresAt).toLocal();
       return expiresAt.isBefore(now) || expiresAt.isAtSameMomentAs(now);
     });

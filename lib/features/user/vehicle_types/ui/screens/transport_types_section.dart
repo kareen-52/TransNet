@@ -19,7 +19,12 @@ class TransportMethodsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('وسائل النقل المتاحة', style: theme.textTheme.labelMedium),
+        Text(
+          'وسائل النقل المتاحة',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         verticalSpace(12),
 
         BlocBuilder<VehicleTypesCubit, VehicleTypesState>(

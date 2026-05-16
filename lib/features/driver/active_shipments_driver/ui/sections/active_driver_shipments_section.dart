@@ -30,7 +30,7 @@ class ActiveDriverShipmentsSection extends StatelessWidget {
           loaded: (shipments) => _buildWithTitle(
             theme: theme,
             child: SizedBox(
-              height: 160.h,
+              height: 170.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 clipBehavior: Clip.none,
@@ -41,11 +41,14 @@ class ActiveDriverShipmentsSection extends StatelessWidget {
             ),
           ),
 
-          error: (error) => ErrorStateWidget(
-            message: error.getAllErrorMessages(),
-            onRetry: () {
-              context.read<ActiveDriverShipmentsCubit>().fetch();
-            },
+          error: (error) => _buildWithTitle(
+            theme: theme,
+            child: ErrorStateWidget(
+              message: error.getAllErrorMessages(),
+              onRetry: () {
+                context.read<ActiveDriverShipmentsCubit>().fetch();
+              },
+            ),
           ),
         );
       },
@@ -53,31 +56,21 @@ class ActiveDriverShipmentsSection extends StatelessWidget {
   }
 
   Widget _buildWithTitle({required ThemeData theme, required Widget child}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 4.w,
-              height: 18.h,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(2.r),
-              ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 32.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'شحناتك النشطة',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            horizontalSpace(8),
-            Text(
-              'شحناتك النشطة',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        verticalSpace(12),
-        child,
-      ],
+          ),
+          verticalSpace(12),
+          child,
+        ],
+      ),
     );
   }
 }

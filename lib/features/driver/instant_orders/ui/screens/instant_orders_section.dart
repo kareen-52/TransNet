@@ -20,43 +20,54 @@ class InstantOrdersSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BlocProvider.value(
-                  value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
-                  child: const ActiveDriverShipmentsSection(),
-                ),
-                verticalSpace(32),
+          value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
+          child: const ActiveDriverShipmentsSection(),
+        ),
 
         Text(
           'الطلبات الفورية',
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         verticalSpace(12),
 
         BlocBuilder<InstantOrdersCubit, InstantOrdersState>(
           builder: (context, state) {
             return state.maybeWhen(
-              
               loading: () => Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.h),
-                  child: CircularProgressIndicator(color: theme.colorScheme.primary),
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
-              
+
               empty: () => _buildEmptyState(theme),
-              
+
               error: (errorModel) => Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.h),
                   child: Column(
                     children: [
-                      Icon(Icons.wifi_off_rounded, size: 50.sp, color: theme.colorScheme.error.withOpacity(0.5)),
+                      Icon(
+                        Icons.wifi_off_rounded,
+                        size: 50.sp,
+                        color: theme.colorScheme.error.withOpacity(0.5),
+                      ),
                       verticalSpace(12),
-                      Text('تعذر جلب الطلبات، تحقق من اتصالك.', style: TextStyle(color: theme.colorScheme.error, fontSize: 14.sp)),
+                      Text(
+                        'تعذر جلب الطلبات، تحقق من اتصالك.',
+                        style: TextStyle(
+                          color: theme.colorScheme.error,
+                          fontSize: 14.sp,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-
 
               success: (orders) => ListView.builder(
                 shrinkWrap: true,
@@ -68,8 +79,10 @@ class InstantOrdersSection extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 16.h),
                     child: InstantOrderCard(
                       key: ValueKey('order_${data.userId}_${data.expiresAt}'),
-                      orderData: data, 
-                      onOrderProcessed: () => context.read<InstantOrdersCubit>().removeOrderLocally(data.userId),
+                      orderData: data,
+                      onOrderProcessed: () => context
+                          .read<InstantOrdersCubit>()
+                          .removeOrderLocally(data.userId),
                     ),
                   );
                 },
@@ -83,19 +96,24 @@ class InstantOrdersSection extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildEmptyState(ThemeData theme) {
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 40.h),
         child: Column(
           children: [
-            Icon(Icons.radar, size: 50.sp, color: theme.colorScheme.primary.withOpacity(0.5)),
+            Icon(
+              Icons.radar,
+              size: 50.sp,
+              color: theme.colorScheme.primary.withOpacity(0.5),
+            ),
             verticalSpace(12),
             Text(
               'جاري البحث عن طلبات قريبة منك...',
-              style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 14.sp),
+              style: TextStyle(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 14.sp,
+              ),
             ),
           ],
         ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
+import 'package:graduation_progect/features/shared_screens/map/ui/widgets/my_location_button.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
@@ -35,10 +38,15 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) return;
       }
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
       if (mounted) {
         setState(() {
-          _driverCurrentLocation = LatLng(position.latitude, position.longitude);
+          _driverCurrentLocation = LatLng(
+            position.latitude,
+            position.longitude,
+          );
         });
         _mapController.move(_driverCurrentLocation!, 14.0);
       }
@@ -49,7 +57,10 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final startPoint = LatLng(widget.shipment.startLat, widget.shipment.startLng);
+    final startPoint = LatLng(
+      widget.shipment.startLat,
+      widget.shipment.startLng,
+    );
     final endPoint = LatLng(widget.shipment.endLat, widget.shipment.endLng);
 
     return Scaffold(
@@ -62,10 +73,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
           // 1. الخريطة المباشرة
           FlutterMap(
             mapController: _mapController,
-            options: MapOptions(
-              initialCenter: startPoint,
-              initialZoom: 13.0,
-            ),
+            options: MapOptions(initialCenter: startPoint, initialZoom: 13.0),
             children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -83,16 +91,37 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
                 ),
               MarkerLayer(
                 markers: [
-                  Marker(point: startPoint, width: 40.w, height: 40.h, child: const Icon(Icons.location_on, color: Colors.green, size: 40)),
-                  Marker(point: endPoint, width: 40.w, height: 40.h, child: const Icon(Icons.flag, color: Colors.red, size: 40)),
+                  Marker(
+                    point: startPoint,
+                    width: 30.w,
+                    height: 30.h,
+                    child: const Icon(
+                      Icons.location_on,
+                      color: Colors.green,
+                      size: 40,
+                    ),
+                  ),
+                  Marker(
+                    point: endPoint,
+                    width: 30.w,
+                    height: 30.h,
+                    child: const Icon(Icons.flag, color: Colors.red, size: 40),
+                  ),
                   if (_driverCurrentLocation != null)
                     Marker(
                       point: _driverCurrentLocation!,
                       width: 50.w,
                       height: 50.h,
                       child: Container(
-                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue.withOpacity(0.3)),
-                        child: const Icon(Icons.local_shipping, color: Colors.blue, size: 30),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue.withOpacity(0.3),
+                        ),
+                        child: const Icon(
+                          Icons.local_shipping,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
                       ),
                     ),
                 ],
@@ -104,13 +133,11 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
           Positioned(
             top: 20.h,
             right: 20.w,
-            child: FloatingActionButton(
-              mini: true,
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              onPressed: () {
-                if (_driverCurrentLocation != null) _mapController.move(_driverCurrentLocation!, 15.0);
+            child: MyLocationButton(
+              mapService: getIt<MapService>(),
+              onLocationFetched: (latLng) {
+                _mapController.move(latLng, 15.0);
               },
-              child: Icon(Icons.my_location, color: Theme.of(context).colorScheme.primary),
             ),
           ),
 

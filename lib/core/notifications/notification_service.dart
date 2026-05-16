@@ -386,15 +386,24 @@ class NotificationService {
       _handleNotificationClick(jsonEncode(message.data));
     });
 
-    // ✅ [8] microtask تمام - بتشتغل بعد ما يكتمل الـ frame الأول
-    Future.microtask(() async {
-      final RemoteMessage? initialMessage = await _firebaseMessaging
-          .getInitialMessage();
-      if (initialMessage != null) {
-        _handleNotificationClick(jsonEncode(initialMessage.data));
-      }
+
+    // تأخير 2 ثانية لضمان حفظ access_token قبل المزامنة
+    Future.delayed(const Duration(seconds: 2), () async {
+      final initial = await _firebaseMessaging.getInitialMessage();
+      if (initial != null) _handleNotificationClick(jsonEncode(initial.data));
       handleDeviceTokenSync();
     });
+
+
+    // ✅ [8] microtask تمام - بتشتغل بعد ما يكتمل الـ frame الأول
+    // Future.microtask(() async {
+    //   final RemoteMessage? initialMessage = await _firebaseMessaging
+    //       .getInitialMessage();
+    //   if (initialMessage != null) {
+    //     _handleNotificationClick(jsonEncode(initialMessage.data));
+    //   }
+    //   handleDeviceTokenSync();
+    // });
 
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
       if (kDebugMode) print("🔄 Token Refreshed: $newToken");
@@ -431,11 +440,14 @@ class NotificationService {
       }
 
       if (kDebugMode) print("🚀 Sending token to backend...");
+
       await getIt<NotificationRepo>().saveDeviceToken(currentToken);
       await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
 
       if (kDebugMode) print("✅ Token synced successfully.");
-    } catch (e) {
+    }
+    
+    catch (e) {
       if (kDebugMode) print("❌ Failed to sync Device Token: $e");
 
       // ✅ [9] الـ retry logic تمام، بس خلّينا الـ print بس في debug mode
@@ -449,6 +461,8 @@ class NotificationService {
       }
     }
   }
+
+  
 
   static void _handleNotificationClick(String? payload) {
     if (payload == null) return;

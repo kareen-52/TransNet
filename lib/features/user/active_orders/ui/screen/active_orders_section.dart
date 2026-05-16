@@ -71,7 +71,9 @@ class ActiveOrdersSection extends StatelessWidget {
         children: [
           Text(
             'الطلبات النشطة',
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
           ),
           if (count > 0)
             Container(

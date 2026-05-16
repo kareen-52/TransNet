@@ -10,6 +10,7 @@ import 'package:graduation_progect/features/driver/tracking/logic/driver_trackin
 import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_state.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/pin_input_dialog.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/qr_scanner_screen.dart';
+import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 
 class TrackingBottomSheet extends StatefulWidget {
   final ActiveDriverShipmentModel initialShipment;
@@ -25,32 +26,38 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
   @override
   void initState() {
     super.initState();
-    currentStatus = widget.initialShipment.status; // 'جارية' أو 'قيد التوصيل'
+    currentStatus = widget.initialShipment.status;
   }
 
   void _onSuccessFinish() {
-    // إزالة الشحنة من قائمة الهوم والعودة للخلف
-    context.read<ActiveDriverShipmentsCubit>().removeShipment(widget.initialShipment.id);
-    Navigator.pop(context); 
+    context.read<ActiveDriverShipmentsCubit>().removeShipment(
+      widget.initialShipment.id,
+    );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final s = widget.initialShipment;
 
     return BlocListener<DriverTrackingCubit, DriverTrackingState>(
       listener: (context, state) {
         state.whenOrNull(
-          errorQr: (err) => SnackBarHelper.showError(context, err),
-          errorPin: (err) => SnackBarHelper.showError(context, err),
           successQr: (msg) {
             SnackBarHelper.showSuccess(context, msg);
-            setState(() => currentStatus = 'قيد التوصيل'); // تحديث الواجهة تلقائياً
+            setState(() {
+              currentStatus = 'قيد التوصيل';
+            });
           },
+
           successPin: (msg) {
             SnackBarHelper.showSuccess(context, msg);
-            _onSuccessFinish(); // إنهاء الرحلة
+            _onSuccessFinish();
           },
+
+          errorQr: (err) => SnackBarHelper.showError(context, err),
+          errorPin: (err) => SnackBarHelper.showError(context, err),
         );
       },
       child: Container(
@@ -58,65 +65,128 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -5))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(20.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // تفاصيل مبسطة
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.initialShipment.client?.fullName ?? 'عميل', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-                Text('${widget.initialShipment.price.toStringAsFixed(0)} ل.س', style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
-              ],
+            // ── مقبض السحب ──
+            Container(
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2.r),
+              ),
             ),
-            verticalSpace(8),
-            Text('من: ${widget.initialShipment.startGovernorate} ➔ إلى: ${widget.initialShipment.endGovernorate}', style: theme.textTheme.bodyMedium),
+            verticalSpace(16),
+
+            // ── معلومات الشحنة ──
+            _buildInfoRow(
+              theme,
+              "الحالة",
+              currentStatus == 'جارية'
+                  ? "جارية (بانتظار الاستلام)"
+                  : "قيد التوصيل",
+              color: ShipmentStatusHelper.getColor(currentStatus),
+            ),
+            _buildInfoRow(theme, "رقم الشحنة", "#${s.shipmentNumber}"),
+            _buildInfoRow(theme, "العميل", s.client?.fullName ?? "غير معروف"),
+            _buildInfoRow(theme, "السعر", "${s.price.toStringAsFixed(0)} ل.س"),
+
             verticalSpace(24),
 
-            // الأزرار الذكية تعتمد على currentStatus
+            // ── الأزرار الذكية ──
             BlocBuilder<DriverTrackingCubit, DriverTrackingState>(
               builder: (context, state) {
-                final isLoadingQr = state == const DriverTrackingState.loadingQr();
-                final isLoadingPin = state == const DriverTrackingState.loadingPin();
+                final loading = state.maybeWhen(
+                  loadingQr: () => true,
+                  loadingPin: () => true,
+                  orElse: () => false,
+                );
 
+                // المرحلة الأولى: جارية (إما بيمسح QR أو بيتخطى)
                 if (currentStatus == 'جارية') {
-                  return Column(
+                  return Row(
                     children: [
-                      AppTextButton(
-                        text: 'مسح رمز الاستلام (QR)',
-                        prefixIcon: const Icon(Icons.qr_code_scanner, color: Colors.white),
-                        isLoading: isLoadingQr,
-                        onPressed: isLoadingPin ? null : () async {
-                          // 1. فتح شاشة الكاميرا
-                          final result = await Navigator.push(context, MaterialPageRoute(builder: (_) => const QRScannerScreen()));
-                          if (result != null && result is String && context.mounted) {
-                            // 2. إرسال الكود للباك إند
-                            context.read<DriverTrackingCubit>().confirmPickup(widget.initialShipment.id, result);
-                          }
-                        },
+                      Expanded(
+                        flex: 3,
+                        child: AppTextButton(
+                          text: 'تأكيد الاستلام (QR)',
+                          textStyle: TextStyle(
+                            fontSize: 13.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.qr_code_scanner,
+                            color: Colors.white,
+                            size: 18.sp,
+                          ),
+                          isLoading: loading,
+                          onPressed: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const QRScannerScreen(),
+                              ),
+                            );
+                            if (result != null && context.mounted) {
+                              context.read<DriverTrackingCubit>().confirmPickup(
+                                s.id,
+                                result,
+                              );
+                            }
+                          },
+                        ),
                       ),
-                      verticalSpace(12),
-                      AppTextButton(
-                        text: 'تخطي الاستلام وإدخال الـ PIN',
-                        backgroundColor: Colors.transparent,
-                        borderSide: BorderSide(color: theme.colorScheme.primary),
-                        textStyle: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold),
-                        isLoading: isLoadingPin,
-                        onPressed: isLoadingQr ? null : () => _showPinDialog(context),
+                      horizontalSpace(10),
+
+                      Expanded(
+                        flex: 2,
+                        child: OutlinedButton(
+                          onPressed: loading
+                              ? null
+                              : () {
+                                  setState(() {
+                                    currentStatus = 'قيد التوصيل';
+                                  });
+                                },
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 14.h),
+                            side: BorderSide(color: theme.colorScheme.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                          ),
+                          child: Text(
+                            'تخطي',
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   );
                 } else {
-                  // الحالة: قيد التوصيل
                   return AppTextButton(
-                    text: 'أدخل رمز التسليم (PIN)',
-                    backgroundColor: Colors.green.shade600,
-                    prefixIcon: const Icon(Icons.pin, color: Colors.white),
-                    isLoading: isLoadingPin,
+                    text: 'تأكيد التسليم (PIN)',
+                    prefixIcon: Icon(
+                      Icons.pin,
+                      color: Colors.white,
+                      size: 20.sp,
+                    ),
+                    isLoading: loading,
                     onPressed: () => _showPinDialog(context),
                   );
                 }
@@ -128,6 +198,37 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
     );
   }
 
+  // دالة بناء أسطر المعلومات
+  Widget _buildInfoRow(
+    ThemeData theme,
+    String label,
+    String value, {
+    Color? color,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color ?? theme.colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   void _showPinDialog(BuildContext parentContext) {
     showDialog(
       context: parentContext,
@@ -135,7 +236,11 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
       builder: (ctx) => PinInputDialog(
         onCompleted: (pin) {
           Navigator.pop(ctx);
-          parentContext.read<DriverTrackingCubit>().confirmDelivery(widget.initialShipment.id, pin);
+
+          parentContext.read<DriverTrackingCubit>().confirmDelivery(
+            widget.initialShipment.id,
+            pin,
+          );
         },
       ),
     );
