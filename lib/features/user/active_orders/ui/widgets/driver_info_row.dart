@@ -5,28 +5,23 @@ import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.d
 import 'package:graduation_progect/features/user/active_orders/data/models/active_order_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
-  Future<void> callDriver(BuildContext context, String phone) async {
-    final uri = Uri.parse('tel:$phone');
-    try {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        SnackBarHelper.showError(context, 'لا يمكن فتح تطبيق الهاتف');
-      }
-    } catch (e) {
-      SnackBarHelper.showError(context, 'حدث خطأ أثناء محاولة الاتصال');
+Future<void> callDriver(BuildContext context, String phone) async {
+  final uri = Uri.parse('tel:$phone');
+  try {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      SnackBarHelper.showError(context, 'لا يمكن فتح تطبيق الهاتف');
     }
+  } catch (e) {
+    SnackBarHelper.showError(context, 'حدث خطأ أثناء محاولة الاتصال');
   }
+}
 
-
-  
 class DriverInfoRow extends StatelessWidget {
   final ActiveOrderDriverModel driver;
 
   const DriverInfoRow({super.key, required this.driver});
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +31,7 @@ class DriverInfoRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
+        Flexible(
           child: Row(
             children: [
               CircleAvatar(

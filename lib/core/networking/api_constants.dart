@@ -15,7 +15,7 @@ class ApiConstants {
   static String get userAgent => AppConfig.userAgent;
 
   // ── Endpoints ─────────────────────────────────────────────────────────────
-  static const String refreshToken = 'auth/refresh';
+  static const String refreshToken = 'refreshToken';
 
   static const String saveDeviceToken = 'saveDeviceToken';
   static const String login = 'login';

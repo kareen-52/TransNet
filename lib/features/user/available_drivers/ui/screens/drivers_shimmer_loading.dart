@@ -20,7 +20,8 @@ class DriversShimmerLoading extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(16.sp),
-            itemCount: 4,
+            itemCount: 6,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Shimmer.fromColors(
                 baseColor: theme.colorScheme.onSurface.withOpacity(0.1),

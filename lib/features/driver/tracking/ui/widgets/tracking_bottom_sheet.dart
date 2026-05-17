@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
@@ -30,7 +31,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
   }
 
   void _onSuccessFinish() {
-    context.read<ActiveDriverShipmentsCubit>().removeShipment(
+    getIt<ActiveDriverShipmentsCubit>().removeShipment(
       widget.initialShipment.id,
     );
     Navigator.pop(context);
@@ -227,7 +228,6 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
       ),
     );
   }
-
 
   void _showPinDialog(BuildContext parentContext) {
     showDialog(

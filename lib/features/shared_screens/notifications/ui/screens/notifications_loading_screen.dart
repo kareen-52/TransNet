@@ -13,6 +13,7 @@ class NotificationsShimmerLoading extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
       itemCount: 6,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: theme.colorScheme.onSurface.withOpacity(0.1),

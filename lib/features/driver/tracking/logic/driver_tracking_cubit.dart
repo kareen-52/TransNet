@@ -8,22 +8,34 @@ class DriverTrackingCubit extends Cubit<DriverTrackingState> {
   DriverTrackingCubit(this._repo) : super(const DriverTrackingState.initial());
 
   Future<void> confirmPickup(int shipmentId, String qrPin) async {
+    if (isClosed) return;
     emit(const DriverTrackingState.loadingQr());
-    final result = await _repo.confirmPickup(shipmentId: shipmentId, qrPin: qrPin);
-    
+    final result = await _repo.confirmPickup(
+      shipmentId: shipmentId,
+      qrPin: qrPin,
+    );
+
+    if (isClosed) return;
     result.when(
       success: (msg) => emit(DriverTrackingState.successQr(msg)),
-      failure: (error) => emit(DriverTrackingState.errorQr(error.getAllErrorMessages())),
+      failure: (error) =>
+          emit(DriverTrackingState.errorQr(error.getAllErrorMessages())),
     );
   }
 
   Future<void> confirmDelivery(int shipmentId, String pin) async {
+    if (isClosed) return;
     emit(const DriverTrackingState.loadingPin());
-    final result = await _repo.confirmDelivery(shipmentId: shipmentId, pin: pin);
-    
+    final result = await _repo.confirmDelivery(
+      shipmentId: shipmentId,
+      pin: pin,
+    );
+
+    if (isClosed) return;
     result.when(
       success: (msg) => emit(DriverTrackingState.successPin(msg)),
-      failure: (error) => emit(DriverTrackingState.errorPin(error.getAllErrorMessages())),
+      failure: (error) =>
+          emit(DriverTrackingState.errorPin(error.getAllErrorMessages())),
     );
   }
 }

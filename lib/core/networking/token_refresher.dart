@@ -79,6 +79,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/app_config.dart';
 
 class TokenRefresher {
@@ -106,7 +107,7 @@ class TokenRefresher {
 
     try {
       final response = await refreshDio.post(
-        'refreshToken',
+        ApiConstants.refreshToken,
         data: {'refresh_token': refreshToken},
       );
 
