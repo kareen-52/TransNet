@@ -90,7 +90,7 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
     _filterAndEmitValidOrders();
   }
 
-  Future<RespondResponseModel?> respondToRequest(
+  Future<ApiResult<RespondResponseModel>> respondToRequest(
     int userId,
     bool isAccept,
   ) async {
@@ -98,21 +98,18 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
       userId: userId,
       accept: isAccept,
     );
-    return result.when(
-      // success: (data) => data,
+    result.whenOrNull(
       success: (data) {
         removeOrderLocally(userId);
-
         if (isAccept) {
-          // getIt<ActiveDriverShipmentsCubit>().fetch();
-                    getIt<ActiveDriverShipmentsCubit>().silentRefresh();
-
+          try {
+            getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+          } catch (e) {}
         }
-
-        return data;
       },
-      failure: (error) => null,
     );
+    
+    return result;
   }
 
   void _filterAndEmitValidOrders() {

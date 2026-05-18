@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
@@ -127,21 +128,17 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
   Future<void> _executeAccept() async {
     setState(() => _isLoadingAccept = true);
-    final response = await context.read<InstantOrdersCubit>().respondToRequest(
+    final result = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       true,
     );
 
     if (!mounted) return;
 
-    if (response != null) {
-      SnackBarHelper.showSuccess(context, response.message);
-      widget.onOrderProcessed();
-
-      // getIt<ActiveDriverShipmentsCubit>().silentRefresh();
-      try {
-        getIt<ActiveDriverShipmentsCubit>().silentRefresh();
-      } catch (e) {}
+    result.when(
+      success: (response) {
+        SnackBarHelper.showSuccess(context, response.message);
+        widget.onOrderProcessed();
 
       // 🛠️ الحل هنا: نقوم بتحويل البيانات إلى المودل الذي تنتظره شاشة التتبع
       final activeShipment = ActiveDriverShipmentModel(
@@ -161,22 +158,22 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
         client: null, // سيعرض "غير معروف" مؤقتاً في شاشة التتبع
       );
 
-      if (response.shipmentData != null) {
-        Navigator.pushNamed(
+      Navigator.pushNamed(
           context,
           Routes.driverTrackingScreen,
           arguments: activeShipment,
         );
-      }
-    } else {
-      setState(() => _isLoadingAccept = false);
-      SnackBarHelper.showError(context, "حدث خطأ أثناء قبول الطلب.");
-    }
+      },
+      failure: (error) {
+        setState(() => _isLoadingAccept = false);
+        SnackBarHelper.showError(context, error.getAllErrorMessages());
+      },
+    );
   }
 
   Future<void> _executeReject({bool autoExpired = false}) async {
     setState(() => _isLoadingReject = true);
-    final response = await context.read<InstantOrdersCubit>().respondToRequest(
+    final result = await context.read<InstantOrdersCubit>().respondToRequest(
       widget.orderData.userId,
       false,
     );
@@ -185,10 +182,16 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
 
     if (autoExpired) {
       SnackBarHelper.showError(context, "انتهت مهلة الرد، تم تجاهل الطلب.");
-    } else if (response != null) {
-      SnackBarHelper.showSuccess(context, response.message);
     } else {
-      SnackBarHelper.showError(context, "حدث خطأ أثناء الرفض.");
+      result.when(
+        success: (response) {
+          SnackBarHelper.showSuccess(context, response.message);
+        },
+        failure: (error) {
+          setState(() => _isLoadingReject = false);
+          SnackBarHelper.showError(context, error.getAllErrorMessages());
+        },
+      );
     }
 
     widget.onOrderProcessed();
