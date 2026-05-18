@@ -60,5 +60,6 @@ class ApiConstants {
 
   static const String confirmPickup = 'shipment/confirm-pickup';
   static const String confirmDelivery = 'shipment/confirm-delivery';
+  static const String createReview = 'review';
 
 }

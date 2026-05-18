@@ -89,7 +89,40 @@
 //                     icon: Icons.drive_eta_outlined,
 //                     iconColor: AppColors.primary,
 //                   ),
-//                   SizedBox(height: 8.h),
+//                   if (isCompleted) ...[
+                  //   verticalSpace(16),
+                  //   OutlinedButton.icon(
+                  //     onPressed: () {
+                  //       // فتح واجهة التقييم السفلية
+                  //       showModalBottomSheet(
+                  //         context: context,
+                  //         isScrollControlled: true,
+                  //         backgroundColor: Colors.transparent,
+                  //         builder: (_) => BlocProvider(
+                  //           create: (context) => getIt<ReviewDriverCubit>(),
+                  //           child: ReviewBottomSheet(driverId: data.driver!.id),
+                  //         ),
+                  //       );
+                  //     },
+                  //     icon: Icon(
+                  //       Icons.star_rate_rounded,
+                  //       color: AppColors.warning,
+                  //       size: 23.sp,
+                  //     ),
+                  //     label: const Text('تقييم السائق'),
+                  //     style: OutlinedButton.styleFrom(
+                  //       backgroundColor: AppColors.warning.withOpacity(0.1),
+                  //       foregroundColor: AppColors.warning,
+                  //       side: const BorderSide(color: AppColors.warning),
+                  //       minimumSize: Size(double.infinity, 48.h),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(16.r),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ],
+                  // // SizedBox(height: 8.h),
+                  // verticalSpace(40),
 //                 ],
 //                 if (data.client != null)
 //                   _PartyCard(
@@ -1312,15 +1345,16 @@
 //   );
 // }
 
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/models/shipment_details_response.dart';
+import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
+import 'package:graduation_progect/features/user/review_driver/ui/review_screen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1370,7 +1404,10 @@ class ShipmentDetailsContent extends StatelessWidget {
 
               // ── 2. Live Tracking (إذا كان النشاط جارياً) ─────────────────
               if (isActive && data.live_tracking != null) ...[
-                _LiveTrackingBanner(liveTracking: data.live_tracking, isDark: isDark),
+                _LiveTrackingBanner(
+                  liveTracking: data.live_tracking,
+                  isDark: isDark,
+                ),
                 SizedBox(height: 16.h),
               ],
 
@@ -1383,7 +1420,11 @@ class ShipmentDetailsContent extends StatelessWidget {
                   color: AppColors.primary,
                 ),
                 SizedBox(height: 8.h),
-                _QrCodeSection(qrPin: s.qrPin!, isDark: isDark, status: s.status),
+                _QrCodeSection(
+                  qrPin: s.qrPin!,
+                  isDark: isDark,
+                  status: s.status,
+                ),
                 SizedBox(height: 16.h),
               ],
 
@@ -1450,7 +1491,42 @@ class ShipmentDetailsContent extends StatelessWidget {
                     icon: Icons.drive_eta_outlined,
                     iconColor: AppColors.primary,
                   ),
-                  SizedBox(height: 8.h),
+
+                  // SizedBox(height: 8.h),
+                  if (isCompleted) ...[
+                    verticalSpace(16),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        // فتح واجهة التقييم السفلية
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => BlocProvider(
+                            create: (context) => getIt<ReviewDriverCubit>(),
+                            child: ReviewBottomSheet(driverId: data.driver!.id),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.star_rate_rounded,
+                        color: AppColors.warning,
+                        size: 23.sp,
+                      ),
+                      label: const Text('تقييم السائق'),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: AppColors.warning.withOpacity(0.1),
+                        foregroundColor: AppColors.warning,
+                        side: const BorderSide(color: AppColors.warning),
+                        minimumSize: Size(double.infinity, 48.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                      ),
+                    ),
+                  ],
+                  // SizedBox(height: 8.h),
+                  verticalSpace(40),
                 ],
                 if (data.client != null)
                   _PartyCard(
@@ -1493,7 +1569,9 @@ class _AppBar extends StatelessWidget {
       floating: true,
       snap: true,
       pinned: true,
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.lightBackground,
+      backgroundColor: isDark
+          ? AppColors.darkBackground
+          : AppColors.lightBackground,
       elevation: 0,
       scrolledUnderElevation: 0.5,
       shadowColor: Colors.black.withOpacity(0.08),
@@ -1511,9 +1589,9 @@ class _AppBar extends StatelessWidget {
           Text(
             'تفاصيل الشحنة',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.3,
-                ),
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.3,
+            ),
           ),
           Row(
             children: [
@@ -1529,9 +1607,9 @@ class _AppBar extends StatelessWidget {
               Text(
                 shipment.status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ'),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: statusColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: statusColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -1586,9 +1664,8 @@ class _ShipmentHeaderCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'شحنة #${shipment.shipmentNumber}',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),
                     CopyButton(
@@ -1600,7 +1677,9 @@ class _ShipmentHeaderCard extends StatelessWidget {
                 ),
                 SizedBox(height: 6.h),
                 _StatusPill(
-                  label: shipment.status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ'),
+                  label:
+                      shipment.status ??
+                      (isCompleted ? 'مكتملة' : 'قيد التنفيذ'),
                   color: statusColor,
                 ),
               ],
@@ -1625,10 +1704,13 @@ class _LiveTrackingBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // liveTracking: { remaining_distance_km, remaining_duration_mins }
-    final distanceKm = (liveTracking['remaining_distance_km'] as num?)?.toDouble();
-    final durationMins = (liveTracking['remaining_duration_mins'] as num?)?.toInt();
+    final distanceKm = (liveTracking['remaining_distance_km'] as num?)
+        ?.toDouble();
+    final durationMins = (liveTracking['remaining_duration_mins'] as num?)
+        ?.toInt();
 
-    if (distanceKm == null && durationMins == null) return const SizedBox.shrink();
+    if (distanceKm == null && durationMins == null)
+      return const SizedBox.shrink();
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -1653,7 +1735,11 @@ class _LiveTrackingBanner extends StatelessWidget {
               color: Colors.white.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.navigation_rounded, color: Colors.white, size: 20.sp),
+            child: Icon(
+              Icons.navigation_rounded,
+              color: Colors.white,
+              size: 20.sp,
+            ),
           ),
           SizedBox(width: 12.w),
 
@@ -1779,11 +1865,15 @@ class _QrCodeSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _isScanned ? 'تم تأكيد الاستلام ✓' : 'رمز استلام الشحنة',
+                        _isScanned
+                            ? 'تم تأكيد الاستلام ✓'
+                            : 'رمز استلام الشحنة',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
-                          color: _isScanned ? AppColors.success : AppColors.primary,
+                          color: _isScanned
+                              ? AppColors.success
+                              : AppColors.primary,
                         ),
                       ),
                       SizedBox(height: 4.h),
@@ -1819,10 +1909,26 @@ class _QrCodeSection extends StatelessWidget {
                     ColorFiltered(
                       colorFilter: _isScanned
                           ? const ColorFilter.matrix([
-                              0.2126, 0.7152, 0.0722, 0, 0,
-                              0.2126, 0.7152, 0.0722, 0, 0,
-                              0.2126, 0.7152, 0.0722, 0, 0,
-                              0,      0,      0,      1, 0,
+                              0.2126,
+                              0.7152,
+                              0.0722,
+                              0,
+                              0,
+                              0.2126,
+                              0.7152,
+                              0.0722,
+                              0,
+                              0,
+                              0.2126,
+                              0.7152,
+                              0.0722,
+                              0,
+                              0,
+                              0,
+                              0,
+                              0,
+                              1,
+                              0,
                             ])
                           : const ColorFilter.mode(
                               Colors.transparent,
@@ -1962,7 +2068,9 @@ class _PinSectionState extends State<_PinSection> {
 
   @override
   Widget build(BuildContext context) {
-    final surface = widget.isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final surface = widget.isDark
+        ? AppColors.darkSurface
+        : AppColors.lightSurface;
     final border = widget.isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final subText = widget.isDark
         ? AppColors.darkTextSecondary
@@ -2012,7 +2120,9 @@ class _PinSectionState extends State<_PinSection> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _isDelivered ? 'تم التسليم بنجاح ✓' : 'رمز تأكيد التوصيل',
+                        _isDelivered
+                            ? 'تم التسليم بنجاح ✓'
+                            : 'رمز تأكيد التوصيل',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
@@ -2122,7 +2232,10 @@ class _PinSectionState extends State<_PinSection> {
                 if (!_isDelivered)
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 14.w,
+                      vertical: 10.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.warning.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(10.r),
@@ -2243,10 +2356,10 @@ class _SectionLabel extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.2,
-              ),
+            color: color,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.2,
+          ),
         ),
       ],
     );
@@ -2261,13 +2374,19 @@ class _RouteCard extends StatelessWidget {
   final String start, end;
   final bool isDark;
 
-  const _RouteCard({required this.start, required this.end, required this.isDark});
+  const _RouteCard({
+    required this.start,
+    required this.end,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final subText = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final subText = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -2282,7 +2401,8 @@ class _RouteCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      width: 8.w, height: 8.w,
+                      width: 8.w,
+                      height: 8.w,
                       decoration: BoxDecoration(
                         color: AppColors.success,
                         shape: BoxShape.circle,
@@ -2293,19 +2413,23 @@ class _RouteCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 6.w),
-                    Text('الانطلاق',
-                        style: TextStyle(
-                            fontSize: 10.sp,
-                            color: subText,
-                            fontWeight: FontWeight.w500)),
+                    Text(
+                      'الانطلاق',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: subText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 5.h),
-                Text(start,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w700)),
+                Text(
+                  start,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                ),
               ],
             ),
           ),
@@ -2319,7 +2443,8 @@ class _RouteCard extends StatelessWidget {
                   children: List.generate(
                     5,
                     (i) => Container(
-                      width: 4.w, height: 2.h,
+                      width: 4.w,
+                      height: 2.h,
                       margin: EdgeInsets.symmetric(horizontal: 2.w),
                       decoration: BoxDecoration(
                         color: subText.withOpacity(0.4),
@@ -2342,14 +2467,18 @@ class _RouteCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('الوجهة',
-                        style: TextStyle(
-                            fontSize: 10.sp,
-                            color: subText,
-                            fontWeight: FontWeight.w500)),
+                    Text(
+                      'الوجهة',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        color: subText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                     SizedBox(width: 6.w),
                     Container(
-                      width: 8.w, height: 8.w,
+                      width: 8.w,
+                      height: 8.w,
                       decoration: BoxDecoration(
                         color: AppColors.error,
                         shape: BoxShape.circle,
@@ -2362,12 +2491,13 @@ class _RouteCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 5.h),
-                Text(end,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.end),
+                Text(
+                  end,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                  textAlign: TextAlign.end,
+                ),
               ],
             ),
           ),
@@ -2391,7 +2521,8 @@ class _ShipmentDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final hasDims = shipment.width != null ||
+    final hasDims =
+        shipment.width != null ||
         shipment.height != null ||
         shipment.length != null;
 
@@ -2450,20 +2581,30 @@ class _ShipmentDetailsCard extends StatelessWidget {
                 ),
                 if (shipment.insurance != null && shipment.insurance! > 0)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Column(
                       children: [
-                        Icon(Icons.security_rounded, color: Colors.white, size: 16.sp),
+                        Icon(
+                          Icons.security_rounded,
+                          color: Colors.white,
+                          size: 16.sp,
+                        ),
                         SizedBox(height: 3.h),
-                        Text('تأمين',
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.85),
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600)),
+                        Text(
+                          'تأمين',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.85),
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -2601,7 +2742,9 @@ class _PartyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final subColor = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final subColor = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -2609,7 +2752,8 @@ class _PartyCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 46.w, height: 46.w,
+            width: 46.w,
+            height: 46.w,
             decoration: BoxDecoration(
               color: iconColor.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -2621,25 +2765,38 @@ class _PartyCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(role,
-                    style: TextStyle(
-                        fontSize: 11.sp, color: subColor, fontWeight: FontWeight.w500)),
+                Text(
+                  role,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: subColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 SizedBox(height: 2.h),
-                Text('${party.firstName} ${party.lastName}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w700)),
+                Text(
+                  '${party.firstName} ${party.lastName}',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                ),
                 SizedBox(height: 2.h),
-                Text(party.phoneNumber,
-                    style: TextStyle(fontSize: 12.sp, color: subColor, letterSpacing: 0.5)),
+                Text(
+                  party.phoneNumber,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: subColor,
+                    letterSpacing: 0.5,
+                  ),
+                ),
               ],
             ),
           ),
           GestureDetector(
             onTap: () => HapticFeedback.lightImpact(),
             child: Container(
-              width: 38.w, height: 38.w,
+              width: 38.w,
+              height: 38.w,
               decoration: BoxDecoration(
                 color: iconColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10.r),
@@ -2671,12 +2828,15 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subColor = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final subColor = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Row(
       children: [
         Container(
-          width: 34.w, height: 34.w,
+          width: 34.w,
+          height: 34.w,
           decoration: BoxDecoration(
             color: isDark
                 ? Colors.white.withOpacity(0.06)
@@ -2686,12 +2846,18 @@ class _InfoRow extends StatelessWidget {
           child: Icon(icon, size: 16.sp, color: subColor),
         ),
         SizedBox(width: 12.w),
-        Expanded(child: Text(label, style: TextStyle(fontSize: 13.sp, color: subColor))),
-        Text(value,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.w700)),
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 13.sp, color: subColor),
+          ),
+        ),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
       ],
     );
   }
@@ -2718,7 +2884,9 @@ class _DimensionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subColor = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final subColor = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2726,17 +2894,25 @@ class _DimensionsRow extends StatelessWidget {
         Row(
           children: [
             Container(
-              width: 34.w, height: 34.w,
+              width: 34.w,
+              height: 34.w,
               decoration: BoxDecoration(
                 color: isDark
                     ? Colors.white.withOpacity(0.06)
                     : Colors.black.withOpacity(0.04),
                 borderRadius: BorderRadius.circular(9.r),
               ),
-              child: Icon(Icons.straighten_rounded, size: 16.sp, color: subColor),
+              child: Icon(
+                Icons.straighten_rounded,
+                size: 16.sp,
+                color: subColor,
+              ),
             ),
             SizedBox(width: 12.w),
-            Text('الأبعاد', style: TextStyle(fontSize: 13.sp, color: subColor)),
+            Text(
+              'الأبعاد',
+              style: TextStyle(fontSize: 13.sp, color: subColor),
+            ),
           ],
         ),
         SizedBox(height: 10.h),
@@ -2745,11 +2921,23 @@ class _DimensionsRow extends StatelessWidget {
           runSpacing: 6.h,
           children: [
             if (shipment.width != null)
-              _DimChip(label: 'عرض', value: '${shipment.width} سم', isDark: isDark),
+              _DimChip(
+                label: 'عرض',
+                value: '${shipment.width} سم',
+                isDark: isDark,
+              ),
             if (shipment.height != null)
-              _DimChip(label: 'ارتفاع', value: '${shipment.height} سم', isDark: isDark),
+              _DimChip(
+                label: 'ارتفاع',
+                value: '${shipment.height} سم',
+                isDark: isDark,
+              ),
             if (shipment.length != null)
-              _DimChip(label: 'طول', value: '${shipment.length} سم', isDark: isDark),
+              _DimChip(
+                label: 'طول',
+                value: '${shipment.length} سم',
+                isDark: isDark,
+              ),
           ],
         ),
       ],
@@ -2761,7 +2949,11 @@ class _DimChip extends StatelessWidget {
   final String label, value;
   final bool isDark;
 
-  const _DimChip({required this.label, required this.value, required this.isDark});
+  const _DimChip({
+    required this.label,
+    required this.value,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2775,23 +2967,27 @@ class _DimChip extends StatelessWidget {
         border: Border.all(color: AppColors.primary.withOpacity(0.2)),
       ),
       child: RichText(
-        text: TextSpan(children: [
-          TextSpan(
-            text: '$label  ',
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$label  ',
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.lightTextSecondary,
+              ),
             ),
-          ),
-          TextSpan(
-            text: value,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -2814,7 +3010,11 @@ class _StatusPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: color, fontSize: 11.sp, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          color: color,
+          fontSize: 11.sp,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -2825,7 +3025,11 @@ class _StatusBadge extends StatelessWidget {
   final String label;
   final Color color;
 
-  const _StatusBadge({required this.icon, required this.label, required this.color});
+  const _StatusBadge({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2845,7 +3049,10 @@ class _StatusBadge extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                  color: color, fontSize: 12.sp, fontWeight: FontWeight.w700),
+                color: color,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -2860,7 +3067,11 @@ class _GlassIconButton extends StatelessWidget {
   final bool isDark;
   final VoidCallback? onTap;
 
-  const _GlassIconButton({required this.icon, required this.isDark, this.onTap});
+  const _GlassIconButton({
+    required this.icon,
+    required this.isDark,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -2868,7 +3079,8 @@ class _GlassIconButton extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        width: 38.w, height: 38.w,
+        width: 38.w,
+        height: 38.w,
         decoration: BoxDecoration(
           color: isDark
               ? Colors.white.withOpacity(0.08)
@@ -2880,8 +3092,13 @@ class _GlassIconButton extends StatelessWidget {
                 : Colors.black.withOpacity(0.06),
           ),
         ),
-        child: Icon(icon, size: 18.sp,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary),
+        child: Icon(
+          icon,
+          size: 18.sp,
+          color: isDark
+              ? AppColors.darkTextPrimary
+              : AppColors.lightTextPrimary,
+        ),
       ),
     );
   }
@@ -2911,7 +3128,8 @@ class CopyButton extends StatefulWidget {
   State<CopyButton> createState() => _CopyButtonState();
 }
 
-class _CopyButtonState extends State<CopyButton> with SingleTickerProviderStateMixin {
+class _CopyButtonState extends State<CopyButton>
+    with SingleTickerProviderStateMixin {
   bool _copied = false;
   late final AnimationController _ctrl;
   late final Animation<double> _scale;
@@ -2920,9 +3138,13 @@ class _CopyButtonState extends State<CopyButton> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     _ctrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 180));
-    _scale = Tween(begin: 1.0, end: 0.88)
-        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
+      vsync: this,
+      duration: const Duration(milliseconds: 180),
+    );
+    _scale = Tween(
+      begin: 1.0,
+      end: 0.88,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
   }
 
   @override
@@ -2993,15 +3215,15 @@ class _CopyButtonState extends State<CopyButton> with SingleTickerProviderStateM
             color: _copied
                 ? AppColors.success.withOpacity(0.12)
                 : (widget.isDark
-                    ? Colors.white.withOpacity(0.07)
-                    : activeColor.withOpacity(0.07)),
+                      ? Colors.white.withOpacity(0.07)
+                      : activeColor.withOpacity(0.07)),
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(
               color: _copied
                   ? AppColors.success.withOpacity(0.4)
                   : (widget.isDark
-                      ? Colors.white.withOpacity(0.12)
-                      : activeColor.withOpacity(0.2)),
+                        ? Colors.white.withOpacity(0.12)
+                        : activeColor.withOpacity(0.2)),
             ),
           ),
           child: Row(

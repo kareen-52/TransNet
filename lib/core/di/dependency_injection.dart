@@ -177,6 +177,8 @@ import 'package:graduation_progect/features/user/available_drivers/logic/availab
 import 'package:graduation_progect/features/user/driver_details/logic/driver_details_cubit.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/repos/create_shipment_repo.dart';
 import 'package:graduation_progect/features/user/create_shipment/logic/create_shipment_cubit.dart';
+import 'package:graduation_progect/features/user/review_driver/data/repo/review_driver_repo.dart';
+import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
 import 'package:graduation_progect/features/user/vehicle_types/data/repos/vehicle_types_repo.dart';
 import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
@@ -328,4 +330,7 @@ void setupGetIt() {
 
   getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
   getIt.registerFactory(() => DriverTrackingCubit(getIt()));
+
+  getIt.registerLazySingleton<ReviewDriverRepo>(() => ReviewDriverRepo(getIt()));
+  getIt.registerFactory<ReviewDriverCubit>(() => ReviewDriverCubit(getIt()));
 }

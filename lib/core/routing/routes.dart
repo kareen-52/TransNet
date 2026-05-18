@@ -25,5 +25,7 @@ class Routes {
   static const String waitingDriverScreen = '/waitingDriverScreen';
   static const String driverTrackingScreen = '/driverTrackingScreen';
 
+  static const String shipmentDetailsScreen = '/shipmentDetailsScreen';
+
   
 }

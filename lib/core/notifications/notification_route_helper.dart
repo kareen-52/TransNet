@@ -75,6 +75,9 @@ class NotificationRouteHelper {
       refreshClientActiveOrders();
       refreshDriverActiveShipments();
       
+      if (shipmentId != 0) {
+        navContext.pushNamed(Routes.shipmentDetailsScreen, arguments: shipmentId);
+      }
     }
 
    

@@ -16,6 +16,7 @@ import 'package:graduation_progect/features/shared_screens/login/logic/login_cub
 import 'package:graduation_progect/features/shared_screens/map/ui/screen/pick_location_screen.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/ui/screens/notifications_screen.dart';
 import 'package:graduation_progect/features/shared_screens/onboarding/screens/onboarding_screen.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/ui/screens/shipment_details_screen.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/logic/verification_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/ui/screen/otp_screen.dart';
 import 'package:graduation_progect/features/shared_screens/login/ui/screen/login_screen.dart';
@@ -148,6 +149,13 @@ class AppRouter {
             create: (context) => getIt<DriverTrackingCubit>(),
             child: DriverTrackingScreen(shipment: shipment),
           ),
+        );
+
+
+      case Routes.shipmentDetailsScreen:
+        final shipmentId = arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => ShipmentDetailsScreen(shipmentId: shipmentId),
         );
       
 

@@ -165,5 +165,8 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
 
   @POST(ApiConstants.confirmDelivery)
   Future<dynamic> confirmDelivery(@Body() Map<String, dynamic> body);
+
+  @POST(ApiConstants.createReview)
+  Future<dynamic> createReview(@Body() Map<String, dynamic> body);
   
 }
