@@ -8,8 +8,11 @@ import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/notifications/notification_route_helper.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
+import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -20,15 +23,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class NotificationService {
-  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  static final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  static final FirebaseMessaging _firebaseMessaging =
+      FirebaseMessaging.instance;
+  static final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
 
   static const String _fcmTokenKey = 'fcm_device_token';
 
-  static final StreamController<Map<String, dynamic>> instantOrderStreamController = StreamController<Map<String, dynamic>>.broadcast();
+  static final StreamController<Map<String, dynamic>>
+  instantOrderStreamController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   static Future<void> init() async {
-
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     _firebaseMessaging
@@ -80,7 +86,10 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
 
-      if (message.data.isNotEmpty) {
+      final data = message.data;
+      final String title = notification?.title ?? data['title'] ?? '';
+
+      if (data.isNotEmpty) {
         instantOrderStreamController.sink.add(message.data);
       }
 
@@ -108,6 +117,39 @@ class NotificationService {
           ),
           payload: jsonEncode(message.data),
         );
+
+        // ── قبول الطلب → refresh فوري للطلبات النشطة ──────────────────────
+        if (title.contains('قبول')) {
+          try {
+            getIt<HomeCubit>().checkActiveShipment();
+            getIt<ActiveOrdersCubit>().silentRefresh();
+            getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+          } catch (e) {
+            if (kDebugMode) print("⚠️ ActiveOrdersCubit not ready: $e");
+          }
+        }
+
+        try {
+          if (title.contains('استلام') || title.contains('تم تأكيد')) {
+            getIt<HomeCubit>().checkActiveShipment();
+            getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+            getIt<ActiveOrdersCubit>().silentRefresh();
+          }
+        } catch (e) {
+          if (kDebugMode) print("⚠️ not ready: $e");
+        }
+
+        // ── تحديث حالة الهوم عند رفض أو قبول الطلب ──────────────────────
+        try {
+          if (title.contains('رفض')) {
+            getIt<HomeCubit>().checkActiveShipment();
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print("⚠️ HomeCubit not registered yet: $e");
+          }
+        }
+
         try {
           getIt<NotificationCubit>().fetchUnreadCount();
         } catch (e) {
@@ -121,7 +163,8 @@ class NotificationService {
     });
 
     Future.microtask(() async {
-      final RemoteMessage? initialMessage = await _firebaseMessaging.getInitialMessage();
+      final RemoteMessage? initialMessage = await _firebaseMessaging
+          .getInitialMessage();
       if (initialMessage != null) {
         _handleNotificationClick(jsonEncode(initialMessage.data));
       }
@@ -151,7 +194,7 @@ class NotificationService {
       );
 
       if (userAuthToken.isEmpty) {
-        print("ℹ️ Skipping sync: User not logged in yet.");
+        if (kDebugMode) print("ℹ️ Skipping sync: User not logged in yet.");
         return;
       }
 
@@ -174,6 +217,43 @@ class NotificationService {
       }
     }
   }
+  // static Future<void> handleDeviceTokenSync({int retryCount = 0}) async {
+  //   try {
+  //     final userAuthToken = await SharedPrefHelper.getSecuredString(
+  //       SharedPrefKeys.userToken,
+  //     );
+  //     if (userAuthToken.isEmpty) {
+  //       if (kDebugMode) print('ℹ️ FCM Sync skipped: not logged in');
+  //       return;
+  //     }
+
+  //     final currentToken = await _firebaseMessaging.getToken();
+  //     if (currentToken == null) return;
+
+  //     final savedToken = await _getStoredToken();
+  //     if (savedToken == currentToken) {
+  //       if (kDebugMode) print('ℹ️ FCM Token unchanged — skipping');
+  //       return;
+  //     }
+
+  //     if (kDebugMode) print('🚀 Sending FCM token...');
+  //     await getIt<NotificationRepo>().saveDeviceToken(currentToken);
+  //     await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
+  //     if (kDebugMode) print('✅ FCM Token synced');
+  //   } catch (e) {
+  //     if (kDebugMode) print('❌ FCM Token sync failed: $e');
+  //     final is401 = e.toString().contains('401');
+  //     if (!is401 && retryCount < 3) {
+  //       Future.delayed(const Duration(seconds: 10), () {
+  //         handleDeviceTokenSync(retryCount: retryCount + 1);
+  //       });
+  //     }
+  //   }
+  // }
+  // static Future<String?> _getStoredToken() async {
+  //   final s = await SharedPrefHelper.getSecuredString(_fcmTokenKey);
+  //   return s.isEmpty ? null : s;
+  // }
 
   static void _handleNotificationClick(String? payload) {
     if (payload != null) {

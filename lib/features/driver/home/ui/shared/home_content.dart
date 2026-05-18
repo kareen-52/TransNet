@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/ui/sections/active_driver_shipments_section.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/availability_toggle.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/challenge_card.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
@@ -43,13 +44,14 @@ class HomeContent extends StatelessWidget {
             await Future.wait([
               context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
               context.read<ProfileCubit>().getProfileData(),
-              getIt<ActiveDriverShipmentsCubit>().silentRefresh(),
+              // getIt<ActiveDriverShipmentsCubit>().silentRefresh(),
             ]);
 
             if (isAvailable) {
               await context.read<InstantOrdersCubit>().fetchPendingOrders(
                 showLoading: false,
               );
+              getIt<ActiveDriverShipmentsCubit>().silentRefresh();
             }
           },
           child: SingleChildScrollView(
@@ -68,17 +70,36 @@ class HomeContent extends StatelessWidget {
 
                 verticalSpace(32),
 
-
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   switchInCurve: Curves.easeInOut,
                   switchOutCurve: Curves.easeInOut,
                   child: isAvailable
-                      ? BlocProvider.value(
-                          value: getIt<InstantOrdersCubit>()..fetchPendingOrders(),
-                          child: const InstantOrdersSection(key: ValueKey('instant'),),
+                      ? MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                              value: getIt<InstantOrdersCubit>()
+                                ..fetchPendingOrders(),
+                            ),
+
+                            BlocProvider.value(
+                              value: getIt<ActiveDriverShipmentsCubit>()
+                                ..fetch(),
+                              // child: const ActiveDriverShipmentsSection(),
+                            ),
+                          ],
+                          child: Column(
+                            children: [
+                              const ActiveDriverShipmentsSection(),
+                              const InstantOrdersSection(
+                                key: ValueKey('instant'),
+                              ),
+                            ],
+                          ),
                         )
-                      : const ScheduledOrdersSection(key: ValueKey('scheduled'),),
+                      : const ScheduledOrdersSection(
+                          key: ValueKey('scheduled'),
+                        ),
                 ),
                 verticalSpace(60),
               ],

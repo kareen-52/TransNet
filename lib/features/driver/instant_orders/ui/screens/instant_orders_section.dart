@@ -19,10 +19,7 @@ class InstantOrdersSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BlocProvider.value(
-          value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
-          child: const ActiveDriverShipmentsSection(),
-        ),
+        
 
         Text(
           'الطلبات الفورية',

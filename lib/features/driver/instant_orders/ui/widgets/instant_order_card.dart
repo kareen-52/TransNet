@@ -90,7 +90,7 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
             onPressed: () => Navigator.pop(ctx),
             child: const Text('إلغاء'),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () {
               Navigator.pop(ctx);
               _executeAccept();
@@ -138,7 +138,10 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
       SnackBarHelper.showSuccess(context, response.message);
       widget.onOrderProcessed();
 
-      getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+      // getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+      try {
+        getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+      } catch (e) {}
 
       // 🛠️ الحل هنا: نقوم بتحويل البيانات إلى المودل الذي تنتظره شاشة التتبع
       final activeShipment = ActiveDriverShipmentModel(

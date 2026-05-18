@@ -11,6 +11,7 @@ import 'package:graduation_progect/features/driver/tracking/logic/driver_trackin
 import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_state.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/pin_input_dialog.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/qr_scanner_screen.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 
 class TrackingBottomSheet extends StatefulWidget {
@@ -34,6 +35,10 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
     getIt<ActiveDriverShipmentsCubit>().removeShipment(
       widget.initialShipment.id,
     );
+    try {
+      getIt<ActiveOrdersCubit>().silentRefresh();
+    } catch (_) {}
+
     Navigator.pop(context);
   }
 
@@ -50,6 +55,13 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
             setState(() {
               currentStatus = 'قيد التوصيل';
             });
+            try {
+              getIt<ActiveOrdersCubit>().silentRefresh();
+            } catch (_) {}
+
+            try {
+              getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+            } catch (_) {}
           },
 
           successPin: (msg) {
@@ -193,6 +205,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                 }
               },
             ),
+            verticalSpace(60),
           ],
         ),
       ),

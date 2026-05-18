@@ -104,7 +104,9 @@ class InstantOrdersCubit extends Cubit<InstantOrdersState> {
         removeOrderLocally(userId);
 
         if (isAccept) {
-          getIt<ActiveDriverShipmentsCubit>().fetch();
+          // getIt<ActiveDriverShipmentsCubit>().fetch();
+                    getIt<ActiveDriverShipmentsCubit>().silentRefresh();
+
         }
 
         return data;
