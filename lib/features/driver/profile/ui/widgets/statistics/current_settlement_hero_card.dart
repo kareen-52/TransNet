@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/driver_statistics_model.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/formatters.dart';
+import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/formatters.dart'; // ملف التنسيق (مرفق بالأسفل)
 
 class CurrentSettlementHeroCard extends StatelessWidget {
   final DriverStatisticsModel stats;
@@ -51,16 +51,12 @@ class CurrentSettlementHeroCard extends StatelessWidget {
                 ),
               ),
               horizontalSpace(12),
-              Expanded(
-                child: Text(
-                  'أرباحي الصافية (قيد التسوية)',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                'أرباحي الصافية (قيد التسوية)',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.9),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
@@ -70,16 +66,14 @@ class CurrentSettlementHeroCard extends StatelessWidget {
             '${Formatters.formatNumber(stats.myEarnings)} ل.س',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 34.sp, // تم تصغيره درجة بسيطة ليتناسب مع كل الشاشات
+              fontSize: 36.sp,
               fontWeight: FontWeight.w900,
               height: 1.1,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
           verticalSpace(24),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.15),
               borderRadius: BorderRadius.circular(16.r),
@@ -92,13 +86,12 @@ class CurrentSettlementHeroCard extends StatelessWidget {
                   stats.unpaidAmount,
                   Icons.monetization_on_outlined,
                 ),
-                // تم استبدال Divider بـ Container كفاصل عمودي
                 Container(
-                  width: 1.w,
-                  height: 35.h,
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
+                  width: 1,
+                  height: 40.h,
                   color: Colors.white.withOpacity(0.2),
                 ),
+                horizontalSpace(2),
                 _buildSubStat(
                   'مستحقات التطبيق (15%)',
                   stats.amountToPay,
@@ -120,21 +113,17 @@ class CurrentSettlementHeroCard extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: Colors.white.withOpacity(0.7), size: 14.sp),
-              horizontalSpace(4),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: 11.sp,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              horizontalSpace(6),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.7),
+                  fontSize: 11.sp,
                 ),
               ),
             ],
           ),
-          verticalSpace(6),
+          verticalSpace(4),
           Text(
             '${Formatters.formatNumber(amount)} ل.س',
             style: TextStyle(
@@ -142,8 +131,6 @@ class CurrentSettlementHeroCard extends StatelessWidget {
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
