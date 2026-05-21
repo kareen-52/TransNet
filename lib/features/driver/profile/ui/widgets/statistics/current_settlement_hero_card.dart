@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/driver_statistics_model.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/formatters.dart'; // ملف التنسيق (مرفق بالأسفل)
+import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/formatters.dart';
 
 class CurrentSettlementHeroCard extends StatelessWidget {
   final DriverStatisticsModel stats;
@@ -44,15 +44,23 @@ class CurrentSettlementHeroCard extends StatelessWidget {
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Icon(Icons.account_balance_wallet, color: Colors.white, size: 20.sp),
+                child: Icon(
+                  Icons.account_balance_wallet,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
               ),
               horizontalSpace(12),
-              Text(
-                'أرباحي الصافية (قيد التسوية)',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Text(
+                  'أرباحي الصافية (قيد التسوية)',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -62,10 +70,12 @@ class CurrentSettlementHeroCard extends StatelessWidget {
             '${Formatters.formatNumber(stats.myEarnings)} ل.س',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 36.sp,
+              fontSize: 34.sp, // تم تصغيره درجة بسيطة ليتناسب مع كل الشاشات
               fontWeight: FontWeight.w900,
               height: 1.1,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           verticalSpace(24),
           Container(
@@ -77,9 +87,23 @@ class CurrentSettlementHeroCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSubStat('إجمالي التسوية', stats.unpaidAmount, Icons.monetization_on_outlined),
-                Container(width: 1, height: 40.h, color: Colors.white.withOpacity(0.2)),
-                _buildSubStat('مستحقات التطبيق (15%)', stats.amountToPay, Icons.pie_chart_outline),
+                _buildSubStat(
+                  'إجمالي التسوية',
+                  stats.unpaidAmount,
+                  Icons.monetization_on_outlined,
+                ),
+                // تم استبدال Divider بـ Container كفاصل عمودي
+                Container(
+                  width: 1.w,
+                  height: 35.h,
+                  margin: EdgeInsets.symmetric(horizontal: 8.w),
+                  color: Colors.white.withOpacity(0.2),
+                ),
+                _buildSubStat(
+                  'مستحقات التطبيق (15%)',
+                  stats.amountToPay,
+                  Icons.pie_chart_outline,
+                ),
               ],
             ),
           ),
@@ -96,14 +120,21 @@ class CurrentSettlementHeroCard extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: Colors.white.withOpacity(0.7), size: 14.sp),
-              horizontalSpace(6),
-              Text(
-                title,
-                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 11.sp),
+              horizontalSpace(4),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 11.sp,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
-          verticalSpace(4),
+          verticalSpace(6),
           Text(
             '${Formatters.formatNumber(amount)} ل.س',
             style: TextStyle(
@@ -111,6 +142,8 @@ class CurrentSettlementHeroCard extends StatelessWidget {
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
