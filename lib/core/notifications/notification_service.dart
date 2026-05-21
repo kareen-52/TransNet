@@ -174,7 +174,7 @@ class NotificationService {
 
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
       print("🔄 Token Refreshed: $newToken");
-      await SharedPrefHelper.setData(_fcmTokenKey, newToken);
+      await SharedPrefHelper.setSecuredString(_fcmTokenKey, newToken);
       String userAuthToken = await SharedPrefHelper.getSecuredString(
         SharedPrefKeys.userToken,
       );
@@ -201,7 +201,7 @@ class NotificationService {
       print("🚀 New Token Detected! Sending to backend...");
       await getIt<NotificationRepo>().saveDeviceToken(currentToken);
 
-      await SharedPrefHelper.setData(_fcmTokenKey, currentToken);
+      await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
 
       print("✅ Token is up to date. No need to send.");
     } catch (e) {
@@ -281,7 +281,7 @@ class NotificationService {
     try {
       await _firebaseMessaging.deleteToken();
 
-      await SharedPrefHelper.removeData(_fcmTokenKey);
+      await SharedPrefHelper.removeSecuredData(_fcmTokenKey);
 
       print("🚪 Firebase Token Deleted & Synced for Logout!");
     } catch (e) {

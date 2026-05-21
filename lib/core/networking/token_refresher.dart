@@ -1,80 +1,3 @@
-// // ============================================================
-// // lib/core/networking/token_refresher.dart
-// // ============================================================
-// // إصلاحات:
-// // 1. Dio instance له timeout محدد (لا يتعلق للأبد)
-// // 2. معالجة أخطاء واضحة ترجع false بدل throw
-// // ============================================================
-
-// import 'package:dio/dio.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:graduation_progect/core/helpers/constants.dart';
-// import 'package:graduation_progect/core/helpers/sharedpreference.dart';
-// import 'package:graduation_progect/core/networking/app_config.dart';
-
-// class TokenRefresher {
-//   TokenRefresher._();
-
-//   static Future<bool> refreshToken() async {
-//     final refreshToken = await SharedPrefHelper.getSecuredString(
-//       SharedPrefKeys.refreshToken,
-//     );
-
-//     if (refreshToken.isEmpty) {
-//       if (kDebugMode) debugPrint('[TokenRefresher] No refresh token found');
-//       return false;
-//     }
-
-//     // Dio منفصل بدون interceptors للتجنب التكرار اللانهائي
-//     final refreshDio = Dio(
-//       BaseOptions(
-//         baseUrl: AppConfig.apiBaseUrl,
-//         connectTimeout: const Duration(seconds: 15),
-//         receiveTimeout: const Duration(seconds: 15),
-//         sendTimeout: const Duration(seconds: 15),
-//         headers: {'Accept': 'application/json'},
-//       ),
-//     );
-
-//     try {
-//       final response = await refreshDio.post(
-//         'auth/refresh',
-//         data: {'refresh_token': refreshToken},
-//       );
-
-//       final newToken = response.data?['access_token'] as String?;
-//       final newRefresh = response.data?['refresh_token'] as String?;
-
-//       if (newToken == null || newToken.isEmpty) {
-//         if (kDebugMode) debugPrint('[TokenRefresher] Empty token in response');
-//         return false;
-//       }
-
-//       await Future.wait([
-//         SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, newToken),
-//         if (newRefresh != null && newRefresh.isNotEmpty)
-//           SharedPrefHelper.setSecuredString(
-//               SharedPrefKeys.refreshToken, newRefresh),
-//       ]);
-
-//       if (kDebugMode) debugPrint('[TokenRefresher] Token refreshed ✓');
-//       return true;
-//     } on DioException catch (e) {
-//       if (kDebugMode) debugPrint('[TokenRefresher] DioError: ${e.type}');
-//       return false;
-//     } catch (e) {
-//       if (kDebugMode) debugPrint('[TokenRefresher] Unexpected error: $e');
-//       return false;
-//     } finally {
-//       refreshDio.close();
-//     }
-//   }
-// }
-
-
-
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
@@ -86,71 +9,75 @@ class TokenRefresher {
   TokenRefresher._();
 
   static Future<bool> refreshToken() async {
-    final refreshToken = await SharedPrefHelper.getSecuredString(
-      SharedPrefKeys.refreshToken,
-    );
-
-    if (refreshToken.isEmpty) {
-      if (kDebugMode) debugPrint('[TokenRefresher] No refresh token found');
-      return false;
-    }
-
-    final refreshDio = Dio(
-      BaseOptions(
-        baseUrl: AppConfig.apiBaseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
-        sendTimeout: const Duration(seconds: 15),
-        headers: {'Accept': 'application/json'},
-      ),
-    );
+    if (kDebugMode) debugPrint('🔄 [TokenRefresher] Started refreshing token process...');
 
     try {
-      final response = await refreshDio.post(
-        ApiConstants.refreshToken,
-        data: {'refresh_token': refreshToken},
+      final oldRefreshToken = await SharedPrefHelper.getSecuredString(SharedPrefKeys.refreshToken);
+
+      if (oldRefreshToken.isEmpty) {
+        if (kDebugMode) debugPrint('❌ [TokenRefresher] No refresh token found. Aborting refresh.');
+        return false;
+      }
+
+      // 1. استخدام Dio منفصل ونظيف (بدون Authorization header لكي لا يرفضه Laravel مبكراً)
+      final refreshDio = Dio(
+        BaseOptions(
+          baseUrl: AppConfig.apiBaseUrl,
+          connectTimeout: const Duration(seconds: 15),
+          receiveTimeout: const Duration(seconds: 15),
+          headers: {
+            'Accept': 'application/json',
+            // تم إزالة الـ Authorization Header من هنا
+          },
+        ),
       );
 
-      // ── تحقق من شكل الرد ─────────────────────────────────────────────────
-      final data = response.data;
-      if (data == null || data is! Map<String, dynamic>) {
-        if (kDebugMode) debugPrint('[TokenRefresher] Invalid response shape');
-        return false;
+      // 2. إرسال طلب التحديث
+      final response = await refreshDio.post(
+        ApiConstants.refreshToken,
+        data: {'refresh_token': oldRefreshToken},
+      );
+
+      // 3. معالجة حالة النجاح 200
+      if (response.statusCode == 200 && response.data != null) {
+        final String? newAccessToken = response.data['access_token'];
+        final String? newRefreshToken = response.data['refresh_token'];
+
+        if (newAccessToken != null && newAccessToken.isNotEmpty) {
+          // حفظ الـ Access Token الجديد دائماً
+          await SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, newAccessToken);
+          
+          // حفظ الـ Refresh Token الجديد فقط إذا أرسله الباك إند
+          if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
+            await SharedPrefHelper.setSecuredString(SharedPrefKeys.refreshToken, newRefreshToken);
+          }
+
+          if (kDebugMode) debugPrint('✅ [TokenRefresher] Token refreshed successfully.');
+          return true;
+        }
       }
+      return false;
 
-      final newToken = data['access_token'] as String?;
-      final newRefresh = data['refresh_token'] as String?;
-
-      if (newToken == null || newToken.isEmpty) {
-        if (kDebugMode) debugPrint('[TokenRefresher] Empty access_token in response');
-        return false;
-      }
-
-      await Future.wait([
-        SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, newToken),
-        if (newRefresh != null && newRefresh.isNotEmpty)
-          SharedPrefHelper.setSecuredString(
-              SharedPrefKeys.refreshToken, newRefresh),
-      ]);
-
-      if (kDebugMode) debugPrint('[TokenRefresher] ✅ Token refreshed');
-      return true;
     } on DioException catch (e) {
-      if (kDebugMode) {
-        debugPrint('[TokenRefresher] DioError: ${e.type}');
-        debugPrint('[TokenRefresher] Status: ${e.response?.statusCode}');
-        debugPrint('[TokenRefresher] Data: ${e.response?.data}');
-      }
+      // 4. معالجة ردود الباك إند في حال الفشل
+      if (e.response != null) {
+        final statusCode = e.response!.statusCode;
+        final data = e.response!.data;
 
-      // ── إذا الباك رجع 404 معناه endpoint غير موجود
-      // إذا رجع 401 معناه الـ refresh token منتهي
-      // في كلا الحالتين → نرجع false بدون استثناء
+        if (kDebugMode) debugPrint('❌ [TokenRefresher] Failed with status: $statusCode, Data: $data');
+
+        if (statusCode == 403 && data is Map) {
+          final message = data['message'];
+          if (message == 'banned' || message == 'frozen') {
+            if (kDebugMode) debugPrint('🛑 [TokenRefresher] User is $message. Forcing logout.');
+            return false; // سيؤدي للطرد
+          }
+        }
+      }
       return false;
     } catch (e) {
-      if (kDebugMode) debugPrint('[TokenRefresher] Unexpected: $e');
+      if (kDebugMode) debugPrint('❌ [TokenRefresher] Unexpected error: $e');
       return false;
-    } finally {
-      refreshDio.close();
     }
   }
 }

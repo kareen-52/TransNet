@@ -1,186 +1,134 @@
-// import 'dart:async';
-// import 'package:dio/dio.dart';
-// import 'package:graduation_progect/core/helpers/constants.dart';
-// import 'package:graduation_progect/core/helpers/sharedpreference.dart';
-// import 'package:graduation_progect/core/networking/dio_factory.dart';
-// import 'package:graduation_progect/core/networking/force_logout_handler.dart';
-// import 'package:graduation_progect/core/networking/token_refresher.dart';
-
-// /// Fixed AuthInterceptor — eliminates the deadlock caused by:
-// ///   1. `static bool _isRefreshing` shared across all queued requests
-// ///   2. `await DioFactory.getDio()` called on a non-async method
-// ///   3. Requests queued during refresh never being resolved/rejected
-// class AuthInterceptor extends QueuedInterceptorsWrapper {
-//   // Completer-based lock: waiting requests subscribe to this future
-//   // and are resolved once the token refresh completes.
-//   static Completer<bool>? _refreshCompleter;
-
-//   @override
-//   void onRequest(
-//     RequestOptions options,
-//     RequestInterceptorHandler handler,
-//   ) async {
-//     final token = await SharedPrefHelper.getSecuredString(
-//       SharedPrefKeys.userToken,
-//     );
-//     if (token.isNotEmpty) {
-//       options.headers['Authorization'] = 'Bearer $token';
-//     }
-//     options.headers['Accept'] = 'application/json';
-//     options.headers['Content-Type'] = 'application/json';
-//     handler.next(options);
-//   }
-
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) async {
-//     // Only handle 401 — all other errors pass through immediately
-//     if (err.response?.statusCode != 401) {
-//       handler.next(err);
-//       return;
-//     }
-
-//     // ── Token refresh ──────────────────────────────────────────────────────
-
-//     if (_refreshCompleter == null) {
-//       // This request is first — it owns the refresh
-//       _refreshCompleter = Completer<bool>();
-
-//       final refreshed = await TokenRefresher.refreshToken();
-//       _refreshCompleter!.complete(refreshed);
-//       _refreshCompleter = null; // reset for next time
-
-//       if (!refreshed) {
-//         await ForceLogoutHandler.forceLogout();
-//         handler.reject(err);
-//         return;
-//       }
-//     } else {
-//       // Another request is already refreshing — wait for it
-//       final refreshed = await _refreshCompleter!.future;
-//       if (!refreshed) {
-//         handler.reject(err);
-//         return;
-//       }
-//     }
-
-//     // ── Retry original request with new token ──────────────────────────────
-//     try {
-//       final newToken = await SharedPrefHelper.getSecuredString(
-//         SharedPrefKeys.userToken,
-//       );
-//       err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
-
-//       // Use the existing singleton Dio — no await needed
-//       final dio = DioFactory.getDio();
-//       final response = await dio.fetch(err.requestOptions);
-//       handler.resolve(response);
-//     } catch (retryError) {
-//       handler.next(err);
-//     }
-//   }
-// }
-
-import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
-import 'package:graduation_progect/core/networking/dio_factory.dart';
 import 'package:graduation_progect/core/networking/force_logout_handler.dart';
 import 'package:graduation_progect/core/networking/token_refresher.dart';
 
-class AuthInterceptor extends QueuedInterceptorsWrapper {
-  static Completer<bool>? _refreshCompleter;
+class AuthInterceptor extends Interceptor {
+  final Dio dio;
+  bool _isRefreshing = false;
+  
+  final _requestsQueue = <Map<String, dynamic>>[];
+
+  AuthInterceptor(this.dio);
 
   @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    final token = await SharedPrefHelper.getSecuredString(
-      SharedPrefKeys.userToken,
-    );
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final token = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
+    
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
+      if (kDebugMode) debugPrint('🔐 [AuthInterceptor] Attached token to request: ${options.path}');
+    } else {
+      if (kDebugMode) debugPrint('⚠️ [AuthInterceptor] No token found for request: ${options.path}');
     }
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
+    
     handler.next(options);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode != 401) {
-      handler.next(err);
-      return;
-    }
-
-    // 🚀 التعديل الجوهري: التحقق من سبب الـ 401
-    // في اللارافل، إذا انتهى التوكن تكون الرسالة "Unauthenticated."
-    final responseData = err.response?.data;
-    bool isTokenExpired = true;
-
-    if (responseData != null && responseData is Map) {
-      final message = responseData['message']?.toString() ?? '';
-
-      // إذا كانت الرسالة لا تدل على انتهاء التوكن (مثل "رمز التحقق غير صحيح")
-      if (message != 'Unauthenticated.' && message != 'Unauthenticated') {
-        isTokenExpired = false;
-      }
-    }
-
-    // إذا لم يكن التوكن منتهياً (مثلاً خطأ في الـ PIN)، نمرر الخطأ للواجهة ولا نتدخل
-    if (!isTokenExpired) {
-      handler.next(err);
-      return;
-    }
-
-    // ── Token refresh logic ──────────────────────────────────────────────────
-
-    final currentToken = await SharedPrefHelper.getSecuredString(
-      SharedPrefKeys.userToken,
-    );
-    if (currentToken.isEmpty) {
-      handler.reject(err);
-      return;
-    }
-
-    if (_refreshCompleter == null) {
-      _refreshCompleter = Completer<bool>();
-
-      final refreshed = await TokenRefresher.refreshToken();
-      _refreshCompleter!.complete(refreshed);
-      _refreshCompleter = null;
-
-      if (!refreshed) {
-        final checkToken = await SharedPrefHelper.getSecuredString(
-          SharedPrefKeys.userToken,
-        );
-        if (checkToken.isNotEmpty) {
-          await ForceLogoutHandler.forceLogout();
+    // 1. التحقق من الشرط المزدوج: 401 + رسالة "Unauthenticated."
+    bool isTokenExpired = false;
+    
+    if (err.response?.statusCode == 401) {
+      final data = err.response?.data;
+      
+      if (data is Map && (data['message'] == 'Unauthenticated.' || data['message'] == 'Unauthenticated')) {
+        isTokenExpired = true;
+        if (kDebugMode) {
+          debugPrint('🔄 [AuthInterceptor] Detected 401 Unauthenticated for ${err.requestOptions.path}. Will try to refresh token.');
         }
-        handler.reject(err);
-        return;
-      }
-    } else {
-      final refreshed = await _refreshCompleter!.future;
-      if (!refreshed) {
-        handler.reject(err);
-        return;
+      } else {
+        if (kDebugMode) debugPrint('🚫 [AuthInterceptor] 401 but message is not Unauthenticated (${data?['message']}). Passing error.');
       }
     }
 
-    // ── Retry original request with new token ──────────────────────────────
-    try {
-      final newToken = await SharedPrefHelper.getSecuredString(
-        SharedPrefKeys.userToken,
-      );
-      err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+    if (!isTokenExpired) {
+      return handler.next(err);
+    }
 
-      final dio = DioFactory.getDio();
-      final response = await dio.fetch(err.requestOptions);
-      handler.resolve(response);
-    } catch (retryError) {
+    // 2. إذا كنا نقوم بتحديث التوكن حالياً، ضع الطلب في الطابور
+    if (_isRefreshing) {
+      if (kDebugMode) debugPrint('⏳ [AuthInterceptor] Refreshing already in progress. Queuing request: ${err.requestOptions.path}');
+      _requestsQueue.add({
+        'options': err.requestOptions, 
+        'handler': handler, 
+        'error': err
+      });
+      return; 
+    }
+
+    _isRefreshing = true;
+    if (kDebugMode) debugPrint('🔁 [AuthInterceptor] Starting token refresh process...');
+
+    try {
+      final isRefreshed = await TokenRefresher.refreshToken();
+
+      if (isRefreshed) {
+        final newToken = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
+        if (kDebugMode) {
+          debugPrint('✅ [AuthInterceptor] Token refreshed successfully. New access token: ${newToken.substring(0, 10)}...');
+        }
+        
+        // 4. إعادة إرسال الطلب الأصلي
+        err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+        if (kDebugMode) debugPrint('🔁 [AuthInterceptor] Retrying original request: ${err.requestOptions.path}');
+        try {
+          final response = await dio.fetch(err.requestOptions);
+          handler.resolve(response);
+          if (kDebugMode) debugPrint('✔️ [AuthInterceptor] Original request succeeded after refresh.');
+        } catch (e) {
+          if (kDebugMode) debugPrint('❌ [AuthInterceptor] Original request failed after refresh: $e');
+          handler.next(e as DioException);
+        }
+
+        // 5. إعادة إرسال جميع الطلبات في الطابور
+        if (_requestsQueue.isNotEmpty) {
+          if (kDebugMode) debugPrint('📦 [AuthInterceptor] Retrying ${_requestsQueue.length} queued requests...');
+          for (var item in _requestsQueue) {
+            final reqOptions = item['options'] as RequestOptions;
+            final reqHandler = item['handler'] as ErrorInterceptorHandler;
+            final reqError = item['error'] as DioException;
+            
+            reqOptions.headers['Authorization'] = 'Bearer $newToken';
+            try {
+              final res = await dio.fetch(reqOptions);
+              reqHandler.resolve(res);
+              if (kDebugMode) debugPrint('✔️ [AuthInterceptor] Queued request to ${reqOptions.path} succeeded.');
+            } catch (e) {
+              if (kDebugMode) debugPrint('❌ [AuthInterceptor] Queued request to ${reqOptions.path} failed: $e');
+              reqHandler.next(e is DioException ? e : reqError);
+            }
+          }
+        }
+      } else {
+        if (kDebugMode) debugPrint('🛑 [AuthInterceptor] Token refresh failed. Logging out...');
+        // فشل التحديث -> إرجاع كل الطلبات في الطابور كأخطاء
+        for (var item in _requestsQueue) {
+          final reqHandler = item['handler'] as ErrorInterceptorHandler;
+          final reqError = item['error'] as DioException;
+          reqHandler.next(reqError);
+        }
+        await ForceLogoutHandler.forceLogout();
+        handler.next(err);
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('💥 [AuthInterceptor] Unexpected error during refresh: $e');
+      for (var item in _requestsQueue) {
+        final reqHandler = item['handler'] as ErrorInterceptorHandler;
+        final reqError = item['error'] as DioException;
+        reqHandler.next(reqError);
+      }
+      await ForceLogoutHandler.forceLogout();
       handler.next(err);
+    } finally {
+      _requestsQueue.clear();
+      _isRefreshing = false;
+      if (kDebugMode) debugPrint('🏁 [AuthInterceptor] Refresh process ended. Queue cleared. isRefreshing = false');
     }
   }
 }
