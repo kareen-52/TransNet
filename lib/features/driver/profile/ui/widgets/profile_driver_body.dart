@@ -40,6 +40,7 @@ class ProfileDriverBody extends StatelessWidget {
           WorkSection(
             car: profileData.car,
             governorates: profileData.driverGovernorates,
+            statistics: profileData.statistics,
           ),
 
           verticalSpace(24),

@@ -1,3 +1,4 @@
+import 'package:graduation_progect/features/driver/profile/data/models/driver_statistics_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_response.g.dart';
@@ -11,6 +12,8 @@ class ProfileResponse {
   @JsonKey(name: 'average_rate')
   final double? averageRate;
   final BadgeData? badge;
+  @JsonKey(name: 'statisics')
+  final DriverStatisticsModel? statistics;
 
   ProfileResponse({
     this.user,
@@ -18,6 +21,7 @@ class ProfileResponse {
     this.driverGovernorates,
     this.averageRate,
     this.badge,
+    this.statistics,
   });
 
   factory ProfileResponse.fromJson(Map<String, dynamic> json) =>

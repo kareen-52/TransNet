@@ -21,6 +21,11 @@ ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) =>
       badge: json['badge'] == null
           ? null
           : BadgeData.fromJson(json['badge'] as Map<String, dynamic>),
+      statistics: json['statisics'] == null
+          ? null
+          : DriverStatisticsModel.fromJson(
+              json['statisics'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$ProfileResponseToJson(ProfileResponse instance) =>
@@ -30,6 +35,7 @@ Map<String, dynamic> _$ProfileResponseToJson(ProfileResponse instance) =>
       'driver_governorates': instance.driverGovernorates,
       'average_rate': instance.averageRate,
       'badge': instance.badge,
+      'statisics': instance.statistics,
     };
 
 UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(

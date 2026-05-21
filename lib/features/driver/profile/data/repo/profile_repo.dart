@@ -106,6 +106,7 @@ Future<ApiResult<ProfileResponse>> getProfile() async {
     final user = r.user;
     final car = r.car;
     final badge = r.badge;
+    final stats = r.statistics;
 
     return {
       'user': user == null
@@ -148,6 +149,7 @@ Future<ApiResult<ProfileResponse>> getProfile() async {
               'name': badge.name,
               'text': badge.text,
             },
+      'statisics': stats?.toJson(),
     };
   }
 }
