@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// A single action row (icon + label + optional subtitle) used inside
-/// [ShareBottomSheet]. Extracted so it can be reused independently.
-///
-/// Supports a [loading] state that shows a spinner instead of the icon.
+
 class ShareActionTile extends StatelessWidget {
   final IconData? icon;
   final String label;

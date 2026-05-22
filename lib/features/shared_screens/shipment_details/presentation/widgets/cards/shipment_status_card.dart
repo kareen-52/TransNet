@@ -8,6 +8,8 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/date_formatter.dart';
 
 /// Displays shipment dates and current payment/completion status pills.
+/// Status pills (مدفوع / قيد التنفيذ) are shown ONLY when the API
+/// returns the corresponding field — they are hidden when null.
 class ShipmentStatusCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;
@@ -20,9 +22,13 @@ class ShipmentStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final surface =
-        isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
+
+    // Only show pills for fields the API actually returned
+    final showPaidPill = shipment.paid != null;
+    final showSuccessPill = shipment.success != null;
+    final showPillsRow = showPaidPill || showSuccessPill;
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -43,31 +49,34 @@ class ShipmentStatusCard extends StatelessWidget {
             value: DateFormatter.format(shipment.createdAt),
             isDark: isDark,
           ),
-          RowDivider(isDark: isDark),
-          Row(
-            children: [
-              Expanded(
-                child: _StatusPill(
-                  icon: Icons.payments_outlined,
-                  label: shipment.isPaid ? 'مدفوع' : 'غير مدفوع',
-                  color: shipment.isPaid
-                      ? AppColors.success
-                      : AppColors.warning,
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: _StatusPill(
-                  icon: Icons.check_circle_outline_rounded,
-                  label:
-                      shipment.isCompleted ? 'مكتملة' : 'قيد التنفيذ',
-                  color: shipment.isCompleted
-                      ? AppColors.success
-                      : AppColors.secondary,
-                ),
-              ),
-            ],
-          ),
+          if (showPillsRow) ...[
+            RowDivider(isDark: isDark),
+            Row(
+              children: [
+                if (showPaidPill)
+                  Expanded(
+                    child: _StatusPill(
+                      icon: Icons.payments_outlined,
+                      label: shipment.isPaid ? 'مدفوع' : 'غير مدفوع',
+                      color: shipment.isPaid
+                          ? AppColors.success
+                          : AppColors.warning,
+                    ),
+                  ),
+                if (showPaidPill && showSuccessPill) SizedBox(width: 10.w),
+                if (showSuccessPill)
+                  Expanded(
+                    child: _StatusPill(
+                      icon: Icons.check_circle_outline_rounded,
+                      label: shipment.isCompleted ? 'مكتملة' : 'قيد التنفيذ',
+                      color: shipment.isCompleted
+                          ? AppColors.success
+                          : AppColors.secondary,
+                    ),
+                  ),
+              ],
+            ),
+          ],
         ],
       ),
     );

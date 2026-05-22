@@ -14,7 +14,11 @@ class ShipmentEntity {
   final String? width;
   final String? length;
   final String? object;
+
+  /// Backend returns 0 = no insurance, 1 = has insurance.
+  /// This is a flag — NOT a monetary amount.
   final int? insurance;
+
   final String startPositionLat;
   final String startPositionLng;
   final String endPositionLat;
@@ -62,7 +66,9 @@ class ShipmentEntity {
   bool get hasPin => pin != null && pin!.isNotEmpty;
   bool get hasQrPin => qrPin != null && qrPin!.isNotEmpty;
   bool get hasDimensions => width != null || height != null || length != null;
-  bool get hasInsurance => insurance != null && insurance! > 0;
+
+  /// insurance == 1  → has insurance (flag, not a monetary value)
+  bool get hasInsurance => insurance == 1;
 
   String get displayStatus => status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ');
 }

@@ -70,6 +70,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
       // FIX: extract driver before entering the builder closure
       // so we avoid using `final` inside a spread `...[]`
       final driver = widget.data.hasDriver ? widget.data.driver : null;
+       final client = widget.data.hasClient ? widget.data.client : null;
 
       pdf.addPage(
         pw.Page(
@@ -120,8 +121,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                     arabicRegular,
                     title: 'مسار الشحنة',
                     rows: [
-                      ['من', s.startGovernorate],
-                      ['إلى', s.endGovernorate],
+                      [s.startGovernorate,'من'],
+                      [ s.endGovernorate,'إلى'],
                     ],
                   ),
                   pw.SizedBox(height: 16),
@@ -133,9 +134,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'التفاصيل المالية',
                       rows: [
-                        if (s.price != null) ['السعر', '${s.price} ل.س'],
-                        if (s.hasInsurance) ['التأمين', '${s.insurance} ل.س'],
-                        ['حالة الدفع', s.isPaid ? 'مدفوع' : 'غير مدفوع'],
+                        if (s.price != null) [ '${s.price} ل.س','السعر'],
+                        if (s.hasInsurance) [ '${s.insurance} ل.س','التأمين'],
+                        [s.isPaid ? 'مدفوع' : 'غير مدفوع','حالة الدفع' ],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -147,8 +148,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'البضاعة',
                       rows: [
-                        if (s.object != null) ['النوع', s.object!],
-                        if (s.weight != null) ['الوزن', '${s.weight} كغم'],
+                        if (s.object != null) [s.object!,'النوع' ],
+                        if (s.weight != null) ['${s.weight} كغم','الوزن' ],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -161,8 +162,18 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'السائق',
                       rows: [
-                        ['الاسم', driver.fullName],
-                        ['الهاتف', driver.phoneNumber],
+                        [ driver.fullName,'الاسم'],
+                        [ driver.phoneNumber,'الهاتف'],
+                      ],
+                    ),
+                      if (client!= null)
+                    _pdfSection(
+                      arabicBold,
+                      arabicRegular,
+                      title: 'العميل',
+                      rows: [
+                        [ client.firstName,'الاسم'],
+                        [ client.phoneNumber,'الهاتف'],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -174,7 +185,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'رمز التسليم',
                       rows: [
-                        ['PIN', s.pin!],
+                        [ s.pin!,'PIN'],
                       ],
                     ),
 
@@ -183,7 +194,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                   // ── Footer ───────────────────────────────────────────────
                   pw.Divider(),
                   pw.Text(
-                    'تم الإنشاء عبر تطبيق الشحن  •  ${DateFormatter.format(DateTime.now().toIso8601String())}',
+                    " تم الإنشاء عبر تطبيق الشحن     •  ${DateFormatter.format(DateTime.now().toIso8601String())}",
                     style: pw.TextStyle(
                       font: arabicRegular,
                       fontSize: 9,
@@ -321,19 +332,11 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
               border: border,
               secondary: secondary),
           SizedBox(height: 20.h),
-          ShareActionTile(
-            icon: Icons.share_rounded,
-            label: 'مشاركة عبر التطبيقات',
-            subtitle: 'WhatsApp · Telegram · …',
-            bgColor: AppColors.primary,
-            textColor: Colors.white,
-            onTap: _shareViaApp,
-          ),
-          SizedBox(height: 10.h),
+       
           ShareActionTile(
             icon: _generatingPdf ? null : Icons.picture_as_pdf_rounded,
             label: _generatingPdf ? 'جارٍ إنشاء PDF...' : 'مشاركة كـ PDF',
-            subtitle: _generatingPdf ? null : 'ملف بالعربي صحيح — جاهز للطباعة',
+         
             bgColor: const Color(0xFFE53935),
             textColor: Colors.white,
             loading: _generatingPdf,

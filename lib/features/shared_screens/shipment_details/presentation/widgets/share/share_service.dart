@@ -4,12 +4,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/date_formatter.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/share/share_bottom_sheet.dart';
 
-/// Service responsible for sharing shipment details.
-///
-/// Single Responsibility: builds the formatted share text and opens
-/// the [ShareBottomSheet]. No UI rendering of its own.
 abstract class ShareService {
-  /// Opens the share bottom sheet for [data].
   static Future<void> shareShipmentDetails(
     BuildContext context,
     ShipmentDetailsEntity data,
@@ -18,13 +13,10 @@ abstract class ShareService {
     return ShareBottomSheet.show(context, data: data, shareText: text);
   }
 
-  /// Copies shipment details directly to clipboard without showing a sheet.
   static Future<void> copyToClipboard(ShipmentDetailsEntity data) async {
     final text = _buildShareText(data);
     await Clipboard.setData(ClipboardData(text: text));
   }
-
-  // ── Text builder ─────────────────────────────────────────────────────────────
 
   static String _buildShareText(ShipmentDetailsEntity data) {
     final s = data.shipment;
@@ -43,11 +35,13 @@ abstract class ShareService {
       buf.writeln('💰 السعر: ${s.price} ل.س');
     }
     if (s.hasInsurance) {
-      buf.writeln('🛡 التأمين: ${s.insurance} ل.س');
+      buf.writeln('🛡 التأمين: مؤمَّن ✅');
     }
-
-    buf.writeln('━━━━━━━━━━━━━━━━━━━━');
-    buf.writeln('💳 الدفع: ${s.isPaid ? "مدفوع ✅" : "غير مدفوع ❌"}');
+    // Only show paid status if the API returned it
+    if (s.paid != null) {
+      buf.writeln('━━━━━━━━━━━━━━━━━━━━');
+      buf.writeln('💳 الدفع: ${s.isPaid ? "مدفوع ✅" : "غير مدفوع ❌"}');
+    }
 
     if (s.deliveryDeadline != null) {
       buf.writeln(
@@ -77,6 +71,6 @@ abstract class ShareService {
     return buf.toString();
   }
 
-  /// Builds a PDF-ready formatted shipment summary text.
-  static String buildPdfText(ShipmentDetailsEntity data) => _buildShareText(data);
+  static String buildPdfText(ShipmentDetailsEntity data) =>
+      _buildShareText(data);
 }

@@ -5,6 +5,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 
 /// Gradient price banner at the top of the cargo card.
 /// Shows total price prominently and an optional insurance badge.
+/// Note: [ShipmentEntity.insurance] is a 0/1 flag — not a monetary amount.
 class CargoPriceHeader extends StatelessWidget {
   final ShipmentEntity shipment;
 
@@ -25,8 +26,7 @@ class CargoPriceHeader extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: _PriceLabel(price: shipment.price)),
-          if (shipment.hasInsurance)
-            _InsuranceBadge(amount: shipment.insurance!),
+          if (shipment.hasInsurance) const _InsuranceBadge(),
         ],
       ),
     );
@@ -82,9 +82,10 @@ class _PriceLabel extends StatelessWidget {
   }
 }
 
+/// Insurance badge — shows "مؤمَّن" because insurance is a boolean flag (0/1),
+/// not a monetary amount. There is no amount to display.
 class _InsuranceBadge extends StatelessWidget {
-  final int amount;
-  const _InsuranceBadge({required this.amount});
+  const _InsuranceBadge();
 
   @override
   Widget build(BuildContext context) {
@@ -96,18 +97,25 @@ class _InsuranceBadge extends StatelessWidget {
         border: Border.all(color: Colors.white.withValues(alpha: 0.20)),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.security_rounded, color: Colors.white, size: 18.sp),
           SizedBox(height: 3.h),
-          Text('$amount ل.س',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w700)),
-          Text('تأمين',
-              style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.70),
-                  fontSize: 9.sp)),
+          Text(
+            'مؤمَّن',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 11.sp,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            'تأمين',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.70),
+              fontSize: 9.sp,
+            ),
+          ),
         ],
       ),
     );
