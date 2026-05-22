@@ -8,8 +8,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 ///
 /// Single Responsibility: builds the formatted share text and opens
 /// the [ShareBottomSheet]. No UI rendering of its own.
-///
-/// All sharing interactions (copy, native share) are delegated to the sheet.
 abstract class ShareService {
   /// Opens the share bottom sheet for [data].
   static Future<void> shareShipmentDetails(
@@ -26,7 +24,7 @@ abstract class ShareService {
     await Clipboard.setData(ClipboardData(text: text));
   }
 
-  // ── Text builder ────────────────────────────────────────────────────────────
+  // ── Text builder ─────────────────────────────────────────────────────────────
 
   static String _buildShareText(ShipmentDetailsEntity data) {
     final s = data.shipment;
@@ -78,4 +76,7 @@ abstract class ShareService {
     buf.write('تم الإرسال عبر تطبيق الشحن');
     return buf.toString();
   }
+
+  /// Builds a PDF-ready formatted shipment summary text.
+  static String buildPdfText(ShipmentDetailsEntity data) => _buildShareText(data);
 }

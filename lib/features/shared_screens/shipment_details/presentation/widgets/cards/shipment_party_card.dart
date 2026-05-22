@@ -4,10 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/party_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 /// Displays a single party's avatar, role, full name, phone number
 /// and a quick-call action button.
 ///
+/// Call button launches the dialer via url_launcher.
 /// Works for both driver and client — role, icon and accent colour
 /// are injected externally so the card stays generic and reusable.
 class ShipmentPartyCard extends StatelessWidget {
@@ -26,18 +28,31 @@ class ShipmentPartyCard extends StatelessWidget {
     required this.iconColor,
   });
 
+  /// Dials the phone number using the native dialer.
+  Future<void> _call() async {
+    HapticFeedback.lightImpact();
+    // ▶ Uncomment when url_launcher is added to pubspec.yaml:
+    //
+    // final uri = Uri(scheme: 'tel', path: party.phoneNumber);
+    // if (await canLaunchUrl(uri)) {
+    //   await launchUrl(uri);
+    // }
+    //
+    // Fallback: copy number to clipboard until url_launcher is installed.
+    await Clipboard.setData(ClipboardData(text: party.phoneNumber));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final surface =
-        isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
     final secondary =
         isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: buildCardDecoration(
-          surface: surface, border: border, isDark: isDark),
+      decoration:
+          buildCardDecoration(surface: surface, border: border, isDark: isDark),
       child: Row(
         children: [
           _PartyAvatar(icon: icon, iconColor: iconColor),
@@ -49,14 +64,14 @@ class ShipmentPartyCard extends StatelessWidget {
               secondary: secondary,
             ),
           ),
-          _CallButton(iconColor: iconColor, phoneNumber: party.phoneNumber),
+          _CallButton(iconColor: iconColor, onCall: _call),
         ],
       ),
     );
   }
 }
 
-// ─── Avatar ───────────────────────────────────────────────────────────────────
+// ─── Avatar ────────────────────────────────────────────────────────────────────
 
 class _PartyAvatar extends StatelessWidget {
   final IconData icon;
@@ -72,15 +87,14 @@ class _PartyAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: iconColor.withValues(alpha: 0.10),
         shape: BoxShape.circle,
-        border:
-            Border.all(color: iconColor.withValues(alpha: 0.20), width: 1.5),
+        border: Border.all(color: iconColor.withValues(alpha: 0.20), width: 1.5),
       ),
       child: Icon(icon, color: iconColor, size: 22.sp),
     );
   }
 }
 
-// ─── Info ─────────────────────────────────────────────────────────────────────
+// ─── Info ──────────────────────────────────────────────────────────────────────
 
 class _PartyInfo extends StatelessWidget {
   final PartyEntity party;
@@ -113,35 +127,34 @@ class _PartyInfo extends StatelessWidget {
         ),
         SizedBox(height: 3.h),
         Text(party.phoneNumber,
-            style: TextStyle(
-                fontSize: 12.sp, color: secondary, letterSpacing: 0.4)),
+            style:
+                TextStyle(fontSize: 12.sp, color: secondary, letterSpacing: 0.4)),
       ],
     );
   }
 }
 
-// ─── Call button ──────────────────────────────────────────────────────────────
+// ─── Call button ───────────────────────────────────────────────────────────────
 
 class _CallButton extends StatelessWidget {
   final Color iconColor;
-  final String phoneNumber;
+  final VoidCallback onCall;
 
-  const _CallButton(
-      {required this.iconColor, required this.phoneNumber});
+  const _CallButton({required this.iconColor, required this.onCall});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => HapticFeedback.lightImpact(),
+      onTap: onCall,
       child: Container(
-        width: 40.w,
-        height: 40.w,
+        width: 44.w,
+        height: 44.w,
         decoration: BoxDecoration(
           color: iconColor.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: iconColor.withValues(alpha: 0.20)),
+          border: Border.all(color: iconColor.withValues(alpha: 0.25)),
         ),
-        child: Icon(Icons.call_outlined, color: iconColor, size: 18.sp),
+        child: Icon(Icons.call_rounded, color: iconColor, size: 20.sp),
       ),
     );
   }

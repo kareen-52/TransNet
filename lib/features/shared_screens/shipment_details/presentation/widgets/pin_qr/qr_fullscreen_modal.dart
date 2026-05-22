@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -6,19 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_display_card.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_modal_header.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_pin_row.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_share_actions.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_modal_header.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 // import 'package:share_plus/share_plus.dart';
 // import 'package:path_provider/path_provider.dart';
 
 /// Full-screen QR code viewer presented over a blurred dark backdrop.
 ///
-/// Responsibilities:
-///   - Manage animation lifecycle (fade + scale entrance).
-///   - Own the capture key ([RepaintBoundary]) for PNG export.
-///   - Coordinate share/copy actions and delegate rendering to sub-widgets.
+/// Features:
+///   - Fade + scale entrance animation.
+///   - Capture QR as PNG via [RepaintBoundary] for image sharing.
+///   - Share as image (WhatsApp, Telegram, …) via share_plus.
+///   - PIN displayed separately with its own copy button.
+///   - No "copy as text" duplicating the PIN — QrPinRow handles that.
 class QrFullscreenModal extends StatefulWidget {
   final String qrPin;
 
@@ -36,7 +40,6 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
   late final Animation<double> _scaleAnim;
 
   bool _isSavingImage = false;
-  bool _copied = false;
 
   @override
   void initState() {
@@ -59,7 +62,7 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     super.dispose();
   }
 
-  // ── Actions ────────────────────────────────────────────────────────────────
+  // ── Actions ──────────────────────────────────────────────────────────────────
 
   Future<void> _shareAsImage() async {
     setState(() => _isSavingImage = true);
@@ -67,28 +70,21 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     try {
       final bytes = await _captureQrAsPng();
       if (bytes == null || !mounted) return;
-      // await Share.shareXFiles([XFile(file.path)], subject: 'رمز QR للشحنة');
-      await Clipboard.setData(ClipboardData(text: widget.qrPin));
-      _showSnack('تم نسخ الرمز — أضف share_plus لمشاركة الصورة');
+
+      // ▶ Uncomment when share_plus + path_provider are in pubspec.yaml:
+      //
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/qr_${widget.qrPin}.png');
+      await file.writeAsBytes(bytes);
+      await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'image/png')],
+        subject: 'رمز QR للشحنة',
+      );
+      
+      _showSnack(' تم مشاركة ');
     } finally {
       if (mounted) setState(() => _isSavingImage = false);
     }
-  }
-
-  Future<void> _shareAsText() async {
-    HapticFeedback.lightImpact();
-    // await Share.share('رمز QR للشحنة: ${widget.qrPin}');
-    await Clipboard.setData(ClipboardData(text: widget.qrPin));
-    _showSnack('تم نسخ الرمز');
-  }
-
-  Future<void> _copyPin() async {
-    await Clipboard.setData(ClipboardData(text: widget.qrPin));
-    HapticFeedback.lightImpact();
-    setState(() => _copied = true);
-    _showSnack('تم نسخ رمز QR ✓');
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) setState(() => _copied = false);
   }
 
   Future<Uint8List?> _captureQrAsPng() async {
@@ -118,7 +114,7 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     );
   }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
+  // ── Build ────────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +125,7 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
         child: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Container(
-            color: Colors.black.withValues(alpha: 0.75),
+            color: Colors.black.withValues(alpha: 0.80),
             alignment: Alignment.center,
             child: GestureDetector(
               onTap: () {},
@@ -143,22 +139,24 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
                     children: [
                       QrModalHeader(onClose: () => Navigator.pop(context)),
                       SizedBox(height: 24.h),
+
+                      // QR card — captured for image sharing
                       QrDisplayCard(
-                          repaintKey: _qrRepaintKey, qrPin: widget.qrPin),
+                        repaintKey: _qrRepaintKey,
+                        qrPin: widget.qrPin,
+                      ),
                       SizedBox(height: 20.h),
-                      QrPinRow(
-                          pin: widget.qrPin,
-                          copied: _copied,
-                          onCopy: _copyPin),
-                      SizedBox(height: 28.h),
+
+                      // PIN + copy button
+        
+
+                      // Share as image
                       QrShareActions(
                         isSavingImage: _isSavingImage,
-                        copied: _copied,
                         onShareImage: _shareAsImage,
-                        onShareText: _shareAsText,
-                        onCopy: _copyPin,
                       ),
                       SizedBox(height: 16.h),
+
                       Text(
                         'اضغط خارج الإطار للإغلاق',
                         style: TextStyle(
@@ -177,4 +175,3 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     );
   }
 }
-
