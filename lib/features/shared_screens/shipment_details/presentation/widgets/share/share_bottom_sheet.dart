@@ -50,19 +50,18 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     HapticFeedback.lightImpact();
     try {
       // ── Step 1: load Arabic font ──────────────────────────────────────────
-      final regularFontData =
-          await rootBundle.load('assets/fonts/NotoNaskhArabic-Regular.ttf');
-      final boldFontData =
-          await rootBundle.load('assets/fonts/NotoNaskhArabic-Bold.ttf');
+      final regularFontData = await rootBundle.load(
+        'assets/fonts/NotoNaskhArabic-Regular.ttf',
+      );
+      final boldFontData = await rootBundle.load(
+        'assets/fonts/NotoNaskhArabic-Bold.ttf',
+      );
       final arabicRegular = pw.Font.ttf(regularFontData);
       final arabicBold = pw.Font.ttf(boldFontData);
 
       // ── Step 2: build PDF ─────────────────────────────────────────────────
       final pdf = pw.Document(
-        theme: pw.ThemeData.withFont(
-          base: arabicRegular,
-          bold: arabicBold,
-        ),
+        theme: pw.ThemeData.withFont(base: arabicRegular, bold: arabicBold),
       );
 
       final s = widget.data.shipment;
@@ -70,7 +69,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
       // FIX: extract driver before entering the builder closure
       // so we avoid using `final` inside a spread `...[]`
       final driver = widget.data.hasDriver ? widget.data.driver : null;
-       final client = widget.data.hasClient ? widget.data.client : null;
+      final client = widget.data.hasClient ? widget.data.client : null;
 
       pdf.addPage(
         pw.Page(
@@ -98,7 +97,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                           style: pw.TextStyle(
                             font: arabicBold,
                             fontSize: 22,
-                            color: PdfColors.white, // FIX: was PdfColors.white70 (doesn't exist)
+                            color: PdfColors
+                                .white, // FIX: was PdfColors.white70 (doesn't exist)
                           ),
                         ),
                         pw.SizedBox(height: 4),
@@ -107,7 +107,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                           style: pw.TextStyle(
                             font: arabicRegular,
                             fontSize: 12,
-                            color: PdfColors.grey300, // FIX: use grey300 for subtitle
+                            color: PdfColors
+                                .grey300, // FIX: use grey300 for subtitle
                           ),
                         ),
                       ],
@@ -121,8 +122,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                     arabicRegular,
                     title: 'مسار الشحنة',
                     rows: [
-                      [s.startGovernorate,'من'],
-                      [ s.endGovernorate,'إلى'],
+                      [s.startGovernorate, 'من'],
+                      [s.endGovernorate, 'إلى'],
                     ],
                   ),
                   pw.SizedBox(height: 16),
@@ -134,9 +135,10 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'التفاصيل المالية',
                       rows: [
-                        if (s.price != null) [ '${s.price} ل.س','السعر'],
-                        if (s.hasInsurance) [ '${s.insurance} ل.س','التأمين'],
-                        [s.isPaid ? 'مدفوع' : 'غير مدفوع','حالة الدفع' ],
+                        if (s.price != null) ['${s.price} ل.س', 'السعر'],
+                        if (s.insurance != null)
+                          [s.hasInsurance ? 'مؤمَّن' : 'غير مؤمَّن', 'التأمين'],
+                        [s.isPaid ? 'مدفوع' : 'غير مدفوع', 'حالة الدفع'],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -148,8 +150,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'البضاعة',
                       rows: [
-                        if (s.object != null) [s.object!,'النوع' ],
-                        if (s.weight != null) ['${s.weight} كغم','الوزن' ],
+                        if (s.object != null) [s.object!, 'النوع'],
+                        if (s.weight != null) ['${s.weight} كغم', 'الوزن'],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -162,18 +164,18 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'السائق',
                       rows: [
-                        [ driver.fullName,'الاسم'],
-                        [ driver.phoneNumber,'الهاتف'],
+                        [driver.fullName, 'الاسم'],
+                        [driver.phoneNumber, 'الهاتف'],
                       ],
                     ),
-                      if (client!= null)
+                  if (client != null)
                     _pdfSection(
                       arabicBold,
                       arabicRegular,
                       title: 'العميل',
                       rows: [
-                        [ client.firstName,'الاسم'],
-                        [ client.phoneNumber,'الهاتف'],
+                        [client.firstName, 'الاسم'],
+                        [client.phoneNumber, 'الهاتف'],
                       ],
                     ),
                   pw.SizedBox(height: 16),
@@ -185,7 +187,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       arabicRegular,
                       title: 'رمز التسليم',
                       rows: [
-                        [ s.pin!,'PIN'],
+                        [s.pin!, 'PIN'],
                       ],
                     ),
 
@@ -213,10 +215,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
       final path = '${dir.path}/shipment_${s.shipmentNumber}.pdf';
       final file = File(path);
       await file.writeAsBytes(await pdf.save());
-      await Share.shareXFiles(
-        [XFile(path, mimeType: 'application/pdf')],
-        subject: 'تفاصيل الشحنة #${s.shipmentNumber}',
-      );
+      await Share.shareXFiles([
+        XFile(path, mimeType: 'application/pdf'),
+      ], subject: 'تفاصيل الشحنة #${s.shipmentNumber}');
     } catch (e) {
       if (mounted) _showSnack('خطأ أثناء إنشاء PDF: $e', isError: true);
     } finally {
@@ -289,7 +290,8 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         backgroundColor: isError ? AppColors.error : AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r)),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 80.h),
       ),
     );
@@ -301,8 +303,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bg = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final secondary =
-        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final secondary = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Container(
       decoration: BoxDecoration(
@@ -327,16 +330,17 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
           _SheetHeader(shipmentNumber: widget.data.shipment.shipmentNumber),
           SizedBox(height: 20.h),
           _TextPreview(
-              text: widget.shareText,
-              isDark: isDark,
-              border: border,
-              secondary: secondary),
+            text: widget.shareText,
+            isDark: isDark,
+            border: border,
+            secondary: secondary,
+          ),
           SizedBox(height: 20.h),
-       
+
           ShareActionTile(
             icon: _generatingPdf ? null : Icons.picture_as_pdf_rounded,
             label: _generatingPdf ? 'جارٍ إنشاء PDF...' : 'مشاركة كـ PDF',
-         
+
             bgColor: const Color(0xFFE53935),
             textColor: Colors.white,
             loading: _generatingPdf,
@@ -379,20 +383,26 @@ class _SheetHeader extends StatelessWidget {
             color: AppColors.primary.withValues(alpha: 0.10),
             borderRadius: BorderRadius.circular(12.r),
           ),
-          child:
-              Icon(Icons.share_rounded, color: AppColors.primary, size: 20.sp),
+          child: Icon(
+            Icons.share_rounded,
+            color: AppColors.primary,
+            size: 20.sp,
+          ),
         ),
         SizedBox(width: 12.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('مشاركة تفاصيل الشحنة',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w700)),
-            Text('شحنة #$shipmentNumber',
-                style: TextStyle(fontSize: 12.sp, color: secondary)),
+            Text(
+              'مشاركة تفاصيل الشحنة',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            Text(
+              'شحنة #$shipmentNumber',
+              style: TextStyle(fontSize: 12.sp, color: secondary),
+            ),
           ],
         ),
       ],
@@ -415,8 +425,7 @@ class _TextPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final preview =
-        text.length > 280 ? '${text.substring(0, 280)}...' : text;
+    final preview = text.length > 280 ? '${text.substring(0, 280)}...' : text;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.w),

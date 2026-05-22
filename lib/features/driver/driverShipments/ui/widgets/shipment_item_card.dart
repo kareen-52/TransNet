@@ -79,7 +79,10 @@ class ShipmentItemCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
                       color: isCompleted
                           ? Colors.green.withOpacity(0.2)
@@ -87,11 +90,14 @@ class ShipmentItemCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Text(
-                      shipment.status ?? (isCompleted ? "مكتملة" : "قيد التنفيذ"),
+                      shipment.status ??
+                          (isCompleted ? "مكتملة" : "قيد التنفيذ"),
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: isCompleted ? Colors.green[800] : Colors.orange[800],
+                        color: isCompleted
+                            ? Colors.green[800]
+                            : Colors.orange[800],
                       ),
                     ),
                   ),
@@ -106,12 +112,18 @@ class ShipmentItemCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.location_on, size: 18.sp, color: AppColors.primary),
+                      Icon(
+                        Icons.location_on,
+                        size: 18.sp,
+                        color: AppColors.primary,
+                      ),
                       SizedBox(width: 8.w),
                       Expanded(
                         child: Text(
                           "${shipment.startGovernorate ?? 'غير محدد'} → ${shipment.endGovernorate ?? 'غير محدد'}",
-                          style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -121,7 +133,11 @@ class ShipmentItemCard extends StatelessWidget {
                   SizedBox(height: 12.h),
                   Row(
                     children: [
-                      Icon(Icons.inventory_2_outlined, size: 18.sp, color: Colors.grey.shade600),
+                      Icon(
+                        Icons.inventory_2_outlined,
+                        size: 18.sp,
+                        color: Colors.grey.shade600,
+                      ),
                       SizedBox(width: 8.w),
                       Text(
                         "الشيء: ${shipment.object ?? 'غير محدد'}",
@@ -134,10 +150,32 @@ class ShipmentItemCard extends StatelessWidget {
                     spacing: 16.w,
                     runSpacing: 8.h,
                     children: [
-                      _buildInfoChip(context, icon: Icons.straighten, label: "العرض", value: _formatDimension(shipment.width)),
-                      _buildInfoChip(context, icon: Icons.height, label: "الارتفاع", value: _formatDimension(shipment.height)),
-                      _buildInfoChip(context, icon: Icons.timeline, label: "الطول", value: _formatDimension(shipment.length)),
-                      _buildInfoChip(context, icon: Icons.fitness_center, label: "الوزن", value: shipment.weight != null ? "${shipment.weight} كغم" : "—"),
+                      _buildInfoChip(
+                        context,
+                        icon: Icons.straighten,
+                        label: "العرض",
+                        value: _formatDimension(shipment.width),
+                      ),
+                      _buildInfoChip(
+                        context,
+                        icon: Icons.height,
+                        label: "الارتفاع",
+                        value: _formatDimension(shipment.height),
+                      ),
+                      _buildInfoChip(
+                        context,
+                        icon: Icons.timeline,
+                        label: "الطول",
+                        value: _formatDimension(shipment.length),
+                      ),
+                      _buildInfoChip(
+                        context,
+                        icon: Icons.fitness_center,
+                        label: "الوزن",
+                        value: shipment.weight != null
+                            ? "${shipment.weight} كغم"
+                            : "—",
+                      ),
                     ],
                   ),
                   SizedBox(height: 12.h),
@@ -153,11 +191,13 @@ class ShipmentItemCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      if (shipment.insurance != null && shipment.insurance! > 0)
+                      if (shipment.insurance != null)
                         _buildInfoRow(
                           icon: Icons.security,
                           label: "التأمين",
-                          value: "${shipment.insurance} ل.س",
+                          value: shipment.insurance == 1
+                              ? "مؤمَّن"
+                              : "غير مؤمَّن",
                         ),
                     ],
                   ),
@@ -186,7 +226,12 @@ class ShipmentItemCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChip(BuildContext context, {required IconData icon, required String label, required String value}) {
+  Widget _buildInfoChip(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
@@ -198,7 +243,13 @@ class ShipmentItemCard extends StatelessWidget {
         children: [
           Icon(icon, size: 16.sp, color: Colors.grey.shade700),
           SizedBox(width: 4.w),
-          Text("$label: $value", style: TextStyle(fontSize: 12.sp, color: Theme.of(context).colorScheme.onSurface)),
+          Text(
+            "$label: $value",
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
         ],
       ),
     );
@@ -215,8 +266,16 @@ class ShipmentItemCard extends StatelessWidget {
       children: [
         Icon(icon, size: 18.sp, color: Colors.grey.shade600),
         SizedBox(width: 8.w),
-        Text("$label: ", style: TextStyle(fontSize: fontSize.sp, color: Colors.grey.shade700)),
-        Text(value, style: valueStyle ?? TextStyle(fontSize: fontSize.sp, fontWeight: FontWeight.w500)),
+        Text(
+          "$label: ",
+          style: TextStyle(fontSize: fontSize.sp, color: Colors.grey.shade700),
+        ),
+        Text(
+          value,
+          style:
+              valueStyle ??
+              TextStyle(fontSize: fontSize.sp, fontWeight: FontWeight.w500),
+        ),
       ],
     );
   }
