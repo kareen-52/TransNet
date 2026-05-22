@@ -15,7 +15,6 @@ class LoginRepo {
       final response = await _apiService.login(loginRequest);
       return ApiResult.success(response);
     } on DioException catch (error) {
-    
       ApiErrorModel apiError = ApiErrorHandler.handle(error);
       final statusCode = error.response?.statusCode;
       final message = apiError.getAllErrorMessages();
@@ -24,9 +23,9 @@ class LoginRepo {
         String? errorType;
         if (message.contains('حظر')) {
           errorType = 'banned';
-        } else if (message.contains('تجميد') || message.contains('التكاليف')) {
-          errorType = 'frozen';
-        } else if (message.contains('تحقق') || message.contains('تفعيل') || message.contains('بريدك الإلكتروني')) {
+        } else if (message.contains('تحقق') ||
+            message.contains('تفعيل') ||
+            message.contains('بريدك الإلكتروني')) {
           errorType = 'unverified';
         }
         apiError = ApiErrorModel(
