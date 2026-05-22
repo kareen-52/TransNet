@@ -31,19 +31,13 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // 1. التحقق من الشرط المزدوج: 401 + رسالة "Unauthenticated."
     bool isTokenExpired = false;
-    
+
     if (err.response?.statusCode == 401) {
       final data = err.response?.data;
-      
       if (data is Map && (data['message'] == 'Unauthenticated.' || data['message'] == 'Unauthenticated')) {
         isTokenExpired = true;
-        if (kDebugMode) {
-          debugPrint('🔄 [AuthInterceptor] Detected 401 Unauthenticated for ${err.requestOptions.path}. Will try to refresh token.');
-        }
-      } else {
-        if (kDebugMode) debugPrint('🚫 [AuthInterceptor] 401 but message is not Unauthenticated (${data?['message']}). Passing error.');
+        if (kDebugMode) debugPrint('🔄 [AuthInterceptor] Detected 401 Unauthenticated. Will try to refresh token.');
       }
     }
 
@@ -51,73 +45,71 @@ class AuthInterceptor extends Interceptor {
       return handler.next(err);
     }
 
-    // 2. إذا كنا نقوم بتحديث التوكن حالياً، ضع الطلب في الطابور
     if (_isRefreshing) {
-      if (kDebugMode) debugPrint('⏳ [AuthInterceptor] Refreshing already in progress. Queuing request: ${err.requestOptions.path}');
-      _requestsQueue.add({
-        'options': err.requestOptions, 
-        'handler': handler, 
-        'error': err
-      });
-      return; 
+      if (kDebugMode) debugPrint('⏳ [AuthInterceptor] Refreshing already in progress. Queuing request.');
+      _requestsQueue.add({'options': err.requestOptions, 'handler': handler, 'error': err});
+      return;
     }
 
     _isRefreshing = true;
     if (kDebugMode) debugPrint('🔁 [AuthInterceptor] Starting token refresh process...');
 
     try {
-      final isRefreshed = await TokenRefresher.refreshToken();
+      final refreshResult = await TokenRefresher.refreshToken();
 
-      if (isRefreshed) {
+      if (refreshResult == RefreshResult.success) {
         final newToken = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
-        if (kDebugMode) {
-          debugPrint('✅ [AuthInterceptor] Token refreshed successfully. New access token: ${newToken.substring(0, 10)}...');
-        }
-        
-        // 4. إعادة إرسال الطلب الأصلي
+        if (kDebugMode) debugPrint('✅ Token refreshed. New token: ${newToken.substring(0, 10)}...');
+
+        // إعادة الطلب الأصلي
         err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
-        if (kDebugMode) debugPrint('🔁 [AuthInterceptor] Retrying original request: ${err.requestOptions.path}');
         try {
           final response = await dio.fetch(err.requestOptions);
           handler.resolve(response);
-          if (kDebugMode) debugPrint('✔️ [AuthInterceptor] Original request succeeded after refresh.');
         } catch (e) {
-          if (kDebugMode) debugPrint('❌ [AuthInterceptor] Original request failed after refresh: $e');
-          handler.next(e as DioException);
+          handler.next(e is DioException ? e : err);
         }
 
-        // 5. إعادة إرسال جميع الطلبات في الطابور
-        if (_requestsQueue.isNotEmpty) {
-          if (kDebugMode) debugPrint('📦 [AuthInterceptor] Retrying ${_requestsQueue.length} queued requests...');
-          for (var item in _requestsQueue) {
-            final reqOptions = item['options'] as RequestOptions;
-            final reqHandler = item['handler'] as ErrorInterceptorHandler;
-            final reqError = item['error'] as DioException;
-            
-            reqOptions.headers['Authorization'] = 'Bearer $newToken';
-            try {
-              final res = await dio.fetch(reqOptions);
-              reqHandler.resolve(res);
-              if (kDebugMode) debugPrint('✔️ [AuthInterceptor] Queued request to ${reqOptions.path} succeeded.');
-            } catch (e) {
-              if (kDebugMode) debugPrint('❌ [AuthInterceptor] Queued request to ${reqOptions.path} failed: $e');
-              reqHandler.next(e is DioException ? e : reqError);
-            }
+        // إعادة الطلبات المتوقفة
+        for (var item in _requestsQueue) {
+          final reqOptions = item['options'] as RequestOptions;
+          final reqHandler = item['handler'] as ErrorInterceptorHandler;
+          reqOptions.headers['Authorization'] = 'Bearer $newToken';
+          try {
+            final res = await dio.fetch(reqOptions);
+            reqHandler.resolve(res);
+          } catch (e) {
+            reqHandler.next(e is DioException ? e : item['error']);
           }
         }
-      } else {
-        if (kDebugMode) debugPrint('🛑 [AuthInterceptor] Token refresh failed. Logging out...');
-        // فشل التحديث -> إرجاع كل الطلبات في الطابور كأخطاء
+      } 
+      else if (refreshResult == RefreshResult.banned) {
+        // حساب محظور أو مجمد → تسجيل خروج فوري مع رسالة أمنية
+        if (kDebugMode) debugPrint('🚫 [AuthInterceptor] Account banned. Forcing logout with security message.');
+        await ForceLogoutHandler.forceLogout(
+          message: 'تم حظر حسابك  بسبب نشاط غير آمن. الرجاء التواصل مع الدعم.',
+          isSecurityBan: true,
+        );
+        // إعادة جميع الطلبات في الطابور كأخطاء
         for (var item in _requestsQueue) {
           final reqHandler = item['handler'] as ErrorInterceptorHandler;
           final reqError = item['error'] as DioException;
           reqHandler.next(reqError);
         }
-        await ForceLogoutHandler.forceLogout();
+        handler.next(err);
+      }
+      else { // RefreshResult.failed
+        if (kDebugMode) debugPrint('🛑 [AuthInterceptor] Token refresh failed (no ban). Logging out normally.');
+        for (var item in _requestsQueue) {
+          final reqHandler = item['handler'] as ErrorInterceptorHandler;
+          final reqError = item['error'] as DioException;
+          reqHandler.next(reqError);
+        }
+        await ForceLogoutHandler.forceLogout(); // تسجيل خروج عادي بدون رسالة محددة
         handler.next(err);
       }
     } catch (e) {
-      if (kDebugMode) debugPrint('💥 [AuthInterceptor] Unexpected error during refresh: $e');
+      if (kDebugMode) debugPrint('💥 Unexpected error during refresh: $e');
       for (var item in _requestsQueue) {
         final reqHandler = item['handler'] as ErrorInterceptorHandler;
         final reqError = item['error'] as DioException;
@@ -128,7 +120,6 @@ class AuthInterceptor extends Interceptor {
     } finally {
       _requestsQueue.clear();
       _isRefreshing = false;
-      if (kDebugMode) debugPrint('🏁 [AuthInterceptor] Refresh process ended. Queue cleared. isRefreshing = false');
     }
   }
 }
