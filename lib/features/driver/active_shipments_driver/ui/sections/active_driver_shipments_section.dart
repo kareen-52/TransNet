@@ -30,7 +30,7 @@ class ActiveDriverShipmentsSection extends StatelessWidget {
           loaded: (shipments) => _buildWithTitle(
             theme: theme,
             child: SizedBox(
-              height: 170.h,
+              height: 210.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 clipBehavior: Clip.none,

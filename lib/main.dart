@@ -135,15 +135,15 @@ void main() async {
   });
 
   runApp(
-    // DevicePreview(
-    //   enabled: !kReleaseMode,
-    //   builder: (_) =>
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (_) =>
     MyGraduationProject(
       appRouter: AppRouter(),
       initialTheme: _savedTheme,
       startRoute: _initialRoute,
     ),
-    // ),
+    ),
   );
 }
 

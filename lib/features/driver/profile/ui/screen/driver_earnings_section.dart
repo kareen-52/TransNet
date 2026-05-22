@@ -3,11 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/driver_statistics_model.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/current_settlement_hero_card.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/lifetime_stats_card.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/quick_stats_grid.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/transactions_history_list.dart';
-
+import '../widgets/statistics/current_settlement_hero_card.dart';
+import '../widgets/statistics/lifetime_stats_card.dart';
+import '../widgets/statistics/quick_stats_grid.dart';
+import '../widgets/statistics/transactions_history_list.dart';
 
 class DriverEarningsScreen extends StatelessWidget {
   final DriverStatisticsModel stats;
@@ -22,10 +21,8 @@ class DriverEarningsScreen extends StatelessWidget {
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'الأرباح والمالية',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          'الأرباح والإحصائيات',
+          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
@@ -39,23 +36,17 @@ class DriverEarningsScreen extends StatelessWidget {
           children: [
             // 1. البطاقة الرئيسية (تسوية الدورة الحالية)
             CurrentSettlementHeroCard(stats: stats),
-            verticalSpace(24),
+            verticalSpace(32),
 
             // 2. شبكة الإحصائيات السريعة
-            Text(
-              'نظرة عامة',
-              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            verticalSpace(12),
+            Text('نظرة عامة', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            verticalSpace(16),
             QuickStatsGrid(stats: stats),
-            verticalSpace(24),
+            verticalSpace(32),
 
             // 3. الإحصائيات التراكمية (الكلية)
-            Text(
-              'الإحصائيات التراكمية',
-              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            verticalSpace(12),
+            Text('الإحصائيات التراكمية', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+            verticalSpace(16),
             LifetimeStatsCard(stats: stats),
             verticalSpace(32),
 
@@ -75,9 +66,9 @@ class DriverEarningsScreen extends StatelessWidget {
             // 5. سجل الضرائب والاستقطاعات
             if (stats.allTaxes.isNotEmpty) ...[
               TransactionsHistoryList(
-                title: 'سجل الضرائب والاستقطاعات',
+                title: 'سجل الضرائب (مستحقات التطبيق)',
                 transactions: stats.allTaxes,
-                activeColor: AppColors.warning, // أو لون أحمر حسب الثيم
+                activeColor: AppColors.error, 
                 icon: Icons.receipt_long_rounded,
                 receivedLabel: 'مدفوعة',
                 pendingLabel: 'غير مدفوعة',

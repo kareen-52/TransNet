@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/driver_statistics_model.dart';
-import 'package:graduation_progect/features/driver/profile/ui/widgets/statistics/financial_summary_card.dart';
+import 'financial_summary_card.dart';
 
 class QuickStatsGrid extends StatelessWidget {
   final DriverStatisticsModel stats;
@@ -11,8 +12,6 @@ class QuickStatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return Column(
       children: [
         Row(
@@ -31,7 +30,7 @@ class QuickStatsGrid extends StatelessWidget {
                 title: 'ضرائب معلقة',
                 amount: stats.unreceivedTaxesSum,
                 icon: Icons.money_off_rounded,
-                color: AppColors.warning,
+                color: AppColors.error,
               ),
             ),
           ],
@@ -42,10 +41,10 @@ class QuickStatsGrid extends StatelessWidget {
             Expanded(
               child: FinancialSummaryCard(
                 title: 'شحنات التسوية',
-                amount: stats.unpaidCount.toDouble(), // تحويل الـ int لـ double ليقبله الكارد
+                amount: stats.unpaidCount.toDouble(),
                 icon: Icons.pending_actions_rounded,
-                color: cs.secondary,
-                isCurrency: false, // سنضيف هذا الخيار للـ Card 
+                color: AppColors.secondary,
+                isCurrency: false,
               ),
             ),
             horizontalSpace(12),
@@ -53,7 +52,7 @@ class QuickStatsGrid extends StatelessWidget {
               child: FinancialSummaryCard(
                 title: 'إجمالي الشحنات',
                 amount: stats.total.toDouble(),
-                icon: Icons.check_circle_outline_rounded,
+                icon: Icons.check_circle_rounded,
                 color: AppColors.primary,
                 isCurrency: false,
               ),

@@ -5,7 +5,6 @@ import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/widgets/driver_info_row.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ActiveDriverShipmentCard extends StatelessWidget {
   final ActiveDriverShipmentModel shipment;
@@ -61,7 +60,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
               verticalSpace(12),
 
               // ── السعر + معلومات العميل ──────────────────────────────────
-              _buildBottomRow(theme, context),
+              _buildBottomSection(theme, context),
             ],
           ),
         ),
@@ -74,7 +73,6 @@ class ActiveDriverShipmentCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Badge الحالة
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
           decoration: BoxDecoration(
@@ -90,8 +88,6 @@ class ActiveDriverShipmentCard extends StatelessWidget {
             ),
           ),
         ),
-
-        // رقم الشحنة
         Text(
           '#${shipment.shipmentNumber}',
           style: theme.textTheme.bodySmall?.copyWith(
@@ -173,70 +169,121 @@ class ActiveDriverShipmentCard extends StatelessWidget {
   }
 
   // ─── Bottom row: السعر + العميل ───────────────────────────────────────────
-  Widget _buildBottomRow(ThemeData theme, BuildContext context) {
+  Widget _buildBottomSection(ThemeData theme, BuildContext context) {
+    return Column(
+      children: [
+        // 1. سطر السعر
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'السعر',
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: _formatPrice(shipment.price),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' ل.س',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.primary.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        // 2. سطر العميل (التصميم الجديد المتجاوب)
+        if (shipment.client != null) ...[
+          verticalSpace(12),
+          _buildClientInfoRow(theme, context, shipment.client!),
+        ],
+      ],
+    );
+  }
+
+  // ─── Client Info Row (التصميم المطلوب) ────────────────────────────────────
+  Widget _buildClientInfoRow(
+    ThemeData theme,
+    BuildContext context,
+    ActiveShipmentClientInfo client,
+  ) {
+    final fullName = client.fullName;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // زر الاتصال بالعميل
-        if (shipment.client != null)
-          Flexible(
-            child: GestureDetector(
-              onTap: () => callUser(context, shipment.client!.phoneNumber),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.phone_rounded,
-                      size: 13.sp,
-                      color: theme.colorScheme.primary,
-                    ),
-                    horizontalSpace(4),
-                    Flexible(
-                      child: Text(
-                        shipment.client!.fullName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
-        else
-          const SizedBox.shrink(),
-
-        horizontalSpace(8),
-
-        // السعر
-        RichText(
-          text: TextSpan(
+        Flexible(
+          child: Row(
             children: [
-              TextSpan(
-                text: _formatPrice(shipment.price),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
+              CircleAvatar(
+                radius: 18.r, // تصغير الحجم قليلاً ليناسب الكارد
+                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                child: Icon(
+                  Icons.person_rounded,
                   color: theme.colorScheme.primary,
+                  size: 20.sp,
                 ),
               ),
-              TextSpan(
-                text: ' ل.س',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary.withOpacity(0.7),
+              horizontalSpace(8),
+              Expanded(
+                child: Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  message: fullName,
+                  child: Text(
+                    fullName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.sp,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ],
+          ),
+        ),
+        horizontalSpace(8),
+        GestureDetector(
+          onTap: () => callUser(context, client.phoneNumber),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.phone_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 14.sp,
+                ),
+                horizontalSpace(4),
+                Text(
+                  'اتصال',
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -261,12 +308,10 @@ class ActiveDriverShipmentCard extends StatelessWidget {
       arguments: shipment,
     );
   }
-
 }
- 
 
-  String _formatPrice(double price) {
-    if (price >= 1000000) return '${(price / 1000000).toStringAsFixed(1)}M';
-    if (price >= 1000) return '${(price / 1000).toStringAsFixed(0)}K';
-    return price.toStringAsFixed(0);
-  }
+String _formatPrice(double price) {
+  if (price >= 1000000) return '${(price / 1000000).toStringAsFixed(1)}M';
+  if (price >= 1000) return '${(price / 1000).toStringAsFixed(0)}K';
+  return price.toStringAsFixed(0);
+}
