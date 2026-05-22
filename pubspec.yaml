@@ -97,3 +97,5 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/animations/
+    - assets/fonts/NotoNaskhArabic-Regular.ttf
+    - assets/fonts/NotoNaskhArabic-Bold.ttf

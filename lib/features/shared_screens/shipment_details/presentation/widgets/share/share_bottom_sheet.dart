@@ -1,21 +1,16 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_details_entity.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/date_formatter.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/share/share_action_tile.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-/// Bottom sheet for sharing shipment details.
-/// Supports: share as text (WhatsApp/Telegram/…), share as PDF,
-/// save as image, and copy to clipboard.
-///
-/// Opened exclusively through [ShareBottomSheet.show].
 class ShareBottomSheet extends StatefulWidget {
   final ShipmentDetailsEntity data;
   final String shareText;
@@ -43,53 +38,225 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
   bool _copied = false;
   bool _generatingPdf = false;
 
-  // ── Share as plain text (WhatsApp, Telegram, …) ──────────────────────────
+  // ── Share as plain text ───────────────────────────────────────────────────
   Future<void> _shareViaApp() async {
     HapticFeedback.lightImpact();
-    // ▶ Uncomment when share_plus is added to pubspec.yaml:
     await Share.share(widget.shareText, subject: 'تفاصيل الشحنة');
-    
-    // Fallback until then:
-    await _copyToClipboard(pop: true);
   }
 
-  // ── Generate & share PDF ─────────────────────────────────────────────────
+  // ── Generate & share PDF (Arabic-safe) ───────────────────────────────────
   Future<void> _shareAsPdf() async {
     setState(() => _generatingPdf = true);
     HapticFeedback.lightImpact();
     try {
-      // ▶ Full implementation with pdf + share_plus packages:
-      
-      final pdf = pw.Document();
-      pdf.addPage(pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        margin: pw.EdgeInsets.all(32),
-        build: (_) => pw.Directionality(
-          textDirection: pw.TextDirection.rtl,
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text('تفاصيل الشحنة #${widget.data.shipment.shipmentNumber}',
-                  style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
-              pw.SizedBox(height: 16),
-              pw.Text(widget.shareText,
-                  style: const pw.TextStyle(fontSize: 13, lineSpacing: 4)),
-            ],
-          ),
+      // ── Step 1: load Arabic font ──────────────────────────────────────────
+      final regularFontData =
+          await rootBundle.load('assets/fonts/NotoNaskhArabic-Regular.ttf');
+      final boldFontData =
+          await rootBundle.load('assets/fonts/NotoNaskhArabic-Bold.ttf');
+      final arabicRegular = pw.Font.ttf(regularFontData);
+      final arabicBold = pw.Font.ttf(boldFontData);
+
+      // ── Step 2: build PDF ─────────────────────────────────────────────────
+      final pdf = pw.Document(
+        theme: pw.ThemeData.withFont(
+          base: arabicRegular,
+          bold: arabicBold,
         ),
-      ));
+      );
+
+      final s = widget.data.shipment;
+
+      // FIX: extract driver before entering the builder closure
+      // so we avoid using `final` inside a spread `...[]`
+      final driver = widget.data.hasDriver ? widget.data.driver : null;
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(36),
+          build: (pw.Context ctx) {
+            return pw.Directionality(
+              textDirection: pw.TextDirection.rtl,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  // ── Header ───────────────────────────────────────────────
+                  pw.Container(
+                    width: double.infinity,
+                    padding: const pw.EdgeInsets.all(16),
+                    decoration: pw.BoxDecoration(
+                      color: PdfColor.fromHex('#1565C0'),
+                      borderRadius: pw.BorderRadius.circular(8),
+                    ),
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(
+                          'تفاصيل الشحنة',
+                          style: pw.TextStyle(
+                            font: arabicBold,
+                            fontSize: 22,
+                            color: PdfColors.white, // FIX: was PdfColors.white70 (doesn't exist)
+                          ),
+                        ),
+                        pw.SizedBox(height: 4),
+                        pw.Text(
+                          'شحنة #${s.shipmentNumber}  •  ${s.displayStatus}',
+                          style: pw.TextStyle(
+                            font: arabicRegular,
+                            fontSize: 12,
+                            color: PdfColors.grey300, // FIX: use grey300 for subtitle
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  pw.SizedBox(height: 24),
+
+                  // ── Route ────────────────────────────────────────────────
+                  _pdfSection(
+                    arabicBold,
+                    arabicRegular,
+                    title: 'مسار الشحنة',
+                    rows: [
+                      ['من', s.startGovernorate],
+                      ['إلى', s.endGovernorate],
+                    ],
+                  ),
+                  pw.SizedBox(height: 16),
+
+                  // ── Financial ────────────────────────────────────────────
+                  if (s.price != null)
+                    _pdfSection(
+                      arabicBold,
+                      arabicRegular,
+                      title: 'التفاصيل المالية',
+                      rows: [
+                        if (s.price != null) ['السعر', '${s.price} ل.س'],
+                        if (s.hasInsurance) ['التأمين', '${s.insurance} ل.س'],
+                        ['حالة الدفع', s.isPaid ? 'مدفوع' : 'غير مدفوع'],
+                      ],
+                    ),
+                  pw.SizedBox(height: 16),
+
+                  // ── Cargo ────────────────────────────────────────────────
+                  if (s.object != null || s.weight != null)
+                    _pdfSection(
+                      arabicBold,
+                      arabicRegular,
+                      title: 'البضاعة',
+                      rows: [
+                        if (s.object != null) ['النوع', s.object!],
+                        if (s.weight != null) ['الوزن', '${s.weight} كغم'],
+                      ],
+                    ),
+                  pw.SizedBox(height: 16),
+
+                  // ── Driver ───────────────────────────────────────────────
+                  // FIX: driver extracted above — no `final` inside spread
+                  if (driver != null)
+                    _pdfSection(
+                      arabicBold,
+                      arabicRegular,
+                      title: 'السائق',
+                      rows: [
+                        ['الاسم', driver.fullName],
+                        ['الهاتف', driver.phoneNumber],
+                      ],
+                    ),
+                  pw.SizedBox(height: 16),
+
+                  // ── PIN ──────────────────────────────────────────────────
+                  if (s.hasPin)
+                    _pdfSection(
+                      arabicBold,
+                      arabicRegular,
+                      title: 'رمز التسليم',
+                      rows: [
+                        ['PIN', s.pin!],
+                      ],
+                    ),
+
+                  pw.Spacer(),
+
+                  // ── Footer ───────────────────────────────────────────────
+                  pw.Divider(),
+                  pw.Text(
+                    'تم الإنشاء عبر تطبيق الشحن  •  ${DateFormatter.format(DateTime.now().toIso8601String())}',
+                    style: pw.TextStyle(
+                      font: arabicRegular,
+                      fontSize: 9,
+                      color: PdfColors.grey600,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+
+      // ── Step 3: save & share ──────────────────────────────────────────────
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/shipment_${widget.data.shipment.shipmentNumber}.pdf');
+      final path = '${dir.path}/shipment_${s.shipmentNumber}.pdf';
+      final file = File(path);
       await file.writeAsBytes(await pdf.save());
-      await Share.shareXFiles([XFile(file.path)], subject: 'تفاصيل الشحنة');
-      //
-      // Fallback until packages are added — copy text and inform user:
-      await Clipboard.setData(ClipboardData(text: widget.shareText));
-      if (!mounted) return;
-      _showSnack('أضف حزمتَي pdf و share_plus لتفعيل تصدير PDF');
+      await Share.shareXFiles(
+        [XFile(path, mimeType: 'application/pdf')],
+        subject: 'تفاصيل الشحنة #${s.shipmentNumber}',
+      );
+    } catch (e) {
+      if (mounted) _showSnack('خطأ أثناء إنشاء PDF: $e', isError: true);
     } finally {
       if (mounted) setState(() => _generatingPdf = false);
     }
+  }
+
+  // ── PDF section helper ────────────────────────────────────────────────────
+  static pw.Widget _pdfSection(
+    pw.Font boldFont,
+    pw.Font regularFont, {
+    required String title,
+    required List<List<String>> rows,
+  }) {
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          title,
+          style: pw.TextStyle(
+            font: boldFont,
+            fontSize: 13,
+            color: PdfColor.fromHex('#1565C0'),
+          ),
+        ),
+        pw.SizedBox(height: 6),
+        pw.Table(
+          border: pw.TableBorder.all(color: PdfColors.grey300, width: 0.5),
+          children: rows.map((row) {
+            return pw.TableRow(
+              children: [
+                pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text(
+                    row[0],
+                    style: pw.TextStyle(font: boldFont, fontSize: 11),
+                  ),
+                ),
+                pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text(
+                    row[1],
+                    style: pw.TextStyle(font: regularFont, fontSize: 11),
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 
   // ── Copy to clipboard ─────────────────────────────────────────────────────
@@ -103,21 +270,21 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     if (mounted) setState(() => _copied = false);
   }
 
-  void _showSnack(String msg) {
+  void _showSnack(String msg, {bool isError = false}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
+        backgroundColor: isError ? AppColors.error : AppColors.success,
         behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r)),
         margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 80.h),
       ),
     );
   }
 
   // ── Build ─────────────────────────────────────────────────────────────────
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -135,7 +302,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Drag handle
           Container(
             width: 40.w,
             height: 4.h,
@@ -147,21 +313,14 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
             ),
           ),
           SizedBox(height: 20.h),
-
-          // Header
           _SheetHeader(shipmentNumber: widget.data.shipment.shipmentNumber),
           SizedBox(height: 20.h),
-
-          // Text preview
           _TextPreview(
-            text: widget.shareText,
-            isDark: isDark,
-            border: border,
-            secondary: secondary,
-          ),
+              text: widget.shareText,
+              isDark: isDark,
+              border: border,
+              secondary: secondary),
           SizedBox(height: 20.h),
-
-          // ① Share as text — WhatsApp / Telegram / …
           ShareActionTile(
             icon: Icons.share_rounded,
             label: 'مشاركة عبر التطبيقات',
@@ -171,20 +330,16 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
             onTap: _shareViaApp,
           ),
           SizedBox(height: 10.h),
-
-          // ② Share as PDF
           ShareActionTile(
             icon: _generatingPdf ? null : Icons.picture_as_pdf_rounded,
             label: _generatingPdf ? 'جارٍ إنشاء PDF...' : 'مشاركة كـ PDF',
-            subtitle: _generatingPdf ? null : 'ملف جاهز للطباعة والإرسال',
+            subtitle: _generatingPdf ? null : 'ملف بالعربي صحيح — جاهز للطباعة',
             bgColor: const Color(0xFFE53935),
             textColor: Colors.white,
             loading: _generatingPdf,
             onTap: _generatingPdf ? () {} : _shareAsPdf,
           ),
           SizedBox(height: 10.h),
-
-          // ③ Copy
           ShareActionTile(
             icon: _copied ? Icons.check_rounded : Icons.copy_all_rounded,
             label: _copied ? 'تم النسخ ✓' : 'نسخ التفاصيل',
@@ -212,7 +367,6 @@ class _SheetHeader extends StatelessWidget {
     final secondary = Theme.of(context).brightness == Brightness.dark
         ? AppColors.darkTextSecondary
         : AppColors.lightTextSecondary;
-
     return Row(
       children: [
         Container(
@@ -258,7 +412,8 @@ class _TextPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final preview = text.length > 280 ? '${text.substring(0, 280)}...' : text;
+    final preview =
+        text.length > 280 ? '${text.substring(0, 280)}...' : text;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.w),
@@ -269,12 +424,8 @@ class _TextPreview extends StatelessWidget {
       ),
       child: Text(
         preview,
-        style: TextStyle(
-          fontSize: 11.sp,
-          color: secondary,
-          height: 1.6,
-          fontFamily: 'monospace',
-        ),
+        style: TextStyle(fontSize: 11.sp, color: secondary, height: 1.6),
+        textDirection: TextDirection.rtl,
       ),
     );
   }
