@@ -7,6 +7,7 @@ class DriverStatisticsModel {
   final double unreceivedTaxesSum;
   final double amountToPay;
   final double myEarnings;
+  final double totalAmountToPay;
   final List<FinancialTransactionModel> allBonuses;
   final List<FinancialTransactionModel> allTaxes;
 
@@ -19,6 +20,7 @@ class DriverStatisticsModel {
     required this.unreceivedTaxesSum,
     required this.amountToPay,
     required this.myEarnings,
+    required this.totalAmountToPay,
     required this.allBonuses,
     required this.allTaxes,
   });
@@ -33,6 +35,7 @@ class DriverStatisticsModel {
       unreceivedTaxesSum: double.tryParse(json['unreceived_taxes_sum'].toString()) ?? 0.0,
       amountToPay: double.tryParse(json['amount_to_pay'].toString()) ?? 0.0,
       myEarnings: double.tryParse(json['my_earnings'].toString()) ?? 0.0,
+      totalAmountToPay: double.tryParse(json['total_amount_to_pay'].toString()) ?? 0.0, 
       allBonuses: json['all_bonuses'] != null
           ? (json['all_bonuses'] as List).map((i) => FinancialTransactionModel.fromJson(i)).toList()
           : [],
@@ -52,6 +55,7 @@ class DriverStatisticsModel {
       'unreceived_taxes_sum': unreceivedTaxesSum,
       'amount_to_pay': amountToPay,
       'my_earnings': myEarnings,
+      'total_amount_to_pay': totalAmountToPay, 
       'all_bonuses': allBonuses.map((e) => e.toJson()).toList(),
       'all_taxes': allTaxes.map((e) => e.toJson()).toList(),
     };
