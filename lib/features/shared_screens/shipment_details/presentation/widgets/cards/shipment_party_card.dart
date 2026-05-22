@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/party_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
+import 'package:graduation_progect/features/user/active_orders/ui/widgets/driver_info_row.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 /// Displays a single party's avatar, role, full name, phone number
@@ -28,19 +28,6 @@ class ShipmentPartyCard extends StatelessWidget {
     required this.iconColor,
   });
 
-  /// Dials the phone number using the native dialer.
-  Future<void> _call() async {
-    HapticFeedback.lightImpact();
-    // ▶ Uncomment when url_launcher is added to pubspec.yaml:
-    //
-    // final uri = Uri(scheme: 'tel', path: party.phoneNumber);
-    // if (await canLaunchUrl(uri)) {
-    //   await launchUrl(uri);
-    // }
-    //
-    // Fallback: copy number to clipboard until url_launcher is installed.
-    await Clipboard.setData(ClipboardData(text: party.phoneNumber));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +51,7 @@ class ShipmentPartyCard extends StatelessWidget {
               secondary: secondary,
             ),
           ),
-          _CallButton(iconColor: iconColor, onCall: _call),
+          _CallButton(iconColor: iconColor, onCall: () => callUser(context , party.phoneNumber) ),
         ],
       ),
     );
@@ -138,7 +125,7 @@ class _PartyInfo extends StatelessWidget {
 
 class _CallButton extends StatelessWidget {
   final Color iconColor;
-  final VoidCallback onCall;
+  final void Function()? onCall;
 
   const _CallButton({required this.iconColor, required this.onCall});
 

@@ -5,7 +5,7 @@ import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.d
 import 'package:graduation_progect/features/user/active_orders/data/models/active_order_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<void> callDriver(BuildContext context, String phone) async {
+Future<void> callUser(BuildContext context, String phone) async {
   final uri = Uri.parse('tel:$phone');
   try {
     if (await canLaunchUrl(uri)) {
@@ -65,7 +65,7 @@ class DriverInfoRow extends StatelessWidget {
         ),
         horizontalSpace(8),
         GestureDetector(
-          onTap: () => callDriver(context, driver.phoneNumber),
+          onTap: () => callUser(context, driver.phoneNumber),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(

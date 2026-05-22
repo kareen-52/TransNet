@@ -4,6 +4,7 @@ import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/helpers/shipment_status_helper.dart';
+import 'package:graduation_progect/features/user/active_orders/ui/widgets/driver_info_row.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ActiveDriverShipmentCard extends StatelessWidget {
@@ -60,7 +61,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
               verticalSpace(12),
 
               // ── السعر + معلومات العميل ──────────────────────────────────
-              _buildBottomRow(theme),
+              _buildBottomRow(theme, context),
             ],
           ),
         ),
@@ -172,7 +173,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
   }
 
   // ─── Bottom row: السعر + العميل ───────────────────────────────────────────
-  Widget _buildBottomRow(ThemeData theme) {
+  Widget _buildBottomRow(ThemeData theme, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -180,7 +181,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
         if (shipment.client != null)
           Flexible(
             child: GestureDetector(
-              onTap: () => _callClient(shipment.client!.phoneNumber),
+              onTap: () => callUser(context, shipment.client!.phoneNumber),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                 decoration: BoxDecoration(
@@ -261,14 +262,11 @@ class ActiveDriverShipmentCard extends StatelessWidget {
     );
   }
 
-  Future<void> _callClient(String phone) async {
-    final uri = Uri.parse('tel:$phone');
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
-  }
+}
+ 
 
   String _formatPrice(double price) {
     if (price >= 1000000) return '${(price / 1000000).toStringAsFixed(1)}M';
     if (price >= 1000) return '${(price / 1000).toStringAsFixed(0)}K';
     return price.toStringAsFixed(0);
   }
-}
