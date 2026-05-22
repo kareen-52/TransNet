@@ -84,7 +84,7 @@ class WorkSection extends StatelessWidget {
             const Divider(height: 1, indent: 70, endIndent: 60),
 
             ProfileNavItem(
-              title: 'الأرباح',
+              title: 'الأرباح والإحصائيات',
               icon: Icons.account_balance_wallet_outlined,
               onTap: () {
                 if (statistics != null) {
