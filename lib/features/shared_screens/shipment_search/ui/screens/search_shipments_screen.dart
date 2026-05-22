@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_screen.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/logic/search_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/logic/search_shipments_state.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/ui/screens/shipment_details_screen.dart';
 import 'package:intl/intl.dart';
 
 class SearchShipmentsScreen extends StatelessWidget {

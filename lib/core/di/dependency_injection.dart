@@ -163,8 +163,10 @@ import 'package:graduation_progect/features/shared_screens/login/data/repo/login
 import 'package:graduation_progect/features/shared_screens/login/logic/login_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/logic/shipment_details_cubit.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/models/repo/shipment_details_repo.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/data/repositories/shipment_details_repository_impl.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/domain/repositories/shipment_details_repository.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/domain/usecases/get_shipment_details_usecase.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/data/repo/shipment_search_repo.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/logic/search_shipments_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/repos/verification_repo.dart';
@@ -284,10 +286,12 @@ void setupGetIt() {
   getIt.registerFactory<DriverShipmentsCubit>(
     () => DriverShipmentsCubit(getIt()),
   );
-
-  // ── Shipment Details ────────────────────────────────────────────────────────
-  getIt.registerLazySingleton<ShipmentsDetailsRepo>(
-    () => ShipmentsDetailsRepo(getIt()),
+  // ── Shipment Details (Clean Architecture) ──────────────────────
+  getIt.registerLazySingleton<ShipmentDetailsRepository>(
+    () => ShipmentDetailsRepositoryImpl(getIt()),
+  );
+  getIt.registerLazySingleton<GetShipmentDetailsUseCase>(
+    () => GetShipmentDetailsUseCase(getIt()),
   );
   getIt.registerFactory<ShipmentDetailsCubit>(
     () => ShipmentDetailsCubit(getIt()),

@@ -12,7 +12,7 @@ part of 'api_service.dart';
 
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://192.168.1.101:8000/api/';
+    baseUrl ??= 'http://192.168.1.103:8000/api/';
   }
 
   final Dio _dio;
@@ -890,12 +890,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ShipmentDetailsResponse> getShipmentDetails(int id) async {
+  Future<ShipmentDetailsResponseModel> getShipmentDetails(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ShipmentDetailsResponse>(
+    final _options = _setStreamType<ShipmentDetailsResponseModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -906,9 +906,9 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ShipmentDetailsResponse _value;
+    late ShipmentDetailsResponseModel _value;
     try {
-      _value = ShipmentDetailsResponse.fromJson(_result.data!);
+      _value = ShipmentDetailsResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/ui/screens/shipment_details_screen.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_screen.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/widgets/driver_info_row.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/widgets/order_header.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/widgets/order_price_row.dart';
