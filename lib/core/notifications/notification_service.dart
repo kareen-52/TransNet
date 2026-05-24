@@ -29,6 +29,11 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static const String _fcmTokenKey = 'fcm_device_token';
+  static Future<String?> _getStoredToken() async {
+    final stored = await SharedPrefHelper.getSecuredString(_fcmTokenKey);
+
+    return stored.isEmpty ? null : stored;
+  }
 
   static final StreamController<Map<String, dynamic>>
   instantOrderStreamController =
@@ -186,31 +191,45 @@ class NotificationService {
 
   static Future<void> handleDeviceTokenSync({int retryCount = 0}) async {
     try {
-      String? currentToken = await _firebaseMessaging.getToken();
+      final currentToken = await _firebaseMessaging.getToken();
+
       if (currentToken == null) return;
 
-      String userAuthToken = await SharedPrefHelper.getSecuredString(
+      final authToken = await SharedPrefHelper.getSecuredString(
         SharedPrefKeys.userToken,
       );
 
-      if (userAuthToken.isEmpty) {
-        if (kDebugMode) print("ℹ️ Skipping sync: User not logged in yet.");
+      if (authToken.isEmpty) {
+        if (kDebugMode) {
+          print("ℹ️ User not logged in.");
+        }
+
         return;
       }
 
-      print("🚀 New Token Detected! Sending to backend...");
+      final storedToken = await _getStoredToken();
+
+      if (storedToken == currentToken) {
+        if (kDebugMode) {
+          print("ℹ️ Token unchanged.");
+        }
+
+        return;
+      }
+
+      if (kDebugMode) {
+        print("🚀 Syncing new token...");
+      }
+
       await getIt<NotificationRepo>().saveDeviceToken(currentToken);
 
       await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
-
-      print("✅ Token is up to date. No need to send.");
     } catch (e) {
-      print("❌ Failed to sync Device Token: $e");
+      if (kDebugMode) {
+        print("❌ Token sync failed: $e");
+      }
 
       if (retryCount < 5) {
-        print(
-          "🔄 Retrying to fetch token in 5 seconds... (Attempt ${retryCount + 1})",
-        );
         Future.delayed(const Duration(seconds: 5), () {
           handleDeviceTokenSync(retryCount: retryCount + 1);
         });
