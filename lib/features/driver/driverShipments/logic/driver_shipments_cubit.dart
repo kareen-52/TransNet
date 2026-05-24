@@ -5,7 +5,7 @@ import 'package:graduation_progect/features/driver/driverShipments/data/driver_s
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_state.dart';
 
-/// Driver shipment history cubit — no role-check, driver-only.
+
 class DriverShipmentsCubit extends Cubit<DriverShipmentsState> {
   final DriverShipmentsRepo _repo;
 
@@ -76,7 +76,7 @@ class DriverShipmentsCubit extends Cubit<DriverShipmentsState> {
     }
   }
 
-  /// Call after any shipment mutation so next fetch shows fresh data.
+  
   Future<void> invalidateAndReload() async {
     await _repo.clearCache();
     await getShipments(isReload: true);

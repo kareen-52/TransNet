@@ -6,12 +6,7 @@ import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Client-only shipments repository.
-/// Uses client_shipments_box — completely isolated from driver shipments.
-///
-/// Policy: ONLINE-FIRST + OFFLINE CACHE. No blocking TTL.
-/// Online  → fetch latest → update cache → return fresh data.
-/// Offline → return cached page or failure.
+
 class ClientShipmentsRepo {
   final ApiService _apiService;
   ClientShipmentsRepo(this._apiService);
@@ -34,11 +29,9 @@ class ClientShipmentsRepo {
     }
   }
 
-  /// Invalidate all cached pages (call after shipment status changes).
   Future<void> invalidateCache() =>
       HiveCacheService.clearClientShipmentPages();
 
-  // ── Private ───────────────────────────────────────────────────────────────
 
   Future<void> _cachePage(int page, DriverShipmentsResponse response) async {
     try {

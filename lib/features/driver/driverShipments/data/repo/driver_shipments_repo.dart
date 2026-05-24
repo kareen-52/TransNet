@@ -6,10 +6,6 @@ import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Driver-only shipment repository.
-///
-/// Strategy: ONLINE FIRST + OFFLINE CACHE. No TTL.
-/// Uses dedicated driver_shipments_box — never shares keys with client.
 class DriverShipmentsRepo {
   final ApiService _apiService;
   DriverShipmentsRepo(this._apiService);
@@ -34,7 +30,7 @@ class DriverShipmentsRepo {
 
   Future<void> clearCache() => HiveCacheService.clearDriverShipmentPages();
 
-  // ── Private ─────────────────────────────────────────────────────────────────
+
 
   Future<void> _toCache(int page, DriverShipmentsResponse r) async {
     try {

@@ -5,8 +5,6 @@ import 'package:graduation_progect/features/driver/driverShipments/data/driver_s
 import 'package:graduation_progect/features/user/client_shipments/data/repo/client_shipments_repo.dart';
 import 'client_shipments_state.dart';
 
-/// Client shipment history cubit — completely isolated from DriverShipmentsCubit.
-/// Uses client_shipments_box via ClientShipmentsRepo — no role check needed.
 class ClientShipmentsCubit extends Cubit<ClientShipmentsState> {
   final ClientShipmentsRepo _repo;
 
@@ -66,7 +64,7 @@ class ClientShipmentsCubit extends Cubit<ClientShipmentsState> {
     }
   }
 
-  /// Call after any shipment mutation (create/cancel/delivered).
+
   Future<void> invalidateAndReload() async {
     await _repo.invalidateCache();
     await getShipments(isReload: true);

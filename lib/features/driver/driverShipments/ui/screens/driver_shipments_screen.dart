@@ -8,8 +8,6 @@ import 'package:graduation_progect/features/driver/driverShipments/logic/driver_
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/ui/screens/search_shipments_screen.dart';
 
-/// Driver shipment history screen.
-/// Uses DriverShipmentsCubit — driver-only, no role check.
 class DriverShipmentsScreen extends StatefulWidget {
   const DriverShipmentsScreen({super.key});
 
@@ -77,7 +75,7 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
                   const Center(child: CircularProgressIndicator()),
 
               success: (shipments, hasReachedMax) {
-                // ── Empty state ───────────────────────────────────────────────
+     
                 if (shipments.isEmpty) {
                   return EmptyStateWidget(
                     title: 'لا توجد شحنات',
