@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
@@ -7,8 +8,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_search/ui/sc
 import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_cubit.dart';
 import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_state.dart';
 
-/// Client shipment history screen.
-/// Uses ClientShipmentsCubit — completely isolated from DriverShipmentsCubit.
 class ClientShipmentsScreen extends StatefulWidget {
   const ClientShipmentsScreen({super.key});
 
@@ -52,11 +51,16 @@ class _ClientShipmentsScreenState extends State<ClientShipmentsScreen> {
       appBar: AppBar(
         title: Text('شحناتي', style: Theme.of(context).textTheme.headlineSmall),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SearchShipmentsScreen()),
+          Padding(
+            padding: EdgeInsets.all(12.0.r),
+            child: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SearchShipmentsScreen(),
+                ),
+              ),
             ),
           ),
         ],
@@ -68,8 +72,7 @@ class _ClientShipmentsScreenState extends State<ClientShipmentsScreen> {
         child: BlocBuilder<ClientShipmentsCubit, ClientShipmentsState>(
           builder: (context, state) {
             return state.maybeWhen(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
 
               success: (shipments, hasReachedMax) {
                 if (shipments.isEmpty) {
