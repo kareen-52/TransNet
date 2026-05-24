@@ -199,12 +199,10 @@ class DriverDetailsBottomSheet extends StatelessWidget {
                 verticalSpace(4),
                 Padding(
                   padding: EdgeInsets.only(right: 28.w),
-                  child: Expanded(
-                    child: Text(
-                      details.car.vehicleType.description,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                  child: Text(
+                    details.car.vehicleType.description,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),

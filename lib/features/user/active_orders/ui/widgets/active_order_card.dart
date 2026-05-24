@@ -34,29 +34,27 @@ class ActiveOrderCard extends StatelessWidget {
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(24.r),
         ),
-        child: Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              OrderHeader(
-                status: order.status,
-                shipmentNumber: order.shipmentNumber,
-              ),
-              verticalSpace(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            OrderHeader(
+              status: order.status,
+              shipmentNumber: order.shipmentNumber,
+            ),
+            verticalSpace(24),
 
-              OrderProgressTracker(status: order.status),
-              verticalSpace(24),
+            OrderProgressTracker(status: order.status),
+            verticalSpace(24),
 
-              Divider(color: theme.dividerColor.withOpacity(0.5), height: 1),
-              verticalSpace(16),
+            Divider(color: theme.dividerColor.withOpacity(0.5), height: 1),
+            verticalSpace(16),
 
-              OrderPriceRow(price: order.price),
-              verticalSpace(24),
+            OrderPriceRow(price: order.price),
+            verticalSpace(24),
 
-              Flexible(child: DriverInfoRow(driver: order.driver)),
-            ],
-          ),
+            DriverInfoRow(driver: order.driver),
+          ],
         ),
       ),
     );
