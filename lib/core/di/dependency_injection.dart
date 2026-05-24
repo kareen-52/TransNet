@@ -231,8 +231,8 @@ void setupGetIt() {
 
   // ── Client Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
-  getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
-  //getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
   getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));

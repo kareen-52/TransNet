@@ -22,7 +22,7 @@ import 'package:graduation_progect/features/shared_screens/login/ui/screen/login
 import 'package:graduation_progect/features/user/available_drivers/ui/screens/available_drivers_screen.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/ui/screen/create_post_screen.dart';
-import 'package:graduation_progect/features/user/create_post/ui/widgets/price_adjustment_bottom_sheet.dart';
+import 'package:graduation_progect/features/user/create_post/ui/widgets/price_adjustment.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/models/shipment_model.dart';
 import 'package:graduation_progect/features/user/create_shipment/ui/screens/create_shipment_stepper.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/screens/client_home_screen.dart';

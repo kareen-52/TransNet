@@ -69,11 +69,9 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     if (currentMax - step > currentMin) setState(() => currentMax -= step);
   }
 
-  // ── دوال الضغط المطوّل (Fast Action) ──
   void _startContinuousAction(VoidCallback action) {
-    action(); // تنفيذ فوري
+    action();
     _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
-      // 🟢 تم زيادة السرعة من 100ms إلى 50ms
       action();
     });
   }
@@ -115,7 +113,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── رسالة التنبيه ──
+
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
@@ -148,7 +146,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                 ),
                 verticalSpace(40),
 
-                // ── عداد الحد الأدنى ──
+
                 _buildCounterCard(
                   theme: theme,
                   title: 'الحد الأدنى للسعر',
@@ -164,7 +162,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                 ),
                 verticalSpace(24),
 
-                // ── عداد الحد الأعلى ──
+
                 _buildCounterCard(
                   theme: theme,
                   title: 'الحد الأعلى للسعر',
@@ -206,7 +204,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                             : () {
                                 SnackBarHelper.showSuccess(
                                   context,
-                                  "تم نشر الإعلان بنجاح",
+                                  "تم نشر الإعلان بالسعر المقترح",
                                 );
                                 Navigator.pop(context, true);
 

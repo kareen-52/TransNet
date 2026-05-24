@@ -1,6 +1,6 @@
 //
 // بناء للـ dev:
-//   flutter run --dart-define=BASE_URL=http://192.168.1.106:8000/
+//   flutter run --dart-define=BASE_URL=http://10.220.186.190:8000/
 //
 // بناء للـ production:
 //   flutter build apk \
@@ -13,7 +13,7 @@ class AppConfig {
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://192.168.1.103:8000/', // dev fallback فقط
+    defaultValue: 'http://10.220.186.190:8000/', // dev fallback فقط
   );
 
   static const String _orsApiKey = String.fromEnvironment(

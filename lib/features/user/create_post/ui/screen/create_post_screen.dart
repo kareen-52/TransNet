@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/app_dialogs.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
+import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_state.dart';
-import '../widgets/price_adjustment_bottom_sheet.dart';
+import '../widgets/price_adjustment.dart';
 import '../widgets/step1_post_locations.dart';
 import '../widgets/step2_post_details.dart';
 import '../widgets/step3_post_review.dart';
@@ -35,9 +36,11 @@ class CreatePostScreen extends StatelessWidget {
                   ),
                 );
 
-                // ✅ إذا عادت الشاشة بنجاح، نغلق شاشة النموذج أيضاً!
                 if (isPublished == true && context.mounted) {
                   Navigator.pop(context, true);
+                  try {
+                    getIt<ClientPostsCubit>().fetchMyPosts();
+                  } catch (_) {}
                 }
               },
               submitError: (err) => AppDialogs.showErrorDialog(
@@ -54,8 +57,7 @@ class CreatePostScreen extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.read<CreatePostCubit>();
 
-            if (cubit.governorates.isEmpty)
-              return const Center(child: CircularProgressIndicator());
+            if (cubit.governorates.isEmpty) return const Center(child: CircularProgressIndicator());
 
             return Stepper(
               type: StepperType.horizontal,

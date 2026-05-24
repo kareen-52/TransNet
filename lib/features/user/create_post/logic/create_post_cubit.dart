@@ -106,20 +106,19 @@ class CreatePostCubit extends Cubit<CreatePostState> {
     final result = await _repo.createPost(requestBody);
     if (isClosed) return;
     result.when(
-      success: (post) => emit(CreatePostState.stepOneSuccess(post, "تم حساب السعر المقترح بنجاح")),
+      success: (post) => emit(CreatePostState.stepOneSuccess(post, "تم نشر إعلان الشحنة وحساب الأسعار التقديرية بنجاح")),
       failure: (error) => emit(CreatePostState.submitError(error)),
     );
   }
 
   Future<void> confirmAndPublishPrices(int postId, double min, double max) async {
     if (isClosed) return;
-    emit(const CreatePostState.loading()); // تجميد الزر أثناء الإرسال
+    emit(const CreatePostState.loading());
     final result = await _repo.updatePrices(postId: postId, minPrice: min, maxPrice: max);
     
     if (isClosed) return;
     result.when(
       success: (msg) {
-        // تفريغ البيانات استعداداً للإعلان القادم
         currentStep = 0;
         startLat = null; startLng = null; endLat = null; endLng = null;
         startGovernorate = null; endGovernorate = null; lastDate = null;
