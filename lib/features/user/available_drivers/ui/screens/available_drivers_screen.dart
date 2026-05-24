@@ -23,14 +23,7 @@ class AvailableDriversScreen extends StatefulWidget {
 }
 
 class _AvailableDriversScreenState extends State<AvailableDriversScreen> {
-  @override
-  void initState() {
-    super.initState();
-    final cubit = getIt<AvailableDriversCubit>();
-    if (cubit.currentShipment == null) {
-      cubit.initEngine();
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
