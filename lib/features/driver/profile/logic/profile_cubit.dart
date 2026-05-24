@@ -26,7 +26,7 @@ class ProfileCubit extends Cubit<ProfileState> {
           ApiConstants.driverId   = id;
           ApiConstants.driverName = name;
           if (!isClosed) {
-            await SharedPrefHelper.setData(SharedPrefKeys.driverFirstName, name ?? '');
+            await SharedPrefHelper.setData(SharedPrefKeys.userFirstName, name ?? '');
           }
         }
         if (!isClosed) emit(ProfileState.success(data));
