@@ -29,6 +29,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
       onTap: () => _navigateToTracking(context),
       child: Container(
         width: 300.w,
+        constraints: BoxConstraints(minHeight: 200.h),
         margin: EdgeInsetsDirectional.only(end: 12.w),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
@@ -42,33 +43,29 @@ class ActiveDriverShipmentCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Padding(
-          padding: EdgeInsets.all(14.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // ── Header: حالة + رقم الشحنة ─────────────────────────────
-              _buildHeader(theme, statusColor),
-              verticalSpace(12),
-
-              // ── المسار: من → إلى ──────────────────────────────────────
-              _buildRoute(theme),
-              verticalSpace(12),
-
-              Divider(height: 1, color: theme.colorScheme.outline),
-              verticalSpace(12),
-
-              // ── السعر + معلومات العميل ──────────────────────────────────
-              _buildBottomSection(theme, context),
-            ],
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.all(14.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildHeader(theme, statusColor),
+                verticalSpace(12),
+                _buildRoute(theme),
+                verticalSpace(12),
+                Divider(height: 1, color: theme.colorScheme.outline),
+                verticalSpace(12),
+                _buildBottomSection(theme, context),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // ─── Header ───────────────────────────────────────────────────────────────
   Widget _buildHeader(ThemeData theme, Color statusColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,22 +85,24 @@ class ActiveDriverShipmentCard extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          '#${shipment.shipmentNumber}',
-          style: theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: theme.colorScheme.onSurface.withOpacity(0.5),
+        Flexible(
+          child: Text(
+            '#${shipment.shipmentNumber}',
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: theme.colorScheme.onSurface.withOpacity(0.5),
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ),
       ],
     );
   }
 
-  // ─── Route ────────────────────────────────────────────────────────────────
   Widget _buildRoute(ThemeData theme) {
     return Row(
       children: [
-        // الأيقونات
         Column(
           children: [
             Container(
@@ -115,7 +114,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: 1,
+              width: 1.w,
               height: 28.h,
               margin: EdgeInsets.symmetric(vertical: 3.h),
               color: theme.colorScheme.outline.withOpacity(0.3),
@@ -131,8 +130,6 @@ class ActiveDriverShipmentCard extends StatelessWidget {
           ],
         ),
         horizontalSpace(10),
-
-        // النصوص
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +139,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               verticalSpace(12),
@@ -151,14 +148,12 @@ class ActiveDriverShipmentCard extends StatelessWidget {
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
-
-        // سهم الدخول
         Icon(
           Icons.arrow_forward_ios_rounded,
           size: 14.sp,
@@ -168,11 +163,9 @@ class ActiveDriverShipmentCard extends StatelessWidget {
     );
   }
 
-  // ─── Bottom row: السعر + العميل ───────────────────────────────────────────
   Widget _buildBottomSection(ThemeData theme, BuildContext context) {
     return Column(
       children: [
-        // 1. سطر السعر
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -183,38 +176,37 @@ class ActiveDriverShipmentCard extends StatelessWidget {
                 color: theme.colorScheme.onSurface.withOpacity(0.5),
               ),
             ),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: _formatPrice(shipment.price),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: theme.colorScheme.primary,
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: _formatPrice(shipment.price),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: ' ل.س',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.primary.withOpacity(0.7),
+                    TextSpan(
+                      text: ' ل.س',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.primary.withOpacity(0.7),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
         ),
-
-        // 2. سطر العميل (التصميم الجديد المتجاوب)
         if (shipment.client != null) ...[
-          verticalSpace(12),
+          verticalSpace(10),
           _buildClientInfoRow(theme, context, shipment.client!),
         ],
       ],
     );
   }
 
-  // ─── Client Info Row (التصميم المطلوب) ────────────────────────────────────
   Widget _buildClientInfoRow(
     ThemeData theme,
     BuildContext context,
@@ -229,7 +221,7 @@ class ActiveDriverShipmentCard extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 18.r, // تصغير الحجم قليلاً ليناسب الكارد
+                radius: 18.r,
                 backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
                 child: Icon(
                   Icons.person_rounded,

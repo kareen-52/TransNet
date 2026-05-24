@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/features/driver/home/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_tablet_appbar.dart';
 import 'package:graduation_progect/features/driver/profile/ui/screen/profile_driver_screen.dart';
-import 'package:graduation_progect/features/user/home_screen/ui/screens/mobile_body.dart';
+
 import '../shared/home_content.dart';
 
 class TabletBody extends StatefulWidget {
@@ -40,8 +41,6 @@ class _TabletBodyState extends State<TabletBody> {
     );
   }
 }
-
-
 
 class ClientAdsScreen extends StatelessWidget {
   const ClientAdsScreen({super.key});
