@@ -218,8 +218,8 @@ class HiveCacheService {
   // ─── Driver Shipments (paginated) ──────────────────────────────────────────
   // Separate box — never shared with client.
 
-  static String _driverShipmentKey(int page) => 'page_$page';
-
+  // Separate box — never shared with driver.
+static String _driverShipmentKey(int page) => 'drv_page_$page';
   static Future<void> cacheDriverShipmentsPage(
     int page,
     Map<String, dynamic> json,
@@ -247,9 +247,9 @@ class HiveCacheService {
   }
 
   // ─── Client Shipments (paginated) ──────────────────────────────────────────
-  // Separate box — never shared with driver.
 
-  static String _clientShipmentKey(int page) => 'page_$page';
+static String _clientShipmentKey(int page) => 'cli_page_$page';
+
 
   static Future<void> cacheClientShipmentsPage(
     int page,
