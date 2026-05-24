@@ -1,4 +1,3 @@
-
 import 'package:graduation_progect/connectivity_helper.dart';
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_error_model.dart';
@@ -7,64 +6,49 @@ import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 import '../models/vehicle_type_model.dart';
 
-/// Offline-first vehicle types repository.
-///
-/// Strategy:
-/// 1. If there is no internet → return cached data immediately (or error if
-///    no cache exists).
-/// 2. If internet is available → try the API.
-///    a. If API succeeds and data has changed → update cache and return fresh.
-///    b. If API succeeds but data is identical → return cache (no rebuild).
-///    c. If API fails but cache exists → return stale cache silently.
-///    d. If API fails and no cache → return failure.
 class VehicleTypesRepo {
   final ApiService _apiService;
-
   VehicleTypesRepo(this._apiService);
 
   Future<ApiResult<List<VehicleTypeModel>>> getVehicleTypes() async {
-    final online =  ConnectivityHelper.isOnline;
-
-    if (!online) {
-      return _returnFromCache() ??
+    if (!ConnectivityHelper.isOnline) {
+      return _fromCache() ??
           ApiResult.failure(
             ApiErrorModel(
-              message: 'لا يوجد اتصال بالإنترنت ولا توجد بيانات محفوظة مسبقاً',
+              message: 'لا يوجد اتصال بالإنترنت ولا توجد بيانات محفوظة',
             ),
           );
     }
 
-    // ── Online path ──────────────────────────────────────────────────────────
     try {
       final response = await _apiService.getVehicleTypes();
-      final rawList =
-          response.map((v) => _vehicleToJson(v)).toList();
+      final rawList  = response.map(_toJson).toList();
 
       if (HiveCacheService.vehicleTypesChanged(rawList)) {
-        // Server data is genuinely new — persist and return fresh
+        // Data changed on server → update cache and return fresh
         await HiveCacheService.cacheVehicleTypes(rawList);
         return ApiResult.success(response);
-      } else {
-        // Data unchanged — return from cache to avoid unnecessary rebuilds
-        return _returnFromCache() ?? ApiResult.success(response);
       }
+      // Data unchanged → serve from cache (avoids unnecessary UI rebuild)
+      return _fromCache() ?? ApiResult.success(response);
     } catch (error) {
-      // API failed — fall back to cache if available
-      return _returnFromCache() ??
-          ApiResult.failure(ApiErrorHandler.handle(error));
+      return _fromCache() ?? ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
 
-  // ── Private helpers ────────────────────────────────────────────────────────
+  // ── Private ─────────────────────────────────────────────────────────────────
 
-  ApiResult<List<VehicleTypeModel>>? _returnFromCache() {
+  ApiResult<List<VehicleTypeModel>>? _fromCache() {
     final cached = HiveCacheService.getCachedVehicleTypes();
     if (cached == null) return null;
-    final models = cached.map(VehicleTypeModel.fromJson).toList();
-    return ApiResult.success(models);
+    try {
+      return ApiResult.success(cached.map(VehicleTypeModel.fromJson).toList());
+    } catch (_) {
+      return null;
+    }
   }
 
-  Map<String, dynamic> _vehicleToJson(VehicleTypeModel v) => {
+  Map<String, dynamic> _toJson(VehicleTypeModel v) => {
         'id': v.id,
         'type': v.type,
         'description': v.description,

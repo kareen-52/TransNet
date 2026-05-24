@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/connectivity_helper.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
@@ -15,36 +16,61 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // OFFLINE GUARD — per spec: don't open, don't load, don't show retry
+    if (!ConnectivityHelper.isOnline) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('الإشعارات')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.wifi_off_rounded,
+                size: 64.sp,
+                color: Theme.of(context).colorScheme.outline,
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                'لا يوجد اتصال بالإنترنت',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'تحقق من الاتصال وحاول مرة أخرى',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return BlocProvider.value(
       value: getIt<NotificationCubit>()..fetchRecentNotifications(),
-      // create: (context) => getIt<NotificationCubit>()..fetchAllNotifications(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('الإشعارات'),
-          // centerTitle: true,
-        ),
+        appBar: AppBar(title: const Text('الإشعارات')),
         body: BlocBuilder<NotificationCubit, NotificationState>(
-          buildWhen: (previous, current) => current is! CountUpdated,
+          buildWhen: (_, curr) => curr is! CountUpdated,
           builder: (context, state) {
             return state.maybeWhen(
-
               loading: () => const NotificationsShimmerLoading(),
-              
 
               empty: () => EmptyStateWidget(
                 title: 'لا يوجد إشعارات',
-                subTitle: 'لم تتلقَ أي إشعارات جديدة حتى الآن.',
-                onRetry: () {
-                  context.read<NotificationCubit>().fetchAllNotifications();
-                 },
+                subTitle: 'لم تتلقَ أي إشعارات حتى الآن.',
+                onRetry: () =>
+                    context.read<NotificationCubit>().fetchAllNotifications(),
               ),
-
 
               error: (errorModel) => ErrorStateWidget(
                 message: errorModel.getAllErrorMessages(),
-                onRetry: () => context.read<NotificationCubit>().fetchAllNotifications(),
+                onRetry: () =>
+                    context.read<NotificationCubit>().fetchAllNotifications(),
               ),
-
 
               success: (notifications) {
                 final cubit = context.read<NotificationCubit>();
@@ -52,19 +78,28 @@ class NotificationsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ListView.builder(
-                        padding: EdgeInsets.only(top: 16.w, bottom: 48.w, left: 16.h, right: 16.h),
+                        padding: EdgeInsets.only(
+                          top: 16.h,
+                          bottom: 48.h,
+                          left: 16.w,
+                          right: 16.w,
+                        ),
                         itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          return NotificationCard(notification: notifications[index]);
-                        },
+                        itemBuilder: (_, i) =>
+                            NotificationCard(notification: notifications[i]),
                       ),
                     ),
                     if (!cubit.isShowingAll)
                       Padding(
-                        padding: EdgeInsets.only(top: 16.w, bottom: 56.w, left: 16.h, right: 16.h),
+                        padding: EdgeInsets.only(
+                          top: 8.h,
+                          bottom: 56.h,
+                          left: 16.w,
+                          right: 16.w,
+                        ),
                         child: AppTextButton(
                           onPressed: () => cubit.fetchAllNotifications(),
-                           text: 'عرض جميع الإشعارات',
+                          text: 'عرض جميع الإشعارات',
                         ),
                       ),
                   ],

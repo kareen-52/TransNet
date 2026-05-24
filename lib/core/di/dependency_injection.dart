@@ -1,150 +1,12 @@
-// import 'package:dio/dio.dart';
-// import 'package:get_it/get_it.dart';
-// import 'package:graduation_progect/core/networking/api_service.dart';
-// import 'package:graduation_progect/core/networking/dio_factory.dart';
-// import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
-// import 'package:graduation_progect/features/driver/driverReviews/model/repo/driver_reviews_repo.dart';
-// import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
-// import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
-// import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
-// import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
-// import 'package:graduation_progect/features/driver/profile/data/repo/profile_repo.dart';
-// import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
-// import 'package:graduation_progect/features/driver/setLocation/data/repo/driver_location_repo.dart';
-// import 'package:graduation_progect/features/driver/setLocation/logic/driver_location_cubit.dart';
-// import 'package:graduation_progect/features/shared_screens/change_password/data/repo/forgot_password_repo.dart';
-// import 'package:graduation_progect/features/shared_screens/change_password/logic/forgot_password_cubit.dart';
-// import 'package:graduation_progect/features/shared_screens/login/data/repo/login_repo.dart';
-// import 'package:graduation_progect/features/shared_screens/login/logic/login_cubit.dart';
-// import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
-// import 'package:graduation_progect/features/shared_screens/verification_code/data/repos/verification_repo.dart';
-// import 'package:graduation_progect/features/shared_screens/verification_code/logic/verification_cubit.dart';
-// import 'package:graduation_progect/features/user/available_drivers/data/repos/available_drivers_repo.dart';
-// import 'package:graduation_progect/features/user/driver_details/data/repo/driver_details_repo.dart';
-// import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
-// import 'package:graduation_progect/features/user/driver_details/logic/driver_details_cubit.dart';
-// import 'package:graduation_progect/features/user/create_shipment/data/repos/create_shipment_repo.dart';
-// import 'package:graduation_progect/features/user/create_shipment/logic/create_shipment_cubit.dart';
-// import 'package:graduation_progect/features/user/vehicle_types.dart/data/repos/vehicle_types_repo.dart';
-// import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
-// import 'package:graduation_progect/features/user/vehicle_types.dart/logic/vehicle_types_cubit.dart';
-// import 'package:graduation_progect/features/user/sign_up/data/repos/sign_up_repo.dart';
-// import 'package:graduation_progect/features/user/sign_up/logic/sign_up_cubit.dart';
-// import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
-
-// final getIt = GetIt.instance;
-
-// Future<void> setupGetIt() async {
-//   // Dio & ApiService
-//   Dio dio = await DioFactory.getDio();
-//   getIt.registerLazySingleton<ApiService>(() => ApiService(dio));
-
-//   // login
-//   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
-//   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
-
-//   // signup
-//   getIt.registerLazySingleton<SignupRepo>(() => SignupRepo(getIt()));
-//   getIt.registerFactory<SignupCubit>(() => SignupCubit(getIt()));
-
-//   // Verification
-//   getIt.registerLazySingleton<VerificationRepo>(
-//     () => VerificationRepo(getIt()),
-//   );
-
-//   getIt.registerFactory<VerificationCubit>(
-//     () => VerificationCubit(
-//       getIt(), // VerificationRepo
-//       getIt(), // ForgotPasswordRepo
-//     ),
-//   );
-
-//   // Forgot Password
-//   getIt.registerLazySingleton<ForgotPasswordRepo>(
-//     () => ForgotPasswordRepo(getIt()),
-//   );
-//   getIt.registerFactory<ForgotPasswordCubit>(
-//     () => ForgotPasswordCubit(getIt()),
-//   );
-
-//   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
-
-//   //create shipment
-//   getIt.registerLazySingleton<CreateShipmentRepo>(
-//     () => CreateShipmentRepo(getIt()),
-//   );
-//   getIt.registerFactory<CreateShipmentCubit>(
-//     () => CreateShipmentCubit(getIt()),
-//   );
-
-//   // available drivers
-//   getIt.registerLazySingleton<AvailableDriversRepo>(
-//     () => AvailableDriversRepo(getIt()),
-//   );
-//   getIt.registerFactory<AvailableDriversCubit>(
-//     () => AvailableDriversCubit(getIt(), getIt()),
-//   );
-
-//   // vehicle types
-//   getIt.registerLazySingleton<VehicleTypesRepo>(
-//     () => VehicleTypesRepo(getIt()),
-//   );
-//   getIt.registerFactory<VehicleTypesCubit>(() => VehicleTypesCubit(getIt()));
-
-//   //driver details
-//   getIt.registerLazySingleton<DriverDetailsRepo>(
-//     () => DriverDetailsRepo(getIt()),
-//   );
-//   getIt.registerFactory<DriverDetailsCubit>(() => DriverDetailsCubit(getIt()));
-
-//   //notification
-//   getIt.registerLazySingleton<NotificationRepo>(
-//     () => NotificationRepo(getIt<ApiService>()),
-//   );
-//   getIt.registerLazySingleton<NotificationCubit>(
-//     () => NotificationCubit(getIt()),
-//   );
-
-//   // Profile
-//   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getIt()));
-//   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
-//   //home driver
-//   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
-//   // getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
-//     getIt.registerLazySingleton<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
-
-//    //setLocatin driver
-//   getIt.registerLazySingleton<DriverLocationRepo>(
-//     () => DriverLocationRepo(getIt()),
-//   );
-//   getIt.registerFactory<DriverLocationCubit>(
-//     () => DriverLocationCubit(getIt()),
-//   );
-
-//  //DriverShipments
-//   getIt.registerLazySingleton<DriverShipmentsRepo>(
-//     () => DriverShipmentsRepo(getIt()),
-//   );
-//   getIt.registerFactory<DriverShipmentsCubit>(
-//     () => DriverShipmentsCubit(getIt()),
-//   );
-
-//    //DriverReviewsCubit
-//   getIt.registerLazySingleton<DriverReviewsRepo>(
-//     () => DriverReviewsRepo(getIt()),
-//   );
-//   getIt.registerFactory<DriverReviewsCubit>(
-//     () => DriverReviewsCubit(getIt()),
-//   );
-
-// }
 import 'package:get_it/get_it.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
+
+// ── Features ──────────────────────────────────────────────────────────────────
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/repos/active_driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
-import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverReviews/data/repo/driver_reviews_repo.dart';
+import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
@@ -163,6 +25,7 @@ import 'package:graduation_progect/features/shared_screens/login/data/repo/login
 import 'package:graduation_progect/features/shared_screens/login/logic/login_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
+import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/repositories/shipment_details_repository_impl.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/repositories/shipment_details_repository.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/usecases/get_shipment_details_usecase.dart';
@@ -174,33 +37,36 @@ import 'package:graduation_progect/features/shared_screens/verification_code/log
 import 'package:graduation_progect/features/user/active_orders/data/repos/active_orders_repo.dart';
 import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/repos/available_drivers_repo.dart';
+import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
 import 'package:graduation_progect/features/user/client_posts/data/repo/client_posts_repo.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/data/repo/create_post_repo.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
-import 'package:graduation_progect/features/user/driver_details/data/repo/driver_details_repo.dart';
-import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
-import 'package:graduation_progect/features/user/driver_details/logic/driver_details_cubit.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/repos/create_shipment_repo.dart';
 import 'package:graduation_progect/features/user/create_shipment/logic/create_shipment_cubit.dart';
+import 'package:graduation_progect/features/user/driver_details/data/repo/driver_details_repo.dart';
+import 'package:graduation_progect/features/user/driver_details/logic/driver_details_cubit.dart';
+import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
+import 'package:graduation_progect/features/user/profile/repo/client_profile_repo.dart';
 import 'package:graduation_progect/features/user/review_driver/data/repo/review_driver_repo.dart';
 import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
-import 'package:graduation_progect/features/user/vehicle_types/data/repos/vehicle_types_repo.dart';
-import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
-import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
+import 'package:graduation_progect/features/user/client_shipments/data/repo/client_shipments_repo.dart';
+import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_cubit.dart';
 import 'package:graduation_progect/features/user/sign_up/data/repos/sign_up_repo.dart';
 import 'package:graduation_progect/features/user/sign_up/logic/sign_up_cubit.dart';
-import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/user/vehicle_types/data/repos/vehicle_types_repo.dart';
+import 'package:graduation_progect/features/user/profile/logic/client_profile_cubit.dart';
+import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_types_cubit.dart';
 
 final getIt = GetIt.instance;
 
 void setupGetIt() {
-  // ── Networking ──────────────────────────────────────────────────────────────
+  // ── Networking ─────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ApiService>(
     () => ApiService(DioFactory.getDio()),
   );
 
-  // ── Auth ────────────────────────────────────────────────────────────────────
+  // ── Auth ───────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
 
@@ -221,8 +87,7 @@ void setupGetIt() {
     () => ForgotPasswordCubit(getIt()),
   );
 
-  // ── Shipment (create / active / cancel) ─────────────────────────────────────
-  // CreateShipmentRepo now caches governorates via Hive
+  // ── Shipments (Client) ─────────────────────────────────────────────────────
   getIt.registerLazySingleton<CreateShipmentRepo>(
     () => CreateShipmentRepo(getIt()),
   );
@@ -230,44 +95,60 @@ void setupGetIt() {
     () => CreateShipmentCubit(getIt()),
   );
 
-  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
+  // Client shipment history — separate from driver, separate box
+  getIt.registerLazySingleton<ClientShipmentsRepo>(
+    () => ClientShipmentsRepo(getIt()),
+  );
+  getIt.registerFactory<ClientShipmentsCubit>(
+    () => ClientShipmentsCubit(getIt()),
+  );
 
-  // ── Available Drivers ───────────────────────────────────────────────────────
+  // ── Home (Client) ──────────────────────────────────────────────────────────
+  // Factory: fresh instance each time — no stale state between navigations
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
+
+  // ── Available Drivers ──────────────────────────────────────────────────────
   getIt.registerLazySingleton<AvailableDriversRepo>(
     () => AvailableDriversRepo(getIt()),
   );
+  // Factory: session image cache lives inside this cubit; close clears it
   getIt.registerFactory<AvailableDriversCubit>(
-    () => AvailableDriversCubit(getIt(), getIt()),
+    () => AvailableDriversCubit(getIt(), getIt(), getIt()),
   );
 
-  // ── Vehicle Types (cached via Hive) ─────────────────────────────────────────
+  // ── Vehicle Types ──────────────────────────────────────────────────────────
   getIt.registerLazySingleton<VehicleTypesRepo>(
     () => VehicleTypesRepo(getIt()),
   );
   getIt.registerFactory<VehicleTypesCubit>(() => VehicleTypesCubit(getIt()));
 
-  // ── Driver Details ──────────────────────────────────────────────────────────
+  // ── Driver Details ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverDetailsRepo>(
     () => DriverDetailsRepo(getIt()),
   );
   getIt.registerFactory<DriverDetailsCubit>(() => DriverDetailsCubit(getIt()));
 
-  // ── Notifications (cached via Hive) ─────────────────────────────────────────
+  // ── Notifications ──────────────────────────────────────────────────────────
+  // NotificationRepo: singleton (stateless service)
   getIt.registerLazySingleton<NotificationRepo>(
     () => NotificationRepo(getIt<ApiService>()),
   );
+  // NotificationCubit: singleton — shared badge count across screens.
+  // fetchRecentNotifications() is guarded by offline check inside the cubit.
   getIt.registerLazySingleton<NotificationCubit>(
     () => NotificationCubit(getIt()),
   );
 
-  // ── Profile (cached via Hive) ───────────────────────────────────────────────
+  // ── Profile ────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getIt()));
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
 
-  // ── Driver Home ─────────────────────────────────────────────────────────────
+  // ── Driver Home ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
-  getIt.registerLazySingleton<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
+  // ✅ Factory (was wrongly Singleton) — fresh state + fresh image on each login
+  getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
 
+  // ── Instant Orders ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<InstantOrdersRepo>(
     () => InstantOrdersRepo(getIt()),
   );
@@ -275,7 +156,7 @@ void setupGetIt() {
     () => InstantOrdersCubit(getIt()),
   );
 
-  // ── Driver Location ─────────────────────────────────────────────────────────
+  // ── Driver Location ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(
     () => DriverLocationRepo(getIt()),
   );
@@ -283,14 +164,16 @@ void setupGetIt() {
     () => DriverLocationCubit(getIt()),
   );
 
-  // ── Shipments History (cached via Hive, paginated) ──────────────────────────
+  // ── Driver Shipment History ────────────────────────────────────────────────
+  // Separate repo + cubit from client — no shared cache
   getIt.registerLazySingleton<DriverShipmentsRepo>(
     () => DriverShipmentsRepo(getIt()),
   );
   getIt.registerFactory<DriverShipmentsCubit>(
     () => DriverShipmentsCubit(getIt()),
   );
-  // ── Shipment Details (Clean Architecture) ──────────────────────
+
+  // ── Shipment Details (Clean Architecture) ──────────────────────────────────
   getIt.registerLazySingleton<ShipmentDetailsRepository>(
     () => ShipmentDetailsRepositoryImpl(getIt()),
   );
@@ -301,12 +184,13 @@ void setupGetIt() {
     () => ShipmentDetailsCubit(getIt()),
   );
 
-  // ── Driver Reviews (cached via Hive) ─────────────────────────────────────────
+  // ── Driver Reviews ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverReviewsRepo>(
     () => DriverReviewsRepo(getIt()),
   );
   getIt.registerFactory<DriverReviewsCubit>(() => DriverReviewsCubit(getIt()));
 
+  // ── Shipment Search ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ShipmentSearchRepo>(
     () => ShipmentSearchRepo(getIt()),
   );
@@ -314,12 +198,8 @@ void setupGetIt() {
     () => SearchShipmentsCubit(getIt()),
   );
 
-
-
-  // ── Map Service ─────────────────────────────────────────────────
-  getIt.registerLazySingleton<MapService>(() => MapService()); 
-
-
+  // ── Map ────────────────────────────────────────────────────────────────────
+  getIt.registerLazySingleton<MapService>(() => MapService());
 
   // ── Active Orders (Client) ─────────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveOrdersRepo>(
@@ -329,6 +209,7 @@ void setupGetIt() {
     () => ActiveOrdersCubit(getIt()),
   );
 
+  // ── Active Shipments (Driver) ──────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
     () => ActiveDriverShipmentsRepo(getIt()),
   );
@@ -336,16 +217,26 @@ void setupGetIt() {
     () => ActiveDriverShipmentsCubit(getIt()),
   );
 
+  // ── Driver Tracking ────────────────────────────────────────────────────────
   getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
   getIt.registerFactory(() => DriverTrackingCubit(getIt()));
 
-  getIt.registerLazySingleton<ReviewDriverRepo>(() => ReviewDriverRepo(getIt()));
+  // ── Review Driver ──────────────────────────────────────────────────────────
+  getIt.registerLazySingleton<ReviewDriverRepo>(
+    () => ReviewDriverRepo(getIt()),
+  );
   getIt.registerFactory<ReviewDriverCubit>(() => ReviewDriverCubit(getIt()));
+
+  // ── Profile (Client) ───────────────────────────────────────────────────────
+  getIt.registerLazySingleton<ClientProfileRepo>(
+    () => ClientProfileRepo(getIt()),
+  );
+  getIt.registerFactory<ClientProfileCubit>(() => ClientProfileCubit(getIt()));
 
   // ── Client Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
-  // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
-  getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  //getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
   getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));

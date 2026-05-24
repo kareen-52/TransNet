@@ -4,8 +4,9 @@ import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/driver/profile/data/repo/profile_repo.dart';
-
 import 'profile_state.dart';
+
+/// Driver profile cubit — driver-only. Do NOT use for client profile.
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo _profileRepo;
   ProfileCubit(this._profileRepo) : super(const ProfileState.initial());
@@ -15,19 +16,18 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(const ProfileState.loading());
 
     final response = await _profileRepo.getProfile();
-    if (isClosed) return; 
+    if (isClosed) return;
+
     response.when(
       success: (data) async {
-        if (isClosed) return;
-        final id = data.user?.driverId;
+        final id   = data.user?.driverId;
         final name = data.user?.firstName;
         if (id != null) {
-          ApiConstants.driverId = id;
+          ApiConstants.driverId   = id;
           ApiConstants.driverName = name;
-          await Future.wait([
-           // SharedPrefHelper.setData(SharedPrefKeys.driverId, id),
-            SharedPrefHelper.setData(SharedPrefKeys.driverFirstName, name ?? ''),
-          ]);
+          if (!isClosed) {
+            await SharedPrefHelper.setData(SharedPrefKeys.driverFirstName, name ?? '');
+          }
         }
         if (!isClosed) emit(ProfileState.success(data));
       },
@@ -37,11 +37,21 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
-  Future<void> updateProfile({required String phone, String? fName, String? lName}) async {
+  Future<void> updateProfile({
+    required String phone,
+    String? fName,
+    String? lName,
+  }) async {
     if (isClosed) return;
     emit(const ProfileState.loading());
-    final response = await _profileRepo.updateProfile(phone: phone, fName: fName, lName: lName);
+
+    final response = await _profileRepo.updateProfile(
+      phone: phone,
+      fName: fName,
+      lName: lName,
+    );
     if (isClosed) return;
+
     response.when(
       success: (message) {
         if (!isClosed) emit(ProfileState.editSuccess(message));
@@ -53,46 +63,41 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<bool> addGovernorate(int govId) async {
-  if (isClosed) return false;
+    if (isClosed) return false;
+    emit(const ProfileState.loading());
 
-  emit(const ProfileState.loading());
+    final response = await _profileRepo.attachGovernorate(govId);
+    if (isClosed) return false;
 
-  final response = await _profileRepo.attachGovernorate(govId);
+    return response.when(
+      success: (_) async {
+        // Guard: check isClosed before the inner refresh
+        if (!isClosed) await getProfileData();
+        return true;
+      },
+      failure: (error) {
+        if (!isClosed) emit(ProfileState.error(error));
+        return false;
+      },
+    );
+  }
 
-  if (isClosed) return false;
+  Future<bool> removeGovernorate(int govId) async {
+    if (isClosed) return false;
+    emit(const ProfileState.loading());
 
-  return response.when(
-    success: (message) async {
-      await getProfileData();
-      return true;
-    },
-    failure: (error) {
-      emit(ProfileState.error(error));
-      return false;
-    },
-  );
-}
+    final response = await _profileRepo.detachGovernorate(govId);
+    if (isClosed) return false;
 
-
-Future<bool> removeGovernorate(int govId) async {
-  if (isClosed) return false;
-
-  emit(const ProfileState.loading());
-
-  final response = await _profileRepo.detachGovernorate(govId);
-
-  if (isClosed) return false;
-
-  return response.when(
-    success: (message) async {
-      await getProfileData();
-      return true;
-    },
-    failure: (error) {
-      emit(ProfileState.error(error));
-      return false;
-    },
-  );
-}
-
+    return response.when(
+      success: (_) async {
+        if (!isClosed) await getProfileData();
+        return true;
+      },
+      failure: (error) {
+        if (!isClosed) emit(ProfileState.error(error));
+        return false;
+      },
+    );
+  }
 }

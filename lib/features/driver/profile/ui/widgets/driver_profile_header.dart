@@ -9,8 +9,8 @@ import 'package:graduation_progect/features/driver/profile/data/models/profile_r
 import 'package:graduation_progect/features/user/available_drivers/ui/widgets/badge/driver_badge_widget.dart';
 
 class DriverProfileHeader extends StatelessWidget {
-  final UserData? userData;
-  final double? rating;
+  final UserData?  userData;
+  final double?    rating;
   final BadgeData? badge;
 
   const DriverProfileHeader({
@@ -22,74 +22,74 @@ class DriverProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final theme       = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return BlocBuilder<DriverHomeCubit, DriverHomeState>(
-      builder: (context, state) {
-        final cubit = context.read<DriverHomeCubit>();
-        final imageBytes = cubit.profileImage;
-
-        return Column(
-          children: [
-            CircleAvatar(
-              radius: 60.r,
+    return Column(
+      children: [
+        // ── Profile image — rebuilds ONLY when image loads/changes ─────────
+        BlocBuilder<DriverHomeCubit, DriverHomeState>(
+          buildWhen: (prev, curr) => curr.maybeWhen(
+            driverImageLoaded: (_) => true,
+            initial: ()        => true,
+            orElse: ()         => false,
+          ),
+          builder: (context, _) {
+            final imageBytes = context.read<DriverHomeCubit>().profileImage;
+            return CircleAvatar(
+              radius:          60.r,
               backgroundColor: colorScheme.surface,
               child: ClipOval(
                 child: imageBytes != null
                     ? Image.memory(
                         imageBytes,
-                        width: 110.r,
-                        height: 110.r,
-                        fit: BoxFit.cover,
+                        width:  120.r,
+                        height: 120.r,
+                        fit:    BoxFit.cover,
                       )
                     : Icon(
                         Icons.person,
-                        size: 40.sp,
+                        size:  40.r,
                         color: colorScheme.onSurfaceVariant,
                       ),
               ),
-            ),
+            );
+          },
+        ),
 
-            verticalSpace(16),
+        verticalSpace(16),
 
+        Text(
+          '${userData?.firstName ?? ''} ${userData?.lastName ?? ''}',
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        verticalSpace(16),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.star, color: AppColors.warning, size: 18.sp),
+            horizontalSpace(4),
             Text(
-              '${userData?.firstName ?? ''} ${userData?.lastName ?? ''}',
-              style: textTheme.headlineSmall?.copyWith(
-                color: colorScheme.onSurface,
+              (rating ?? 0.0).toStringAsFixed(1),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color:      AppColors.warning,
                 fontWeight: FontWeight.bold,
               ),
             ),
-
-            verticalSpace(16),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star, color: AppColors.warning, size: 18.sp),
-                horizontalSpace(4),
-                Text(
-                  rating?.toStringAsFixed(1) ?? '0.0',
-                  style: textTheme.titleMedium?.copyWith(
-                    color: AppColors.warning,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                if (badge != null && badge!.name != null) ...[
-                  horizontalSpace(16),
-
-                  DriverBadgeWidget(
-                    badgeTitle: badge!.name!,
-                    badgeDescription: badge!.text ?? '',
-                  ),
-                ],
-              ],
-            ),
+            if (badge?.name != null) ...[
+              horizontalSpace(16),
+              DriverBadgeWidget(
+                badgeTitle:       badge!.name!,
+                badgeDescription: badge!.text ?? '',
+              ),
+            ],
           ],
-        );
-      },
+        ),
+      ],
     );
   }
 }

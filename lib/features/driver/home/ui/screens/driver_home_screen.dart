@@ -42,37 +42,30 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             extendBody: true,
-
             body: Center(
-              child: CircularProgressIndicator(
-                color: theme.colorScheme.primary,
-              ),
+              child: CircularProgressIndicator(color: theme.colorScheme.primary),
             ),
           );
         }
 
-        final driverId = snapshot.data ?? 2;
+        final driverId = snapshot.data ?? 0;
 
         return MultiBlocProvider(
           providers: [
-            // BlocProvider(
-            //   create: (_) => getIt<DriverHomeCubit>()..loadAllData(driverId),
-            // ),
-            BlocProvider.value( value: getIt<DriverHomeCubit>()..loadAllData(driverId),),
-
-            BlocProvider(create: (context) => getIt<DriverLocationCubit>()),
+            // DriverHomeCubit is a Factory — fresh instance, no stale state
+            BlocProvider(
+              create: (_) => getIt<DriverHomeCubit>()..loadAllData(driverId),
+            ),
+            BlocProvider(create: (_) => getIt<DriverLocationCubit>()),
             BlocProvider(create: (_) => getIt<ProfileCubit>()),
+            // NotificationCubit is a Singleton shared across screens (badge count)
             BlocProvider.value(
               value: getIt<NotificationCubit>()..fetchUnreadCount(),
             ),
-            BlocProvider.value(value: getIt<InstantOrdersCubit>())
-            
+            BlocProvider.value(value: getIt<InstantOrdersCubit>()),
           ],
           child: Container(
-            // Scafflod(
-            // extendBody: true,
             color: theme.scaffoldBackgroundColor,
-            // backgroundColor: theme.colorScheme.surface,
             child: const SafeArea(
               top: false,
               child: ClipRRect(

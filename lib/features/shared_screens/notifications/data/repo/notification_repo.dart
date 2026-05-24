@@ -1,10 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graduation_progect/connectivity_helper.dart';
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/models/notification_model.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
+/// Notification repository.
+///
+/// Per spec: NO notifications caching. Notifications are always fetched fresh.
+/// Only the unread count is cached (with a 30s anti-spam window).
 class NotificationRepo {
   final ApiService _apiService;
   NotificationRepo(this._apiService);
@@ -13,55 +18,46 @@ class NotificationRepo {
     try {
       await _apiService.saveDeviceToken({'token': token});
     } catch (e) {
-      debugPrint('❌ Error saving token to backend: $e');
+      debugPrint('❌ Error saving device token: $e');
     }
   }
 
+  /// Fetches notifications — always from server, no local cache returned here.
+  /// The cubit guards offline access before calling this.
   Future<ApiResult<List<NotificationModel>>> getNotifications({
     required int latest,
   }) async {
     try {
       final response = await _apiService.getNotifications(latest);
-      final notifications = response.notifications;
-
-
-      final jsonList = notifications.map((n) => n.toJson()).toList();
-      await HiveCacheService.cacheNotifications(jsonList);
-
-      return ApiResult.success(notifications);
+      return ApiResult.success(response.notifications);
     } catch (error) {
-      final cached = _getCachedNotifications();
-      if (cached != null) {
-        return ApiResult.success(cached);
-      }
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
 
+  /// Unread count — online: always fresh + cache. Offline: use cache.
   Future<ApiResult<int>> getNewNotificationsCount() async {
+    if (!ConnectivityHelper.isOnline) {
+      final cached = HiveCacheService.getCachedNotificationCount();
+      if (cached != null) return ApiResult.success(cached);
+      return ApiResult.success(0);
+    }
+
+    // Anti-spam: skip server call if we fetched count very recently
+    if (HiveCacheService.isNotifCountFresh()) {
+      final cached = HiveCacheService.getCachedNotificationCount();
+      if (cached != null) return ApiResult.success(cached);
+    }
+
     try {
       final response = await _apiService.getNewNotificationsCount();
-      final count = response['count'] ?? 0;
+      final count = (response['count'] as int?) ?? 0;
       await HiveCacheService.cacheNotificationCount(count);
       return ApiResult.success(count);
     } catch (error) {
-      final cachedCount = HiveCacheService.getCachedNotificationCount();
-      if (cachedCount != null) {
-        return ApiResult.success(cachedCount);
-      }
+      final cached = HiveCacheService.getCachedNotificationCount();
+      if (cached != null) return ApiResult.success(cached);
       return ApiResult.failure(ApiErrorHandler.handle(error));
-    }
-  }
-
-  List<NotificationModel>? _getCachedNotifications() {
-    final cachedList = HiveCacheService.getCachedNotifications();
-    if (cachedList == null) return null;
-    try {
-      return cachedList
-          .map((json) => NotificationModel.fromJson(json))
-          .toList();
-    } catch (_) {
-      return null;
     }
   }
 }

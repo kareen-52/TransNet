@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
-import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
-import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_state.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/ui/screens/search_shipments_screen.dart';
+import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_cubit.dart';
+import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_state.dart';
 
-/// Driver shipment history screen.
-/// Uses DriverShipmentsCubit — driver-only, no role check.
-class DriverShipmentsScreen extends StatefulWidget {
-  const DriverShipmentsScreen({super.key});
+/// Client shipment history screen.
+/// Uses ClientShipmentsCubit — completely isolated from DriverShipmentsCubit.
+class ClientShipmentsScreen extends StatefulWidget {
+  const ClientShipmentsScreen({super.key});
 
   @override
-  State<DriverShipmentsScreen> createState() => _DriverShipmentsScreenState();
+  State<ClientShipmentsScreen> createState() => _ClientShipmentsScreenState();
 }
 
-class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
+class _ClientShipmentsScreenState extends State<ClientShipmentsScreen> {
   late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    final cubit = context.read<DriverShipmentsCubit>();
+    final cubit = context.read<ClientShipmentsCubit>();
     cubit.getShipments(isReload: true);
 
     _scrollController.addListener(() {
@@ -63,23 +63,21 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
       ),
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.primary,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        onRefresh: () async =>
-            context.read<DriverShipmentsCubit>().getShipments(isReload: true),
-        child: BlocBuilder<DriverShipmentsCubit, DriverShipmentsState>(
+        onRefresh: () =>
+            context.read<ClientShipmentsCubit>().getShipments(isReload: true),
+        child: BlocBuilder<ClientShipmentsCubit, ClientShipmentsState>(
           builder: (context, state) {
             return state.maybeWhen(
               loading: () =>
                   const Center(child: CircularProgressIndicator()),
 
               success: (shipments, hasReachedMax) {
-                // ── Empty state ───────────────────────────────────────────────
                 if (shipments.isEmpty) {
                   return EmptyStateWidget(
                     title: 'لا توجد شحنات',
                     subTitle: 'لم تقم بأي شحنات بعد.',
                     onRetry: () => context
-                        .read<DriverShipmentsCubit>()
+                        .read<ClientShipmentsCubit>()
                         .getShipments(isReload: true),
                   );
                 }
@@ -103,7 +101,7 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
               error: (error) => ErrorStateWidget(
                 message: error.message ?? 'حدث خطأ',
                 onRetry: () => context
-                    .read<DriverShipmentsCubit>()
+                    .read<ClientShipmentsCubit>()
                     .getShipments(isReload: true),
               ),
 
