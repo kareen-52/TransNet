@@ -7,11 +7,6 @@ import 'package:graduation_progect/features/driver/profile/data/models/edit_prof
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Client profile repository — separate from DriverProfileRepo.
-///
-/// Strategy: ONLINE FIRST + CACHE FALLBACK. No TTL.
-/// Uses the same shared profile_box key (only one user is logged in at a time).
-/// Does NOT deal with driver-specific data (car, badge, governorates, statistics).
 class ClientProfileRepo {
   final ApiService _apiService;
   ClientProfileRepo(this._apiService);
@@ -51,8 +46,6 @@ class ClientProfileRepo {
     }
   }
 
-  // ── Private ─────────────────────────────────────────────────────────────────
-
   ApiResult<ProfileResponse>? _fromCache() {
     final cached = HiveCacheService.getCachedProfile();
     if (cached == null) return null;
@@ -63,7 +56,6 @@ class ClientProfileRepo {
     }
   }
 
-  /// Client profile serialization — only user fields (no car/badge/stats).
   Map<String, dynamic> _toJson(ProfileResponse r) {
     final user = r.user;
     return {

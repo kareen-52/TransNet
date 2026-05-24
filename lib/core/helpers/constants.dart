@@ -12,7 +12,7 @@ class SharedPrefKeys {
   static const String refreshToken = 'refreshToken';
 
   static const String driverId = 'driverId';
-  static const String driverFirstName = 'driverFirstName';
+  static const String userFirstName = 'userFirstName';
 
   static const String cachedInstantOrders = 'cached_instant_orders';
 }

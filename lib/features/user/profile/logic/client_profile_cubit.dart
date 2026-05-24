@@ -23,7 +23,7 @@ class ClientProfileCubit extends Cubit<ClientProfileState> {
       success: (data) async {
         final name = data.user?.firstName;
         if (name != null && name.isNotEmpty) {
-          await SharedPrefHelper.setData(SharedPrefKeys.driverFirstName, name);
+          await SharedPrefHelper.setData(SharedPrefKeys.userFirstName, name);
         }
         if (!isClosed) emit(ClientProfileState.success(data));
       },
