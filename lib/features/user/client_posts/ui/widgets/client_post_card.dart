@@ -37,11 +37,13 @@ class ClientPostCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // للحماية من تمدد الكولوم
         children: [
           // ── Header: نوع الغرض + الحالة ──
           Padding(
             padding: EdgeInsets.all(16.w),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.all(10.w),
@@ -77,6 +79,8 @@ class ClientPostCard extends StatelessWidget {
                           color: statusColor,
                           fontWeight: FontWeight.bold,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -85,7 +89,7 @@ class ClientPostCard extends StatelessWidget {
             ),
           ),
 
-          Divider(height: 1, color: theme.colorScheme.outline.withOpacity(0.5)),
+          Divider(height: 1, color: theme.colorScheme.outline.withOpacity(0.3)),
 
           // ── Body: المسار (من -> إلى) ──
           Padding(
@@ -103,7 +107,7 @@ class ClientPostCard extends StatelessWidget {
                     ),
                     Container(
                       width: 2.w,
-                      height: 24.h,
+                      height: 28.h, // تم زيادتها قليلاً لتتناسب مع حجم النصوص
                       margin: EdgeInsets.symmetric(vertical: 4.h),
                       color: Colors.grey.shade300,
                     ),
@@ -115,22 +119,22 @@ class ClientPostCard extends StatelessWidget {
                   ],
                 ),
                 horizontalSpace(12),
-                // العناوين
+                // العناوين (مع حماية Flexible لتجنب الايرورات)
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${post.startGovernorate} - ${post.startLocationDetails}',
+                        '${post.startGovernorate ?? 'غير محدد'} - ${post.startLocationDetails ?? ''}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      verticalSpace(22),
+                      verticalSpace(26), // متناسب مع ارتفاع الخط الرابط
                       Text(
-                        '${post.endGovernorate} - ${post.endLocationDetails}',
+                        '${post.endGovernorate ?? 'غير محدد'} - ${post.endLocationDetails ?? ''}',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -154,44 +158,63 @@ class ClientPostCard extends StatelessWidget {
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // الموعد
-                Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_month_rounded,
-                      size: 16.sp,
-                      color: Colors.grey.shade600,
-                    ),
-                    horizontalSpace(6),
-                    Text(
-                      'أقصى موعد: ${post.lastDate ?? 'غير محدد'}',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                // السعر
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'السعر المقترح',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                // الموعد (نستخدم Flexible لحمايته إذا صغرت الشاشة جداً)
+                Flexible(
+                  flex: 3,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.calendar_month_rounded,
+                        size: 16.sp,
                         color: Colors.grey.shade600,
                       ),
-                    ),
-                    Text(
-                      '${_formatNumber(post.minPrice ?? 0)} - ${_formatNumber(post.maxPrice ?? 0)}',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.primary,
+                      horizontalSpace(6),
+                      Flexible(
+                        child: Text(
+                          'أقصى موعد:\n${post.lastDate ?? 'غير محدد'}',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: Colors.grey.shade700,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                horizontalSpace(8),
+                // السعر (يأخذ المساحة الأكبر لأنه الأهم)
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'نطاق السعر',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.grey.shade600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${_formatNumber(post.minPrice ?? 0)} - ${_formatNumber(post.maxPrice ?? 0)}',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
