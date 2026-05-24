@@ -3,8 +3,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 
 part 'route_geometry_model.g.dart';
 
-/// Data model for route geometry (GeoJSON LineString).
-/// Responsible only for JSON deserialization and entity mapping.
 @JsonSerializable()
 class RouteGeometryModel {
   final List<List<double>> coordinates;
@@ -20,7 +18,7 @@ class RouteGeometryModel {
 
   Map<String, dynamic> toJson() => _$RouteGeometryModelToJson(this);
 
-  /// Maps this data model to the corresponding domain entity.
+  
   RouteGeometryEntity toEntity() => RouteGeometryEntity(
         coordinates: coordinates,
         type: type,

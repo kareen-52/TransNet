@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Error state view shown when loading shipment details fails.
-///
-/// Displays a descriptive message and a back-navigation button.
-/// Stateless — receives the error message as a parameter.
 class ShipmentDetailsErrorView extends StatelessWidget {
   final String? message;
 

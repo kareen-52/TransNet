@@ -1,5 +1,3 @@
-/// Pure domain entity representing a party involved in a shipment
-/// (either a driver or a client). No serialization dependencies.
 class PartyEntity {
   final int id;
   final String firstName;
@@ -15,6 +13,5 @@ class PartyEntity {
     required this.userNumber,
   });
 
-  /// Full display name composed from first and last name.
   String get fullName => '$firstName $lastName';
 }

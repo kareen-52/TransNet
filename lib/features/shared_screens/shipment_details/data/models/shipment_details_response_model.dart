@@ -6,9 +6,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 
 part 'shipment_details_response_model.g.dart';
 
-/// Root API response model for the shipment details endpoint.
-/// Wraps all nested models and exposes a single [toEntity()] converter
-/// that produces the clean domain aggregate.
 @JsonSerializable()
 class ShipmentDetailsResponseModel {
   final ShipmentDetailModel shipment;
@@ -35,7 +32,6 @@ class ShipmentDetailsResponseModel {
 
   Map<String, dynamic> toJson() => _$ShipmentDetailsResponseModelToJson(this);
 
-  /// Converts the full API response into the clean domain entity aggregate.
   ShipmentDetailsEntity toEntity() => ShipmentDetailsEntity(
         shipment: shipment.toEntity(),
         routeGeometry: routeGeometry?.toEntity(),

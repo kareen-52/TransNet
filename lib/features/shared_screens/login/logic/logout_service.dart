@@ -5,6 +5,7 @@ import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/logout_dialog.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 import 'package:graduation_progect/main.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
@@ -42,9 +43,9 @@ class LogoutService {
       SnackbarHelper.showError(message: 'حدث خطأ أثناء الاتصال بالسيرفر');
       return false;
     }
-
-    SnackbarHelper.showSuccess(message: 'تم تسجيل الخروج بنجاح');
     await _performLogout();
+    SnackbarHelper.showSuccess(message: 'تم تسجيل الخروج بنجاح');
+
     return true;
   }
 
@@ -79,11 +80,14 @@ class LogoutService {
     await _performLogout();
   }
 
+
+
   static Future<void> _performLogout() async {
     try {
       await NotificationService.handleLogout();
     } catch (_) {}
 
+    ShipmentDetailsCubit.clearCurrentUserCache();
     await _clearLocalData();
 
     navigatorKey.currentState?.pushNamedAndRemoveUntil(

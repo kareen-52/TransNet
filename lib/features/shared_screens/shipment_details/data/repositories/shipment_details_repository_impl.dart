@@ -14,8 +14,7 @@ class ShipmentDetailsRepositoryImpl implements ShipmentDetailsRepository {
     int shipmentId,
   ) async {
     try {
-      // Retrofit already deserializes into ShipmentDetailsResponseModel
-      // directly — no need to call fromJson again.
+     
       final responseModel = await _apiService.getShipmentDetails(shipmentId);
       return ApiResult.success(responseModel.toEntity());
     } catch (error) {

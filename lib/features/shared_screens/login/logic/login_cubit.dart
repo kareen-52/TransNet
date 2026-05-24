@@ -37,6 +37,9 @@ class LoginCubit extends Cubit<LoginState> {
         final firstLogin = loginResponse.firstLoginForDriver;
         ApiConstants.driverId = loginResponse.driverId;
         final message = loginResponse.message;
+           final userId = loginResponse.userId;
+         
+             await SharedPrefHelper.setData(SharedPrefKeys.userId, userId);
 
         if (token == null &&
             message != null &&

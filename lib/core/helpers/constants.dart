@@ -2,6 +2,7 @@ bool isLoggedInUser = false;
 
 class SharedPrefKeys {
   static const String userToken = 'access_token';
+  static const String userId = 'user_id';
   static const String userResetToken = 'userResetToken';
   static const String userRole = 'userRole';
   static const String isFirstLogin = 'isFirstLogin';

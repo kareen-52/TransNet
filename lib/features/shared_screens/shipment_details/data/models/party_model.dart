@@ -3,8 +3,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 
 part 'party_model.g.dart';
 
-/// Data model for a party (driver or client) involved in a shipment.
-/// Responsible only for JSON deserialization.
 @JsonSerializable()
 class PartyModel {
   final int id;
@@ -34,7 +32,6 @@ class PartyModel {
 
   Map<String, dynamic> toJson() => _$PartyModelToJson(this);
 
-  /// Maps this data model to the corresponding domain entity.
   PartyEntity toEntity() => PartyEntity(
         id: id,
         firstName: firstName,

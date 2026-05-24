@@ -1,72 +1,91 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
+import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_details_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/usecases/get_shipment_details_usecase.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_state.dart';
 
-/// Cubit for the Shipment Details screen.
-///
-/// Responsibilities (and ONLY these):
-///   - Translate UI events into use-case calls.
-///   - Emit the correct [ShipmentDetailsState] based on the result.
-///   - Maintain an in-memory cache to prevent redundant network calls.
-///
-/// Does NOT contain business logic, formatting, or UI concerns.
 class ShipmentDetailsCubit extends Cubit<ShipmentDetailsState> {
   final GetShipmentDetailsUseCase _getShipmentDetailsUseCase;
 
-  /// Static cache shared across cubit instances of the same session.
-  /// Key: shipmentId. Cleared on logout via [clearCache].
-  static final Map<int, ShipmentDetailsEntity> _cache = {};
+
+  static final Map<String, ShipmentDetailsEntity> _cache = {};
 
   ShipmentDetailsCubit(this._getShipmentDetailsUseCase)
       : super(const ShipmentDetailsState.initial());
 
-  // ── Public API ─────────────────────────────────────────────────────────────
+  static String _cacheKey(int userId, int shipmentId) => '${userId}_$shipmentId';
 
-  /// Loads shipment details for [shipmentId].
-  /// Serves instantly from cache if available; otherwise fetches from network.
+  static int? _getCurrentUserId() {
+    return SharedPrefHelper.getInt(SharedPrefKeys.userId);
+  }
+
   Future<void> load(int shipmentId) async {
     if (isClosed) return;
 
-    final cached = _cache[shipmentId];
+    final userId = _getCurrentUserId();
+    if (userId == null) {
+    
+      emit(const ShipmentDetailsState.loading());
+      await _fetch(shipmentId);
+      return;
+    }
+
+    final key = _cacheKey(userId, shipmentId);
+    final cached = _cache[key];
     if (cached != null) {
       emit(ShipmentDetailsState.success(cached));
       return;
     }
 
     emit(const ShipmentDetailsState.loading());
-    await _fetch(shipmentId);
+    await _fetch(shipmentId, userId: userId);
   }
 
-  /// Forces a fresh network request for [shipmentId], bypassing the cache.
   Future<void> refresh(int shipmentId) async {
     if (isClosed) return;
-    _cache.remove(shipmentId);
+    final userId = _getCurrentUserId();
+    if (userId != null) {
+      _cache.remove(_cacheKey(userId, shipmentId));
+    } else {
+  
+      _cache.removeWhere((key, _) => key.endsWith('_$shipmentId'));
+    }
     emit(const ShipmentDetailsState.loading());
-    await _fetch(shipmentId);
+    await _fetch(shipmentId, userId: userId);
   }
 
-  // ── Private helpers ────────────────────────────────────────────────────────
-
-  Future<void> _fetch(int shipmentId) async {
+  Future<void> _fetch(int shipmentId, {int? userId}) async {
     final result = await _getShipmentDetailsUseCase(shipmentId);
     if (isClosed) return;
 
     result.when(
       success: (data) {
-        _cache[shipmentId] = data;
+        if (userId != null) {
+          final key = _cacheKey(userId, shipmentId);
+          _cache[key] = data;
+        }
         emit(ShipmentDetailsState.success(data));
       },
       failure: (error) => emit(ShipmentDetailsState.error(error)),
     );
   }
 
-  // ── Cache management ───────────────────────────────────────────────────────
+  static void clearCurrentUserCache() {
+    final userId = SharedPrefHelper.getInt(SharedPrefKeys.userId);
+ 
+    _cache.removeWhere((key, _) => key.startsWith('${userId}_'));
+  }
 
-  /// Evicts all cached shipment details (call on user logout).
-  static void clearCache() => _cache.clear();
 
-  /// Evicts cached data for a single shipment (call after an update).
-  static void invalidate(int shipmentId) => _cache.remove(shipmentId);
+  static void clearAllCache() => _cache.clear();
+
+
+  static void invalidate(int shipmentId) {
+    final userId = SharedPrefHelper.getInt(SharedPrefKeys.userId);
+  
+      _cache.remove(_cacheKey(userId, shipmentId));
+    
+  }
 }

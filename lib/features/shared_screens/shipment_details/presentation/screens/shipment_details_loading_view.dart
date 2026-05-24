@@ -3,10 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/shimmer_box.dart';
 
-/// Loading skeleton shown while shipment data is being fetched.
-///
-/// Uses [ShimmerBox] primitives to render a believable content placeholder
-/// that matches the actual content layout — reducing perceived load time.
 class ShipmentDetailsLoadingView extends StatelessWidget {
   const ShipmentDetailsLoadingView({super.key});
 
@@ -19,7 +15,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          // Fake AppBar
+   
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
             child: Row(
@@ -33,7 +29,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
             ),
           ),
 
-          // Scrollable skeleton body
+  
           Expanded(
             child: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -41,7 +37,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 4.h),
-                  // Header card skeleton
+              
                   ShimmerBox(
                       w: double.infinity,
                       h: 100.h,
@@ -49,7 +45,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                       base: base,
                       high: high),
                   SizedBox(height: 14.h),
-                  // PIN + QR skeleton
+            
                   Row(
                     children: [
                       Expanded(
@@ -74,7 +70,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                       base: base,
                       high: high),
                   SizedBox(height: 14.h),
-                  // Map skeleton
+                 
                   ShimmerBox(
                       w: double.infinity,
                       h: 200.h,
@@ -90,7 +86,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                       base: base,
                       high: high),
                   SizedBox(height: 14.h),
-                  // Status skeleton
+          
                   ShimmerBox(
                       w: double.infinity,
                       h: 130.h,
@@ -98,7 +94,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                       base: base,
                       high: high),
                   SizedBox(height: 14.h),
-                  // Party skeleton
+              
                   ShimmerBox(
                       w: double.infinity,
                       h: 80.h,

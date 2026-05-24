@@ -16,10 +16,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
 import 'package:graduation_progect/features/user/review_driver/ui/review_screen.dart';
 
-/// Renders the success state of the Shipment Details screen.
-///
-/// Responsibility: layout only — composing section widgets in the correct
-/// visual order. No business logic, no state management.
+
 class ShipmentDetailsBody extends StatelessWidget {
   final ShipmentDetailsEntity data;
 
@@ -43,17 +40,16 @@ class ShipmentDetailsBody extends StatelessWidget {
             delegate: SliverChildListDelegate([
               SizedBox(height: 12.h),
 
-              // ① Shipment number + status + copy
+   
               ShipmentHeaderCard(shipment: shipment, isDark: isDark),
               SizedBox(height: 14.h),
 
-              // ② PIN + QR (conditional)
+   
               if (shipment.hasPin || shipment.hasQrPin) ...[
                 PinQrRow(shipment: shipment, isDark: isDark),
                 SizedBox(height: 14.h),
               ],
 
-              // ③ Route summary
               SectionHeader(
                 label: 'مسار الشحنة',
                 icon: Icons.route_rounded,
@@ -63,7 +59,6 @@ class ShipmentDetailsBody extends StatelessWidget {
               ShipmentRouteCard(shipment: shipment, isDark: isDark),
               SizedBox(height: 14.h),
 
-              // ④ Map preview card
               SectionHeader(
                 label: 'خريطة الرحلة',
                 icon: Icons.map_rounded,
@@ -77,7 +72,7 @@ class ShipmentDetailsBody extends StatelessWidget {
               ),
               SizedBox(height: 14.h),
 
-              // ⑤ Cargo details (price + dimensions + weight)
+           
               SectionHeader(
                 label: 'تفاصيل الشحنة',
                 icon: Icons.inventory_2_outlined,
@@ -87,7 +82,6 @@ class ShipmentDetailsBody extends StatelessWidget {
               ShipmentCargoCard(shipment: shipment, isDark: isDark),
               SizedBox(height: 14.h),
 
-              // ⑥ Status (payment + delivery date)
               SectionHeader(
                 label: 'حالة الشحنة',
                 icon: Icons.info_outline_rounded,
@@ -97,7 +91,7 @@ class ShipmentDetailsBody extends StatelessWidget {
               ShipmentStatusCard(shipment: shipment, isDark: isDark),
               SizedBox(height: 14.h),
 
-              // ⑦ Parties (driver + client)
+     
               if (data.hasParties) ...[
                 SectionHeader(
                   label: 'الأطراف',

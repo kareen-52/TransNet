@@ -1,5 +1,3 @@
-/// Pure domain entity representing a single shipment.
-/// No framework or serialization dependencies — only business data.
 class ShipmentEntity {
   final int id;
   final int userId;
@@ -15,8 +13,6 @@ class ShipmentEntity {
   final String? length;
   final String? object;
 
-  /// Backend returns 0 = no insurance, 1 = has insurance.
-  /// This is a flag — NOT a monetary amount.
   final int? insurance;
 
   final String startPositionLat;
@@ -59,7 +55,7 @@ class ShipmentEntity {
     this.paid,
   });
 
-  // ── Derived business-logic properties ──────────────────────────────────────
+
 
   bool get isCompleted => success == 1;
   bool get isPaid => paid == 1;
@@ -67,7 +63,7 @@ class ShipmentEntity {
   bool get hasQrPin => qrPin != null && qrPin!.isNotEmpty;
   bool get hasDimensions => width != null || height != null || length != null;
 
-  /// insurance == 1  → has insurance (flag, not a monetary value)
+
   bool get hasInsurance => insurance == 1;
 
   String get displayStatus => status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ');

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
@@ -10,12 +9,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_error_view.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_loading_view.dart';
 
-/// Entry point for the Shipment Details feature.
-///
-/// Responsibilities:
-///   - Provide the [ShipmentDetailsCubit] via dependency injection.
-///   - Configure system UI overlay style.
-///   - Route between [_Loading], [_Error], and [_Success] state views.
+
 class ShipmentDetailsScreen extends StatelessWidget {
   final int shipmentId;
 

@@ -3,9 +3,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 
 part 'shipment_detail_model.g.dart';
 
-/// Data model for a single shipment.
-/// Responsible only for JSON deserialization.
-/// Converts to the domain entity via [toEntity()].
+
 @JsonSerializable()
 class ShipmentDetailModel {
   final int id;
@@ -98,7 +96,7 @@ class ShipmentDetailModel {
 
   Map<String, dynamic> toJson() => _$ShipmentDetailModelToJson(this);
 
-  /// Maps this data model to the corresponding domain entity.
+
   ShipmentEntity toEntity() => ShipmentEntity(
         id: id,
         userId: userId,
