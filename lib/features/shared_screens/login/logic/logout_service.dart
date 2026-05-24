@@ -42,16 +42,9 @@ class LogoutService {
       SnackbarHelper.showError(message: 'حدث خطأ أثناء الاتصال بالسيرفر');
       return false;
     }
-    await _performLogout();
 
     SnackbarHelper.showSuccess(message: 'تم تسجيل الخروج بنجاح');
-
-    if (navigatorKey.currentState != null) {
-      navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        Routes.login,
-        (route) => false,
-      );
-    }
+    await _performLogout();
     return true;
   }
 
