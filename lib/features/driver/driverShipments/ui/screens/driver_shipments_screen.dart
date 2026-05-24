@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
@@ -52,11 +53,14 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
       appBar: AppBar(
         title: Text('شحناتي', style: Theme.of(context).textTheme.headlineSmall),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SearchShipmentsScreen()),
+          Padding(
+            padding:  EdgeInsets.all(12.0.r),
+            child: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SearchShipmentsScreen()),
+              ),
             ),
           ),
         ],
