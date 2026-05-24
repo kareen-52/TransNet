@@ -19,6 +19,7 @@ import 'package:graduation_progect/features/shared_screens/verification_code/dat
 import 'package:graduation_progect/features/shared_screens/verification_code/data/models/verification_response.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/models/driver_model.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/models/send_to_driver_request.dart';
+import 'package:graduation_progect/features/user/client_posts/data/models/client_post_model.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/models/create_shipment_request_body.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/models/governorate_model.dart';
 import 'package:graduation_progect/features/user/vehicle_types/data/models/vehicle_type_model.dart';
@@ -170,4 +171,13 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
   @POST(ApiConstants.createReview)
   Future<dynamic> createReview(@Body() Map<String, dynamic> body);
   
+
+  @GET(ApiConstants.clientPosts)
+  Future<List<ClientPostModel>> getClientPosts();
+
+  @POST(ApiConstants.createPost)
+  Future<dynamic> createPost(@Body() Map<String, dynamic> body);
+
+  @PUT(ApiConstants.updatePostPrices)
+  Future<dynamic> updatePostPrices(@Body() Map<String, dynamic> body);
 }

@@ -62,4 +62,9 @@ class ApiConstants {
   static const String confirmDelivery = 'shipment/confirm-delivery';
   static const String createReview = 'review';
 
+  static const String clientPosts = 'posts/client';
+  static const String createPost = 'post/create';
+  static const String updatePostPrices = 'post/update';
+  
+
 }

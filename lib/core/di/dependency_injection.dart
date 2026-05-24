@@ -174,6 +174,10 @@ import 'package:graduation_progect/features/shared_screens/verification_code/log
 import 'package:graduation_progect/features/user/active_orders/data/repos/active_orders_repo.dart';
 import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/repos/available_drivers_repo.dart';
+import 'package:graduation_progect/features/user/client_posts/data/repo/client_posts_repo.dart';
+import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
+import 'package:graduation_progect/features/user/create_post/data/repo/create_post_repo.dart';
+import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
 import 'package:graduation_progect/features/user/driver_details/data/repo/driver_details_repo.dart';
 import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
 import 'package:graduation_progect/features/user/driver_details/logic/driver_details_cubit.dart';
@@ -337,4 +341,12 @@ void setupGetIt() {
 
   getIt.registerLazySingleton<ReviewDriverRepo>(() => ReviewDriverRepo(getIt()));
   getIt.registerFactory<ReviewDriverCubit>(() => ReviewDriverCubit(getIt()));
+
+  // ── Client Posts ────────────────────────────────────────────────────────────
+  getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
+  // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+
+  getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
+  getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));
 }

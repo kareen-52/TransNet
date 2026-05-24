@@ -27,5 +27,7 @@ class Routes {
 
   static const String shipmentDetailsScreen = '/shipmentDetailsScreen';
 
+  static const String createClientPostScreen = '/createClientPostScreen';
+  static const String priceAdjustmentScreen = '/priceAdjustmentScreen';
   
 }

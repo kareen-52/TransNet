@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/features/user/client_posts/ui/screen/client_post_screen.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/screens/home_content.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/widgets/appbar/tablet_appbar.dart';
@@ -17,7 +18,7 @@ class _TabletBodyState extends State<TabletBody> {
 
   final List<Widget> _screens = const [
     HomeContent(isTablet: true),
-    MyAdsScreen(),
+    ClientPostsScreen(),
     MyOrdersScreen(),
     ProfileClientScreen(),
   ];

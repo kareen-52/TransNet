@@ -17,7 +17,7 @@ class _TabletBodyState extends State<TabletBody> {
 
   final List<Widget> _screens = const [
     HomeContent(isTablet: true),
-    MyAdsScreen(),
+    ClientAdsScreen(),
     MyOrdersScreen(),
     ProfileDriverScreen(),
   ];
@@ -39,4 +39,12 @@ class _TabletBodyState extends State<TabletBody> {
       ),
     );
   }
+}
+
+
+
+class ClientAdsScreen extends StatelessWidget {
+  const ClientAdsScreen({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: Text('اعلاناتي'));
 }
