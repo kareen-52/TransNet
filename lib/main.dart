@@ -89,7 +89,6 @@
 // }
 
 import 'dart:async';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -105,61 +104,53 @@ import 'package:graduation_progect/core/routing/app_router.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/theme_cash_helper.dart';
 import 'package:graduation_progect/graduation_project.dart';
-import 'package:graduation_progect/connectivity_helper.dart';
+import 'package:graduation_progect/core/offline_onlineMode/connectivity_helper.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
 String _initialRoute = Routes.onboardingScreens;
 ThemeMode _savedTheme = ThemeMode.system;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-
-
   setupGetIt();
-
   Bloc.observer = AppBlocObserver();
 
   await Future.wait([
     Firebase.initializeApp(),
     SharedPrefHelper.init(),
     HiveCacheService.init(),
-    ConnectivityHelper.init(),
+    ConnectivityHelper.init(),  
     ThemeCacheHelper.getTheme().then((t) => _savedTheme = t),
     _determineInitialRoute(),
   ]);
-FlutterNativeSplash.remove();
 
-unawaited(
-  NotificationService.init().catchError((e) {
-    if (kDebugMode) {
-      debugPrint(
-        '❌ خطأ في الإشعارات: $e',
-      );
-    }
-  }),
-);
+  FlutterNativeSplash.remove();
 
-runApp(
-  DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (_) => MyGraduationProject(
-      appRouter: AppRouter(),
-      initialTheme: _savedTheme,
-      startRoute: _initialRoute,
+  unawaited(
+    NotificationService.init().catchError((e) {
+      if (kDebugMode) {
+        debugPrint(' خطأ في الإشعارات: $e');
+      }
+    }),
+  );
+
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (_) => MyGraduationProject(
+        appRouter: AppRouter(),
+        initialTheme: _savedTheme,
+        startRoute: _initialRoute,
+      ),
     ),
-  ),
-);
-
-
+  );
 }
 
-
 Future<void> _determineInitialRoute() async {
-    final token = await SharedPrefHelper.getSecuredString(
-    SharedPrefKeys.userToken,
-  );
+  final token = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
   final role = SharedPrefHelper.getString(SharedPrefKeys.userRole);
   final isFirstLogin = SharedPrefHelper.getBool(SharedPrefKeys.isFirstLogin);
 
@@ -167,8 +158,6 @@ Future<void> _determineInitialRoute() async {
     if (isFirstLogin == true) {
       _initialRoute = Routes.login;
     } else {
-      print(role);
-
       _initialRoute = (role == 'driver')
           ? Routes.driverHomeScreen
           : Routes.clientHomeScreen;

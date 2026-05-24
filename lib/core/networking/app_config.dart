@@ -1,19 +1,19 @@
 //
-// بناء للـ dev:
+// dev:
 //   flutter run --dart-define=BASE_URL=http://10.220.186.190:8000/
 //
-// بناء للـ production:
+// production:
 //   flutter build apk \
 //     --dart-define=BASE_URL=https://api.transnet.app/ \
 //     --dart-define=ORS_API_KEY=your_key_here
-// ============================================================
+
 
 class AppConfig {
   AppConfig._();
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://10.220.186.190:8000/', // dev fallback فقط
+    defaultValue: 'http://10.220.186.190:8000/', 
   );
 
   static const String _orsApiKey = String.fromEnvironment(

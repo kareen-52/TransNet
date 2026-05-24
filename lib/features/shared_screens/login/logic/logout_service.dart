@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_progect/connectivity_helper.dart';
+import 'package:graduation_progect/core/offline_onlineMode/connectivity_helper.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';

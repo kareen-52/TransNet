@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/connectivity_helper.dart';
+import 'package:graduation_progect/core/offline_onlineMode/connectivity_helper.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/widgets/icon_button_header.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';

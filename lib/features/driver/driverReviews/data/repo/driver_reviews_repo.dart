@@ -1,4 +1,4 @@
-import 'package:graduation_progect/connectivity_helper.dart';
+import 'package:graduation_progect/core/offline_onlineMode/connectivity_helper.dart';
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_error_model.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';

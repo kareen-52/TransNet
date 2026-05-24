@@ -123,14 +123,14 @@ class NotificationService {
           payload: jsonEncode(message.data),
         );
 
-        // ── قبول الطلب → refresh فوري للطلبات النشطة ──────────────────────
+    
         if (title.contains('قبول')) {
           try {
             getIt<HomeCubit>().checkActiveShipment();
             getIt<ActiveOrdersCubit>().silentRefresh();
             getIt<ActiveDriverShipmentsCubit>().silentRefresh();
           } catch (e) {
-            if (kDebugMode) print("⚠️ ActiveOrdersCubit not ready: $e");
+            if (kDebugMode) print(" ActiveOrdersCubit not ready: $e");
           }
         }
 
@@ -141,24 +141,23 @@ class NotificationService {
             getIt<ActiveOrdersCubit>().silentRefresh();
           }
         } catch (e) {
-          if (kDebugMode) print("⚠️ not ready: $e");
+          if (kDebugMode) print(" not ready: $e");
         }
 
-        // ── تحديث حالة الهوم عند رفض أو قبول الطلب ──────────────────────
         try {
           if (title.contains('رفض')) {
             getIt<HomeCubit>().checkActiveShipment();
           }
         } catch (e) {
           if (kDebugMode) {
-            print("⚠️ HomeCubit not registered yet: $e");
+            print(" HomeCubit not registered yet: $e");
           }
         }
 
         try {
           getIt<NotificationCubit>().fetchUnreadCount();
         } catch (e) {
-          print("⚠️ NotificationCubit is not registered yet: $e");
+          print(" NotificationCubit is not registered yet: $e");
         }
       }
     });
@@ -178,7 +177,7 @@ class NotificationService {
     });
 
     _firebaseMessaging.onTokenRefresh.listen((newToken) async {
-      print("🔄 Token Refreshed: $newToken");
+      print("Token Refreshed: $newToken");
       await SharedPrefHelper.setSecuredString(_fcmTokenKey, newToken);
       String userAuthToken = await SharedPrefHelper.getSecuredString(
         SharedPrefKeys.userToken,
@@ -201,7 +200,7 @@ class NotificationService {
 
       if (authToken.isEmpty) {
         if (kDebugMode) {
-          print("ℹ️ User not logged in.");
+          print(" User not logged in.");
         }
 
         return;
@@ -211,14 +210,14 @@ class NotificationService {
 
       if (storedToken == currentToken) {
         if (kDebugMode) {
-          print("ℹ️ Token unchanged.");
+          print(" Token unchanged.");
         }
 
         return;
       }
 
       if (kDebugMode) {
-        print("🚀 Syncing new token...");
+        print(" Syncing new token...");
       }
 
       await getIt<NotificationRepo>().saveDeviceToken(currentToken);
@@ -226,7 +225,7 @@ class NotificationService {
       await SharedPrefHelper.setSecuredString(_fcmTokenKey, currentToken);
     } catch (e) {
       if (kDebugMode) {
-        print("❌ Token sync failed: $e");
+        print(" Token sync failed: $e");
       }
 
       if (retryCount < 5) {

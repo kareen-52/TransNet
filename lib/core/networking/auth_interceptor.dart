@@ -19,9 +19,9 @@ class AuthInterceptor extends Interceptor {
     
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
-      if (kDebugMode) debugPrint('🔐 [AuthInterceptor] Attached token to request: ${options.path}');
+      if (kDebugMode) debugPrint(' [AuthInterceptor] Attached token to request: ${options.path}');
     } else {
-      if (kDebugMode) debugPrint('⚠️ [AuthInterceptor] No token found for request: ${options.path}');
+      if (kDebugMode) debugPrint(' [AuthInterceptor] No token found for request: ${options.path}');
     }
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
@@ -37,7 +37,7 @@ class AuthInterceptor extends Interceptor {
       final data = err.response?.data;
       if (data is Map && (data['message'] == 'Unauthenticated.' || data['message'] == 'Unauthenticated')) {
         isTokenExpired = true;
-        if (kDebugMode) debugPrint('🔄 [AuthInterceptor] Detected 401 Unauthenticated. Will try to refresh token.');
+        if (kDebugMode) debugPrint(' [AuthInterceptor] Detected 401 Unauthenticated. Will try to refresh token.');
       }
     }
 
@@ -46,22 +46,22 @@ class AuthInterceptor extends Interceptor {
     }
 
     if (_isRefreshing) {
-      if (kDebugMode) debugPrint('⏳ [AuthInterceptor] Refreshing already in progress. Queuing request.');
+      if (kDebugMode) debugPrint(' [AuthInterceptor] Refreshing already in progress. Queuing request.');
       _requestsQueue.add({'options': err.requestOptions, 'handler': handler, 'error': err});
       return;
     }
 
     _isRefreshing = true;
-    if (kDebugMode) debugPrint('🔁 [AuthInterceptor] Starting token refresh process...');
+    if (kDebugMode) debugPrint(' [AuthInterceptor] Starting token refresh process...');
 
     try {
       final refreshResult = await TokenRefresher.refreshToken();
 
       if (refreshResult == RefreshResult.success) {
         final newToken = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
-        if (kDebugMode) debugPrint('✅ Token refreshed. New token: ${newToken.substring(0, 10)}...');
+        if (kDebugMode) debugPrint(' Token refreshed. New token: ${newToken.substring(0, 10)}...');
 
-        // إعادة الطلب الأصلي
+  
         err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
         try {
           final response = await dio.fetch(err.requestOptions);
@@ -70,7 +70,6 @@ class AuthInterceptor extends Interceptor {
           handler.next(e is DioException ? e : err);
         }
 
-        // إعادة الطلبات المتوقفة
         for (var item in _requestsQueue) {
           final reqOptions = item['options'] as RequestOptions;
           final reqHandler = item['handler'] as ErrorInterceptorHandler;
@@ -84,13 +83,13 @@ class AuthInterceptor extends Interceptor {
         }
       } 
       else if (refreshResult == RefreshResult.banned) {
-        // حساب محظور أو مجمد → تسجيل خروج فوري مع رسالة أمنية
-        if (kDebugMode) debugPrint('🚫 [AuthInterceptor] Account banned. Forcing logout with security message.');
+     
+        if (kDebugMode) debugPrint(' [AuthInterceptor] Account banned. Forcing logout with security message.');
         await ForceLogoutHandler.forceLogout(
           message: 'تم حظر حسابك  بسبب نشاط غير آمن. الرجاء التواصل مع الدعم.',
           isSecurityBan: true,
         );
-        // إعادة جميع الطلبات في الطابور كأخطاء
+     
         for (var item in _requestsQueue) {
           final reqHandler = item['handler'] as ErrorInterceptorHandler;
           final reqError = item['error'] as DioException;
@@ -98,14 +97,14 @@ class AuthInterceptor extends Interceptor {
         }
         handler.next(err);
       }
-      else { // RefreshResult.failed
-        if (kDebugMode) debugPrint('🛑 [AuthInterceptor] Token refresh failed (no ban). Logging out normally.');
+      else {
+        if (kDebugMode) debugPrint(' [AuthInterceptor] Token refresh failed (no ban). Logging out normally.');
         for (var item in _requestsQueue) {
           final reqHandler = item['handler'] as ErrorInterceptorHandler;
           final reqError = item['error'] as DioException;
           reqHandler.next(reqError);
         }
-        await ForceLogoutHandler.forceLogout(); // تسجيل خروج عادي بدون رسالة محددة
+        await ForceLogoutHandler.forceLogout(); 
         handler.next(err);
       }
     } catch (e) {

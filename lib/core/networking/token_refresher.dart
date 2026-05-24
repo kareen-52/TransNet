@@ -63,7 +63,7 @@ class TokenRefresher {
 
         if (kDebugMode) debugPrint('❌ [TokenRefresher] Failed with status: $statusCode, Data: $data');
 
-        // حالة 403 مع رسالة banned أو frozen
+  
         if (statusCode == 403 && data is Map) {
           final message = data['message']?.toString().toLowerCase();
           if (message == 'banned') {

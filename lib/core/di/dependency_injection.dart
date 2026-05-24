@@ -61,12 +61,12 @@ import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_typ
 final getIt = GetIt.instance;
 
 void setupGetIt() {
-  // ── Networking ─────────────────────────────────────────────────────────────
+  // ── Networking 
   getIt.registerLazySingleton<ApiService>(
     () => ApiService(DioFactory.getDio()),
   );
 
-  // ── Auth ───────────────────────────────────────────────────────────────────
+  // ── Auth 
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
 
@@ -104,14 +104,14 @@ void setupGetIt() {
   );
 
   // ── Home (Client) ──────────────────────────────────────────────────────────
-  // Factory: fresh instance each time — no stale state between navigations
+  
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
 
   // ── Available Drivers ──────────────────────────────────────────────────────
   getIt.registerLazySingleton<AvailableDriversRepo>(
     () => AvailableDriversRepo(getIt()),
   );
-  // Factory: session image cache lives inside this cubit; close clears it
+
   getIt.registerFactory<AvailableDriversCubit>(
     () => AvailableDriversCubit(getIt(), getIt(), getIt()),
   );
@@ -129,12 +129,11 @@ void setupGetIt() {
   getIt.registerFactory<DriverDetailsCubit>(() => DriverDetailsCubit(getIt()));
 
   // ── Notifications ──────────────────────────────────────────────────────────
-  // NotificationRepo: singleton (stateless service)
+
   getIt.registerLazySingleton<NotificationRepo>(
     () => NotificationRepo(getIt<ApiService>()),
   );
-  // NotificationCubit: singleton — shared badge count across screens.
-  // fetchRecentNotifications() is guarded by offline check inside the cubit.
+ 
   getIt.registerLazySingleton<NotificationCubit>(
     () => NotificationCubit(getIt()),
   );
@@ -145,7 +144,7 @@ void setupGetIt() {
 
   // ── Driver Home ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
-  // ✅ Factory (was wrongly Singleton) — fresh state + fresh image on each login
+  
   getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
 
   // ── Instant Orders ─────────────────────────────────────────────────────────
@@ -163,7 +162,7 @@ void setupGetIt() {
   );
 
   // ── Driver Shipment History ────────────────────────────────────────────────
-  // Separate repo + cubit from client — no shared cache
+  
   getIt.registerLazySingleton<DriverShipmentsRepo>(
     () => DriverShipmentsRepo(getIt()),
   );

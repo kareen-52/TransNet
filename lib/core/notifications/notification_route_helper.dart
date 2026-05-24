@@ -17,14 +17,14 @@ class NotificationRouteHelper {
   }) {
     final BuildContext? navContext = context ?? navigatorKey.currentContext;
     if (navContext == null) return;
-    if (kDebugMode) print("🔔 Notification action: title='$title' id=$shipmentId");
+    if (kDebugMode) print(" Notification action: title='$title' id=$shipmentId");
 
 
     void refreshHome() {
       try {
         getIt<HomeCubit>().checkActiveShipment();
       } catch (e) {
-        if (kDebugMode) print("⚠️ HomeCubit not ready: $e");
+        if (kDebugMode) print(" HomeCubit not ready: $e");
       }
     }
 
@@ -32,7 +32,7 @@ class NotificationRouteHelper {
       try {
         getIt<ActiveOrdersCubit>().silentRefresh();
       } catch (e) {
-        if (kDebugMode) print("⚠️ ActiveOrdersCubit not ready: $e");
+        if (kDebugMode) print(" ActiveOrdersCubit not ready: $e");
       }
     }
 
@@ -40,14 +40,14 @@ class NotificationRouteHelper {
       try {
         getIt<ActiveDriverShipmentsCubit>().silentRefresh();
       } catch (e) {
-        if (kDebugMode) print("⚠️ ActiveDriverShipmentsCubit not ready: $e");
+        if (kDebugMode) print(" ActiveDriverShipmentsCubit not ready: $e");
       }
     }
 
 
 
     if (title.contains('شحنة جديد')) {
-      if (kDebugMode) print("🚛 توجيه السائق إلى الهوم");
+      if (kDebugMode) print(" توجيه السائق إلى الهوم");
       navContext.pushNamedAndRemoveUntil(
         Routes.driverHomeScreen,
         predicate: (route) => false,
@@ -56,13 +56,13 @@ class NotificationRouteHelper {
 
 
     else if (title.contains('رفض')) {
-      if (kDebugMode) print("❌ الطلب رُفض — تحديث الهوم");
+      if (kDebugMode) print(" الطلب رُفض — تحديث الهوم");
       refreshHome();
     }
     
 
     else if (title.contains('قبول')) {
-      if (kDebugMode) print("✅ الطلب قُبل — refresh الطلبات النشطة");
+      if (kDebugMode) print(" الطلب قُبل — refresh الطلبات النشطة");
       refreshHome();
       refreshClientActiveOrders();
       refreshDriverActiveShipments();
@@ -70,7 +70,7 @@ class NotificationRouteHelper {
 
     
     else if (title.contains('استلام') || title.contains('تأكيد')) {
-      if (kDebugMode) print("⭐ تم التسليم — توجيه للتقييم id=$shipmentId");
+      if (kDebugMode) print(" تم التسليم — توجيه للتقييم id=$shipmentId");
       refreshHome();
       refreshClientActiveOrders();
       refreshDriverActiveShipments();

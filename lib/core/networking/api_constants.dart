@@ -3,18 +3,18 @@ import 'package:graduation_progect/core/networking/app_config.dart';
 class ApiConstants {
   ApiConstants._();
 
-  // ── Global session state (يُعبَّأ عند Login/Profile) ─────────────────────
+
 
   static int? driverId;
   static String? driverName;
 
-  // ── URLs (من AppConfig — لا hardcoding) ──────────────────────────────────
+ 
   static String get apiBaseUrl => AppConfig.apiBaseUrl;
   static String get orsApiKey => AppConfig.orsApiKey;
   static String get mapUrl => AppConfig.mapTileUrl;
   static String get userAgent => AppConfig.userAgent;
 
-  // ── Endpoints ─────────────────────────────────────────────────────────────
+
   static const String refreshToken = 'refreshToken';
 
   static const String saveDeviceToken = 'saveDeviceToken';
