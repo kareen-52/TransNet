@@ -16,4 +16,14 @@ class ClientPostsRepo {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
+
+
+   Future<ApiResult<String>> deletePost(int id) async {
+    try {
+      final response = await _apiService.deletePost(id);
+      return ApiResult.success(response['message'] ?? 'تم حذف الإعلان بنجاح.');
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
 }

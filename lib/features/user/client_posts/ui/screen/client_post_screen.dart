@@ -17,8 +17,9 @@ class ClientPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider(
-      create: (context) => getIt<ClientPostsCubit>()..fetchMyPosts(),
+    return BlocProvider.value(
+      value: getIt<ClientPostsCubit>()..fetchMyPosts(),
+      // create: (context) => getIt<ClientPostsCubit>()..fetchMyPosts(),
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
 
@@ -26,14 +27,14 @@ class ClientPostsScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 80),
           child: FloatingActionButton.extended(
             onPressed: () async {
-              // ✅ انتظار نتيجة العودة من شاشة إنشاء الإعلان
               final result = await Navigator.pushNamed(
                 context,
                 Routes.createClientPostScreen,
               );
-              // ✅ إذا رجع المستخدم بعد النشر، حدث القائمة فوراً
+
+              // if (!context.mounted) return;
+
               if (result == true || result == null) {
-                // ignore: use_build_context_synchronously
                 context.read<ClientPostsCubit>().fetchMyPosts();
               }
             },
@@ -75,8 +76,10 @@ class ClientPostsScreen extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
                   itemCount: posts.length,
                   separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                  itemBuilder: (context, index) =>
-                      ClientPostCard(post: posts[index]),
+                  itemBuilder: (context, index) => ClientPostCard(
+                    key: ValueKey(posts[index].id),
+                    post: posts[index],
+                  ),
                 ),
               ),
             );

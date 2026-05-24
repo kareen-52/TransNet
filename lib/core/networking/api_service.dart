@@ -180,4 +180,7 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
 
   @PUT(ApiConstants.updatePostPrices)
   Future<dynamic> updatePostPrices(@Body() Map<String, dynamic> body);
+
+  @DELETE(ApiConstants.deletePostClient)
+  Future<dynamic> deletePost(@Path('id') int id);
 }

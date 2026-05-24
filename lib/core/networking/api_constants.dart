@@ -65,6 +65,6 @@ class ApiConstants {
   static const String clientPosts = 'posts/client';
   static const String createPost = 'post/create';
   static const String updatePostPrices = 'post/update';
-  
+  static const String deletePostClient = 'post/{id}';
 
 }

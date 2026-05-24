@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,570 +9,452 @@ part of 'client_profile_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$ClientProfileState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientProfileState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ClientProfileState()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ClientProfileStateCopyWith<$Res> {
-  factory $ClientProfileStateCopyWith(
-          ClientProfileState value, $Res Function(ClientProfileState) then) =
-      _$ClientProfileStateCopyWithImpl<$Res, ClientProfileState>;
+class $ClientProfileStateCopyWith<$Res>  {
+$ClientProfileStateCopyWith(ClientProfileState _, $Res Function(ClientProfileState) __);
+}
+
+
+/// Adds pattern-matching-related methods to [ClientProfileState].
+extension ClientProfileStatePatterns on ClientProfileState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _EditSuccess value)?  editSuccess,TResult Function( _Error value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Initial() when initial != null:
+return initial(_that);case _Loading() when loading != null:
+return loading(_that);case _Success() when success != null:
+return success(_that);case _EditSuccess() when editSuccess != null:
+return editSuccess(_that);case _Error() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _EditSuccess value)  editSuccess,required TResult Function( _Error value)  error,}){
+final _that = this;
+switch (_that) {
+case _Initial():
+return initial(_that);case _Loading():
+return loading(_that);case _Success():
+return success(_that);case _EditSuccess():
+return editSuccess(_that);case _Error():
+return error(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _EditSuccess value)?  editSuccess,TResult? Function( _Error value)?  error,}){
+final _that = this;
+switch (_that) {
+case _Initial() when initial != null:
+return initial(_that);case _Loading() when loading != null:
+return loading(_that);case _Success() when success != null:
+return success(_that);case _EditSuccess() when editSuccess != null:
+return editSuccess(_that);case _Error() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( ProfileResponse profileResponse)?  success,TResult Function( String message)?  editSuccess,TResult Function( ApiErrorModel apiErrorModel)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Initial() when initial != null:
+return initial();case _Loading() when loading != null:
+return loading();case _Success() when success != null:
+return success(_that.profileResponse);case _EditSuccess() when editSuccess != null:
+return editSuccess(_that.message);case _Error() when error != null:
+return error(_that.apiErrorModel);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( ProfileResponse profileResponse)  success,required TResult Function( String message)  editSuccess,required TResult Function( ApiErrorModel apiErrorModel)  error,}) {final _that = this;
+switch (_that) {
+case _Initial():
+return initial();case _Loading():
+return loading();case _Success():
+return success(_that.profileResponse);case _EditSuccess():
+return editSuccess(_that.message);case _Error():
+return error(_that.apiErrorModel);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( ProfileResponse profileResponse)?  success,TResult? Function( String message)?  editSuccess,TResult? Function( ApiErrorModel apiErrorModel)?  error,}) {final _that = this;
+switch (_that) {
+case _Initial() when initial != null:
+return initial();case _Loading() when loading != null:
+return loading();case _Success() when success != null:
+return success(_that.profileResponse);case _EditSuccess() when editSuccess != null:
+return editSuccess(_that.message);case _Error() when error != null:
+return error(_that.apiErrorModel);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-class _$ClientProfileStateCopyWithImpl<$Res, $Val extends ClientProfileState>
-    implements $ClientProfileStateCopyWith<$Res> {
-  _$ClientProfileStateCopyWithImpl(this._value, this._then);
-  final $Val _value;
-  final $Res Function($Val) _then;
+
+
+class _Initial implements ClientProfileState {
+  const _Initial();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ClientProfileState.initial()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Loading implements ClientProfileState {
+  const _Loading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ClientProfileState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Success implements ClientProfileState {
+  const _Success(this.profileResponse);
+  
+
+ final  ProfileResponse profileResponse;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SuccessCopyWith<_Success> get copyWith => __$SuccessCopyWithImpl<_Success>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Success&&(identical(other.profileResponse, profileResponse) || other.profileResponse == profileResponse));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,profileResponse);
+
+@override
+String toString() {
+  return 'ClientProfileState.success(profileResponse: $profileResponse)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+abstract mixin class _$SuccessCopyWith<$Res> implements $ClientProfileStateCopyWith<$Res> {
+  factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
+@useResult
+$Res call({
+ ProfileResponse profileResponse
+});
+
+
+
+
+}
+/// @nodoc
+class __$SuccessCopyWithImpl<$Res>
+    implements _$SuccessCopyWith<$Res> {
+  __$SuccessCopyWithImpl(this._self, this._then);
+
+  final _Success _self;
+  final $Res Function(_Success) _then;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? profileResponse = null,}) {
+  return _then(_Success(
+null == profileResponse ? _self.profileResponse : profileResponse // ignore: cast_nullable_to_non_nullable
+as ProfileResponse,
+  ));
+}
+
+
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ClientProfileStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
+
+
+class _EditSuccess implements ClientProfileState {
+  const _EditSuccess(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EditSuccessCopyWith<_EditSuccess> get copyWith => __$EditSuccessCopyWithImpl<_EditSuccess>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EditSuccess&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'ClientProfileState.editSuccess(message: $message)';
+}
+
+
 }
 
 /// @nodoc
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+abstract mixin class _$EditSuccessCopyWith<$Res> implements $ClientProfileStateCopyWith<$Res> {
+  factory _$EditSuccessCopyWith(_EditSuccess value, $Res Function(_EditSuccess) _then) = __$EditSuccessCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
 
-  @override
-  String toString() => 'ClientProfileState.initial()';
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      initial();
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      initial?.call();
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      initial != null ? initial() : orElse();
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      initial(this);
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      initial?.call(this);
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      initial != null ? initial(this) : orElse(this);
+
+}
+/// @nodoc
+class __$EditSuccessCopyWithImpl<$Res>
+    implements _$EditSuccessCopyWith<$Res> {
+  __$EditSuccessCopyWithImpl(this._self, this._then);
+
+  final _EditSuccess _self;
+  final $Res Function(_EditSuccess) _then;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_EditSuccess(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-abstract class _Initial implements ClientProfileState {
-  const factory _Initial() = _$InitialImpl;
+
 }
 
 /// @nodoc
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
 
-  @override
-  String toString() => 'ClientProfileState.loading()';
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
+class _Error implements ClientProfileState {
+  const _Error(this.apiErrorModel);
+  
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      loading();
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      loading?.call();
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      loading != null ? loading() : orElse();
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      loading(this);
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      loading?.call(this);
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      loading != null ? loading(this) : orElse(this);
+ final  ApiErrorModel apiErrorModel;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.apiErrorModel, apiErrorModel) || other.apiErrorModel == apiErrorModel));
 }
 
-abstract class _Loading implements ClientProfileState {
-  const factory _Loading() = _$LoadingImpl;
+
+@override
+int get hashCode => Object.hash(runtimeType,apiErrorModel);
+
+@override
+String toString() {
+  return 'ClientProfileState.error(apiErrorModel: $apiErrorModel)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$SuccessImplCopyWith<$Res> {
-  factory _$$SuccessImplCopyWith(
-          _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
-      __$$SuccessImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ProfileResponse profileResponse});
-}
+abstract mixin class _$ErrorCopyWith<$Res> implements $ClientProfileStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
+@useResult
+$Res call({
+ ApiErrorModel apiErrorModel
+});
 
+
+
+
+}
 /// @nodoc
-class __$$SuccessImplCopyWithImpl<$Res>
-    extends _$ClientProfileStateCopyWithImpl<$Res, _$SuccessImpl>
-    implements _$$SuccessImplCopyWith<$Res> {
-  __$$SuccessImplCopyWithImpl(
-      _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
-      : super(_value, _then);
+class __$ErrorCopyWithImpl<$Res>
+    implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? profileResponse = null}) {
-    return _then(_$SuccessImpl(
-      null == profileResponse
-          ? _value.profileResponse
-          : profileResponse as ProfileResponse,
-    ));
-  }
+  final _Error _self;
+  final $Res Function(_Error) _then;
+
+/// Create a copy of ClientProfileState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? apiErrorModel = null,}) {
+  return _then(_Error(
+null == apiErrorModel ? _self.apiErrorModel : apiErrorModel // ignore: cast_nullable_to_non_nullable
+as ApiErrorModel,
+  ));
 }
 
-/// @nodoc
-class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.profileResponse);
 
-  @override
-  final ProfileResponse profileResponse;
-
-  @override
-  String toString() => 'ClientProfileState.success(profileResponse: $profileResponse)';
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuccessImpl &&
-            (identical(other.profileResponse, profileResponse) ||
-                other.profileResponse == profileResponse));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, profileResponse);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      success(profileResponse);
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      success?.call(profileResponse);
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      success != null ? success(profileResponse) : orElse();
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      success(this);
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      success?.call(this);
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      success != null ? success(this) : orElse(this);
 }
 
-abstract class _Success implements ClientProfileState {
-  const factory _Success(final ProfileResponse profileResponse) = _$SuccessImpl;
-  ProfileResponse get profileResponse;
-  @JsonKey(ignore: true)
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-class _$EditSuccessImpl implements _EditSuccess {
-  const _$EditSuccessImpl(this.message);
-
-  @override
-  final String message;
-
-  @override
-  String toString() => 'ClientProfileState.editSuccess(message: $message)';
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EditSuccessImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      editSuccess(message);
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      editSuccess?.call(message);
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      editSuccess != null ? editSuccess(message) : orElse();
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      editSuccess(this);
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      editSuccess?.call(this);
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      editSuccess != null ? editSuccess(this) : orElse(this);
-}
-
-abstract class _EditSuccess implements ClientProfileState {
-  const factory _EditSuccess(final String message) = _$EditSuccessImpl;
-  String get message;
-}
-
-/// @nodoc
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.apiErrorModel);
-
-  @override
-  final ApiErrorModel apiErrorModel;
-
-  @override
-  String toString() => 'ClientProfileState.error(apiErrorModel: $apiErrorModel)';
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
-            (identical(other.apiErrorModel, apiErrorModel) ||
-                other.apiErrorModel == apiErrorModel));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, apiErrorModel);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileResponse profileResponse) success,
-    required TResult Function(String message) editSuccess,
-    required TResult Function(ApiErrorModel apiErrorModel) error,
-  }) =>
-      error(apiErrorModel);
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileResponse profileResponse)? success,
-    TResult? Function(String message)? editSuccess,
-    TResult? Function(ApiErrorModel apiErrorModel)? error,
-  }) =>
-      error?.call(apiErrorModel);
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileResponse profileResponse)? success,
-    TResult Function(String message)? editSuccess,
-    TResult Function(ApiErrorModel apiErrorModel)? error,
-    required TResult Function() orElse,
-  }) =>
-      error != null ? error(apiErrorModel) : orElse();
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Success value) success,
-    required TResult Function(_EditSuccess value) editSuccess,
-    required TResult Function(_Error value) error,
-  }) =>
-      error(this);
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Success value)? success,
-    TResult? Function(_EditSuccess value)? editSuccess,
-    TResult? Function(_Error value)? error,
-  }) =>
-      error?.call(this);
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Success value)? success,
-    TResult Function(_EditSuccess value)? editSuccess,
-    TResult Function(_Error value)? error,
-    required TResult Function(ClientProfileState value) orElse,
-  }) =>
-      error != null ? error(this) : orElse(this);
-}
-
-abstract class _Error implements ClientProfileState {
-  const factory _Error(final ApiErrorModel apiErrorModel) = _$ErrorImpl;
-  ApiErrorModel get apiErrorModel;
-}
+// dart format on
