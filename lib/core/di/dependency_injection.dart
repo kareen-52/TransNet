@@ -152,9 +152,7 @@ void setupGetIt() {
   getIt.registerLazySingleton<InstantOrdersRepo>(
     () => InstantOrdersRepo(getIt()),
   );
-  getIt.registerLazySingleton<InstantOrdersCubit>(
-    () => InstantOrdersCubit(getIt()),
-  );///////////////////////////////////////sdsdsdsdsd
+  getIt.registerFactory<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
 
   // ── Driver Location ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(
@@ -205,17 +203,15 @@ void setupGetIt() {
   getIt.registerLazySingleton<ActiveOrdersRepo>(
     () => ActiveOrdersRepo(getIt()),
   );
-  getIt.registerLazySingleton<ActiveOrdersCubit>(
-    () => ActiveOrdersCubit(getIt()),
-  );//////////////////////////////////sdsdsd
+  getIt.registerFactory<ActiveOrdersCubit>(() => ActiveOrdersCubit(getIt()));
 
   // ── Active Shipments (Driver) ──────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
     () => ActiveDriverShipmentsRepo(getIt()),
   );
-  getIt.registerLazySingleton<ActiveDriverShipmentsCubit>(
+  getIt.registerFactory<ActiveDriverShipmentsCubit>(
     () => ActiveDriverShipmentsCubit(getIt()),
-  );/////////////////////////sdsd
+  );
 
   // ── Driver Tracking ────────────────────────────────────────────────────────
   getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
