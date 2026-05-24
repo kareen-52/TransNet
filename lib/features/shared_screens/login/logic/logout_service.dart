@@ -7,11 +7,11 @@ import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/logout_dialog.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 import 'package:graduation_progect/main.dart';
+import 'package:graduation_progect/core/notifications/notification_service.dart';
 
 class LogoutService {
   LogoutService._();
 
-  // ─── المسح المحلي دائماً — بغض النظر عن الـ API ──────────────────────────
   static Future<void> _clearLocalData() async {
     await Future.wait([
       HiveCacheService.clearAll(),
@@ -20,7 +20,6 @@ class LogoutService {
     ]);
   }
 
-  /// يُستدعى من زر المستخدم.
   static Future<bool> execute(BuildContext context) async {
     if (!ConnectivityHelper.isOnline) {
       SnackbarHelper.showError(message: 'لا يوجد اتصال بالإنترنت');
@@ -33,7 +32,9 @@ class LogoutService {
           .get('${ApiConstants.apiBaseUrl}${ApiConstants.logout}')
           .timeout(const Duration(seconds: 5));
 
-      if (response.statusCode == null || response.statusCode! < 200 || response.statusCode! >= 300) {
+      if (response.statusCode == null ||
+          response.statusCode! < 200 ||
+          response.statusCode! >= 300) {
         SnackbarHelper.showError(message: 'فشل تسجيل الخروج من السيرفر');
         return false;
       }
@@ -41,8 +42,8 @@ class LogoutService {
       SnackbarHelper.showError(message: 'حدث خطأ أثناء الاتصال بالسيرفر');
       return false;
     }
+    await _performLogout();
 
-    await _clearLocalData();
     SnackbarHelper.showSuccess(message: 'تم تسجيل الخروج بنجاح');
 
     if (navigatorKey.currentState != null) {
@@ -54,18 +55,13 @@ class LogoutService {
     return true;
   }
 
-  // ─── Force Logout (انتهاء الـ token أو حظر) ──────────────────────────────
-  /// يُستدعى من ForceLogoutHandler عند 401 غير قابل للتجديد أو 403 محظور.
-  /// يعرض ديالوج برسالة أمنية إذا وُجدت، ثم يمسح البيانات ويوجّه للدخول.
   static Future<void> forceLogout({
     String? message,
     bool isSecurityBan = false,
   }) async {
-    // إذا كان هناك رسالة، نحاول عرضها عبر navigatorKey قبل مسح البيانات
     if (message != null && message.isNotEmpty) {
       final context = navigatorKey.currentContext;
       if (context != null) {
-        // نستخدم addPostFrameCallback لضمان أن الـ context جاهز
         await showDialog(
           context: context,
           barrierDismissible: false,
@@ -86,17 +82,20 @@ class LogoutService {
         return;
       }
     }
-    // إذا لم توجد رسالة أو لم يتوفر context، نقوم بالخروج مباشرة
+
     await _performLogout();
   }
 
   static Future<void> _performLogout() async {
+    try {
+      await NotificationService.handleLogout();
+    } catch (_) {}
+
     await _clearLocalData();
-    if (navigatorKey.currentState != null) {
-      navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        Routes.login,
-        (route) => false,
-      );
-    }
+
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      Routes.login,
+      (_) => false,
+    );
   }
 }
