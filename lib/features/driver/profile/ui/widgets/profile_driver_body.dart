@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/responsive/responsive_layout.dart';
-
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/features/driver/profile/ui/widgets/driver_profile_header.dart';
@@ -19,13 +18,11 @@ class ProfileDriverBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTablet = context.isTablet;
-    return isTablet
+    return context.isTablet
         ? _TabletDriverProfile(profileData: profileData)
         : _MobileDriverProfile(profileData: profileData);
   }
 }
-
 
 class _MobileDriverProfile extends StatelessWidget {
   final ProfileResponse profileData;
@@ -80,8 +77,6 @@ class _MobileDriverProfile extends StatelessWidget {
     );
   }
 }
-
-
 class _TabletDriverProfile extends StatelessWidget {
   final ProfileResponse profileData;
   const _TabletDriverProfile({required this.profileData});
@@ -90,74 +85,82 @@ class _TabletDriverProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 32.h),
-      child: Column(
-        children: [
-          // Centered header
-          TabletFormContainer(
-            maxWidth: 480,
-            child: Column(
-              children: [
-                verticalSpace(24),
-                DriverProfileHeader(
-                  userData: profileData.user,
-                  rating: profileData.averageRate,
-                  badge: profileData.badge,
-                ),
-                verticalSpace(32),
-              ],
-            ),
-          ),
-
-          // Two-column body
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Center(
+  
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 950),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 40.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    DriverPersonalInfoSection(user: profileData.user!),
-                    verticalSpace(24),
-                    WorkSection(
-                      car: profileData.car,
-                      governorates: profileData.driverGovernorates,
-                      statistics: profileData.statistics,
-                    ),
-                  ],
+              // Header
+              TabletFormContainer(
+                maxWidth: 500,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 40.h),
+                  child: DriverProfileHeader(
+                    userData: profileData.user,
+                    rating: profileData.averageRate,
+                    badge: profileData.badge,
+                  ),
                 ),
               ),
-              horizontalSpace(24),
-              Expanded(
-                child: Column(
-                  children: [
-                    const NotificationsSection(),
-                    verticalSpace(24),
-                    const SharedSettingsSection(),
-                    verticalSpace(24),
-                    AppTextButton(
-                      text: 'تسجيل الخروج',
-                      onPressed: () => showLogoutConfirmDialog(context),
-                      backgroundColor: colorScheme.surface,
-                      textStyle:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colorScheme.error,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.logout_rounded,
-                        color: colorScheme.error,
-                        size: 22.sp,
-                      ),
-                      borderRadius: 16.r,
+
+           
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      children: [
+                        DriverPersonalInfoSection(user: profileData.user!),
+                        verticalSpace(24),
+                        WorkSection(
+                          car: profileData.car,
+                          governorates: profileData.driverGovernorates,
+                          statistics: profileData.statistics,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  horizontalSpace(32),
+
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        const NotificationsSection(),
+                        verticalSpace(24),
+                        const SharedSettingsSection(),
+                        verticalSpace(40),
+                        AppTextButton(
+                          text: 'تسجيل الخروج',
+                          onPressed: () => showLogoutConfirmDialog(context),
+                          backgroundColor: colorScheme.surface,
+                          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: colorScheme.error,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          prefixIcon: Icon(
+                            Icons.logout_rounded,
+                            color: colorScheme.error,
+                            size: 24.sp,
+                          ),
+                          borderRadius: 16.r,
+                          height: 60.h, 
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
+              verticalSpace(60),
             ],
           ),
-          verticalSpace(48),
-        ],
+        ),
       ),
     );
   }

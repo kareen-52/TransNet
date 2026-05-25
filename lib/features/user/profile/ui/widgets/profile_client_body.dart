@@ -16,12 +16,11 @@ class ProfileClientBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTablet = context.isTablet;
-    return isTablet ? _TabletProfile(profileData: profileData) : _MobileProfile(profileData: profileData);
+    return context.isTablet 
+        ? _TabletProfile(profileData: profileData) 
+        : _MobileProfile(profileData: profileData);
   }
 }
-
-
 class _MobileProfile extends StatelessWidget {
   final ProfileResponse profileData;
   const _MobileProfile({required this.profileData});
@@ -64,7 +63,6 @@ class _MobileProfile extends StatelessWidget {
   }
 }
 
-
 class _TabletProfile extends StatelessWidget {
   final ProfileResponse profileData;
   const _TabletProfile({required this.profileData});
@@ -73,62 +71,63 @@ class _TabletProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 32.h),
-      child: Column(
-        children: [
- 
-          TabletFormContainer(
-            maxWidth: 480,
-            child: Column(
-              children: [
-                verticalSpace(24),
-                ClientProfileHeader(userData: profileData.user),
-                verticalSpace(32),
-              ],
-            ),
-          ),
-
-          // Two-column body
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 950),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 40.h),
+          child: Column(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    PersonalInfoSection(user: profileData.user!),
-                  ],
+              TabletFormContainer(
+                maxWidth: 500,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 40.h),
+                  child: ClientProfileHeader(userData: profileData.user),
                 ),
               ),
-              horizontalSpace(24),
-              Expanded(
-                child: Column(
-                  children: [
-                    const SharedSettingsSection(isClient: true),
-                    verticalSpace(24),
-                    AppTextButton(
-                      text: 'تسجيل الخروج',
-                      onPressed: () => showLogoutConfirmDialog(context),
-                      backgroundColor: colorScheme.surface,
-                      textStyle:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colorScheme.error,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.logout_rounded,
-                        color: colorScheme.error,
-                        size: 22.sp,
-                      ),
-                      borderRadius: 16.r,
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 1, 
+                    child: PersonalInfoSection(user: profileData.user!),
+                  ),
+                  horizontalSpace(32),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        const SharedSettingsSection(isClient: true),
+                        verticalSpace(40),
+               
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+                       Center(
+                          child: AppTextButton(
+                            text: 'تسجيل الخروج',
+                            onPressed: () => showLogoutConfirmDialog(context),
+                            backgroundColor: colorScheme.surface,
+                            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: colorScheme.error,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                            prefixIcon: Icon(
+                              Icons.logout_rounded,
+                              color: colorScheme.error,
+                              size: 24.sp,
+                            ),
+                            borderRadius: 16.r,
+                            height: 60.h,
+                          ),
+                        ),
+              verticalSpace(60),
             ],
           ),
-          verticalSpace(48),
-        ],
+        ),
       ),
     );
   }

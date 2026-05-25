@@ -8,7 +8,7 @@ import 'package:graduation_progect/features/user/profile/logic/client_profile_cu
 import 'package:graduation_progect/features/user/profile/logic/client_profile_state.dart';
 import 'package:graduation_progect/features/user/profile/ui/widgets/profile_client_body.dart';
 
-/// Client profile screen — uses ClientProfileCubit (NOT the driver ProfileCubit).
+
 class ProfileClientScreen extends StatelessWidget {
   const ProfileClientScreen({super.key});
 
