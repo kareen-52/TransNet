@@ -26,6 +26,8 @@ import 'package:graduation_progect/features/shared_screens/login/logic/login_cub
 import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
+import 'package:graduation_progect/features/shared_screens/post_details/data/repo/post_details_repo.dart';
+import 'package:graduation_progect/features/shared_screens/post_details/logic/post_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/repositories/shipment_details_repository_impl.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/repositories/shipment_details_repository.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/usecases/get_shipment_details_usecase.dart';
@@ -235,4 +237,11 @@ void setupGetIt() {
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
   getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));
+
+  getIt.registerLazySingleton<PostDetailsRepo>(
+  () => PostDetailsRepo(getIt<ApiService>()),
+  );
+  getIt.registerFactory<PostDetailsCubit>(
+    () => PostDetailsCubit(getIt<PostDetailsRepo>()),
+  );
 }

@@ -13,6 +13,7 @@ import 'package:graduation_progect/features/shared_screens/login/data/models/log
 import 'package:graduation_progect/features/shared_screens/login/data/models/login_response.dart';
 import 'package:graduation_progect/features/shared_screens/login/logic/refresh_token_models.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/models/notification_model.dart';
+import 'package:graduation_progect/features/shared_screens/post_details/data/models/post_details_model.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/models/shipment_details_response_model.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/data/models/search_shipments_request.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/data/models/verification_request_body.dart';
@@ -183,4 +184,10 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
 
   @DELETE(ApiConstants.deletePostClient)
   Future<dynamic> deletePost(@Path('id') int id);
+
+  @GET(ApiConstants.postDetails)
+  Future<PostDetailsModel> getPostDetails(@Path('id') int id);
+
+  
+
 }

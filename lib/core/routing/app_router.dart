@@ -15,6 +15,7 @@ import 'package:graduation_progect/features/shared_screens/login/logic/login_cub
 import 'package:graduation_progect/features/shared_screens/map/ui/screen/pick_location_screen.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/ui/screens/notifications_screen.dart';
 import 'package:graduation_progect/features/shared_screens/onboarding/screens/onboarding_screen.dart';
+import 'package:graduation_progect/features/shared_screens/post_details/ui/screen/post_details_screen.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_screen.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/logic/verification_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/verification_code/ui/screen/otp_screen.dart';
@@ -174,6 +175,12 @@ class AppRouter {
             value: args['cubit'] as CreatePostCubit,
             child: PriceAdjustmentScreen(post: args['post']),
           ),
+        );
+
+      case Routes.postDetailsScreen:
+        final postId = arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => PostDetailsScreen(postId: postId),
         );
 
 
