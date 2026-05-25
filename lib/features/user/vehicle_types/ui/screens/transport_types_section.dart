@@ -7,7 +7,7 @@ import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_typ
 import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/transport_grid.dart';
 import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/transport_grid_shimmer.dart';
 import '../../../../../../core/helpers/spacing.dart';
-import '../../../../../../core/responsive/responsive_layout.dart';
+import 'package:graduation_progect/core/responsive/responsive_layout.dart';
 
 class TransportMethodsSection extends StatelessWidget {
   const TransportMethodsSection({super.key});

@@ -114,7 +114,7 @@ Widget build(BuildContext context) {
               context.read<DriverLocationCubit>().toggleLocationTracking(
                 isAvailable,
               );
-              print("📡 تحديث تتبع الموقع: ${isAvailable ? 'شغال' : 'متوقف'}");
+              print(" تحديث تتبع الموقع: ${isAvailable ? 'شغال' : 'متوقف'}");
             },
             orElse: () {},
           );
