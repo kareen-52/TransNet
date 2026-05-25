@@ -30,7 +30,7 @@ class Step2PostDetails extends StatelessWidget {
           ),
           verticalSpace(16),
           
-          // ── قسم التاريخ الجديد ──
+
           Text('أقصى موعد متاح للتوصيل', style: theme.textTheme.titleMedium),
           verticalSpace(8),
           InkWell(

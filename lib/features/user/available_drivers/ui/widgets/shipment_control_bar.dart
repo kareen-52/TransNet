@@ -13,7 +13,7 @@ class ShipmentControlBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      // color: Theme.of(context).colorScheme.surface,
+
       child: BlocBuilder<AvailableDriversCubit, AvailableDriversState>(
         buildWhen: (previous, current) =>
             current is ShowExtendDialog ||
@@ -44,7 +44,7 @@ class ShipmentControlBar extends StatelessWidget {
                 icon: Icon(Icons.edit, size: 20.sp),
                 label: const Text('تعديل بيانات الشحنة'),
                 style: TextButton.styleFrom(
-                  // backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+
                   foregroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
@@ -59,7 +59,7 @@ class ShipmentControlBar extends StatelessWidget {
                 label: const Text('حذف الشحنة'),
                 style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.error,
-                  // backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.1),
+
 
                 ),
               ),

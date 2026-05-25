@@ -6,14 +6,14 @@ import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
-import 'package:graduation_progect/features/user/client_posts/data/models/client_post_model.dart';
+import 'package:graduation_progect/features/user/client_posts/data/models/post_model.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_state.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 
 class PriceAdjustmentScreen extends StatefulWidget {
-  final ClientPostModel post;
+  final PostModel post;
   const PriceAdjustmentScreen({super.key, required this.post});
 
   @override
@@ -52,7 +52,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-  // ── دوال التحكم العادية ──
+
   void _increaseMin() {
     if (currentMin + step < currentMax) setState(() => currentMin += step);
   }
@@ -113,7 +113,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
@@ -146,7 +145,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                 ),
                 verticalSpace(40),
 
-
                 _buildCounterCard(
                   theme: theme,
                   title: 'الحد الأدنى للسعر',
@@ -161,7 +159,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                   helperText: 'لا يمكن أن يقل عن ${_formatNumber(baseMin)} ل.س',
                 ),
                 verticalSpace(24),
-
 
                 _buildCounterCard(
                   theme: theme,
@@ -209,7 +206,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                                 Navigator.pop(context, true);
 
                                 try {
-                                  // clientPostsCubit.fetchMyPosts();
+
                                   getIt<ClientPostsCubit>().fetchMyPosts();
                                 } catch (_) {}
                               },
@@ -255,7 +252,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-  // ── بطاقة العداد (بدون تغيير) ──
+
   Widget _buildCounterCard({
     required ThemeData theme,
     required String title,
@@ -323,7 +320,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-  // ── الزر الدائري مع دعم الضغط المطول ──
+
   Widget _buildRoundButton({
     required IconData icon,
     required VoidCallback? onAction,
@@ -334,8 +331,8 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
       onTap: onAction,
       onLongPress: isDisabled
           ? null
-          : () => _startContinuousAction(onAction), // بدء التسريع
-      onLongPressEnd: (_) => _stopContinuousAction(), // إيقاف التسريع
+          : () => _startContinuousAction(onAction),
+      onLongPressEnd: (_) => _stopContinuousAction(),
       child: Container(
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(

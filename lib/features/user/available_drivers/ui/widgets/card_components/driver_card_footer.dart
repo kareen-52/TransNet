@@ -18,7 +18,7 @@ class DriverCardFooter extends StatefulWidget {
 }
 
 class _DriverCardFooterState extends State<DriverCardFooter> {
-  // bool _isLoading = false;
+
 
   String _formatPrice(double price) {
     return price.round().toString().replaceAllMapped(

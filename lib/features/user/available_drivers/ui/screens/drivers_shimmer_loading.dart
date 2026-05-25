@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/core/helpers/animation_constants.dart';
-import 'package:graduation_progect/core/widgets/state_handlers/loading_state_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 
@@ -13,10 +11,7 @@ class DriversShimmerLoading extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        // LoadingStateWidget(
-        //   animationPath: AnimationConstants.shippingTruck,
-        //   size: 150.w,
-        // ),
+    
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(16.sp),

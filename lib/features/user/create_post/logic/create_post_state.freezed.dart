@@ -149,7 +149,7 @@ return stepTwoError(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  govLoading,TResult Function( List<GovernorateModel> govs)?  govSuccess,TResult Function( ApiErrorModel error)?  govError,TResult Function( int timestamp)?  uiUpdated,TResult Function( ClientPostModel post,  String message)?  stepOneSuccess,TResult Function( String message)?  stepTwoSuccess,TResult Function( ApiErrorModel error)?  submitError,TResult Function()?  stepTwoLoading,TResult Function( ApiErrorModel error)?  stepTwoError,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  govLoading,TResult Function( List<GovernorateModel> govs)?  govSuccess,TResult Function( ApiErrorModel error)?  govError,TResult Function( int timestamp)?  uiUpdated,TResult Function( PostModel post,  String message)?  stepOneSuccess,TResult Function( String message)?  stepTwoSuccess,TResult Function( ApiErrorModel error)?  submitError,TResult Function()?  stepTwoLoading,TResult Function( ApiErrorModel error)?  stepTwoError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -180,7 +180,7 @@ return stepTwoError(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  govLoading,required TResult Function( List<GovernorateModel> govs)  govSuccess,required TResult Function( ApiErrorModel error)  govError,required TResult Function( int timestamp)  uiUpdated,required TResult Function( ClientPostModel post,  String message)  stepOneSuccess,required TResult Function( String message)  stepTwoSuccess,required TResult Function( ApiErrorModel error)  submitError,required TResult Function()  stepTwoLoading,required TResult Function( ApiErrorModel error)  stepTwoError,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  govLoading,required TResult Function( List<GovernorateModel> govs)  govSuccess,required TResult Function( ApiErrorModel error)  govError,required TResult Function( int timestamp)  uiUpdated,required TResult Function( PostModel post,  String message)  stepOneSuccess,required TResult Function( String message)  stepTwoSuccess,required TResult Function( ApiErrorModel error)  submitError,required TResult Function()  stepTwoLoading,required TResult Function( ApiErrorModel error)  stepTwoError,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
@@ -210,7 +210,7 @@ return stepTwoError(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  govLoading,TResult? Function( List<GovernorateModel> govs)?  govSuccess,TResult? Function( ApiErrorModel error)?  govError,TResult? Function( int timestamp)?  uiUpdated,TResult? Function( ClientPostModel post,  String message)?  stepOneSuccess,TResult? Function( String message)?  stepTwoSuccess,TResult? Function( ApiErrorModel error)?  submitError,TResult? Function()?  stepTwoLoading,TResult? Function( ApiErrorModel error)?  stepTwoError,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  govLoading,TResult? Function( List<GovernorateModel> govs)?  govSuccess,TResult? Function( ApiErrorModel error)?  govError,TResult? Function( int timestamp)?  uiUpdated,TResult? Function( PostModel post,  String message)?  stepOneSuccess,TResult? Function( String message)?  stepTwoSuccess,TResult? Function( ApiErrorModel error)?  submitError,TResult? Function()?  stepTwoLoading,TResult? Function( ApiErrorModel error)?  stepTwoError,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -538,7 +538,7 @@ class _StepOneSuccess implements CreatePostState {
   const _StepOneSuccess(this.post, this.message);
   
 
- final  ClientPostModel post;
+ final  PostModel post;
  final  String message;
 
 /// Create a copy of CreatePostState
@@ -571,7 +571,7 @@ abstract mixin class _$StepOneSuccessCopyWith<$Res> implements $CreatePostStateC
   factory _$StepOneSuccessCopyWith(_StepOneSuccess value, $Res Function(_StepOneSuccess) _then) = __$StepOneSuccessCopyWithImpl;
 @useResult
 $Res call({
- ClientPostModel post, String message
+ PostModel post, String message
 });
 
 
@@ -591,7 +591,7 @@ class __$StepOneSuccessCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? post = null,Object? message = null,}) {
   return _then(_StepOneSuccess(
 null == post ? _self.post : post // ignore: cast_nullable_to_non_nullable
-as ClientPostModel,null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as PostModel,null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

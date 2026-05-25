@@ -1,14 +1,14 @@
 import 'package:graduation_progect/core/networking/api_error_handler.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
-import '../models/client_post_model.dart';
+import '../models/post_model.dart';
 
 class ClientPostsRepo {
   final ApiService _apiService;
 
   ClientPostsRepo(this._apiService);
 
-  Future<ApiResult<List<ClientPostModel>>> getMyPosts() async {
+  Future<ApiResult<List<PostModel>>> getMyPosts() async {
     try {
       final response = await _apiService.getClientPosts();
       return ApiResult.success(response);
@@ -17,8 +17,7 @@ class ClientPostsRepo {
     }
   }
 
-
-   Future<ApiResult<String>> deletePost(int id) async {
+  Future<ApiResult<String>> deletePost(int id) async {
     try {
       final response = await _apiService.deletePost(id);
       return ApiResult.success(response['message'] ?? 'تم حذف الإعلان بنجاح.');

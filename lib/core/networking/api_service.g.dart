@@ -1057,12 +1057,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<ClientPostModel>> getClientPosts() async {
+  Future<List<PostModel>> getClientPosts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ClientPostModel>>(
+    final _options = _setStreamType<List<PostModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -1073,12 +1073,10 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ClientPostModel> _value;
+    late List<PostModel> _value;
     try {
       _value = _result.data!
-          .map(
-            (dynamic i) => ClientPostModel.fromJson(i as Map<String, dynamic>),
-          )
+          .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -1172,6 +1170,35 @@ class _ApiService implements ApiService {
     late PostDetailsModel _value;
     try {
       _value = PostDetailsModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<PostModel>> getSuitablePostsForDriver() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<PostModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'posts/driver/suitable',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<PostModel> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => PostModel.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

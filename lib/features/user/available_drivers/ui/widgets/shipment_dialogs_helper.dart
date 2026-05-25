@@ -22,19 +22,7 @@ class ShipmentDialogsHelper {
             onPressed: () async {
               Navigator.pop(ctx);
               cubit.deleteShipment();
-              // if (context.mounted) {
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     SnackBar(
-              //       content: Text(
-              //         'تم حذف الطلب بنجاح',
-              //         style: Theme.of(context).textTheme.labelMedium!.copyWith(
-              //           color: Theme.of(context).colorScheme.onPrimary,
-              //         ),
-              //       ),
-              //       backgroundColor: AppColors.success,
-              //     ),
-              //   );
-              // }
+    
               
             },
             child: Text(

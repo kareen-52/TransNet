@@ -28,7 +28,7 @@ class OrderProgressTracker extends StatelessWidget {
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: [
-              // --- الخطوط بين النقاط (خلفية) ---
+
               Row(
                 children: List.generate(_steps.length - 1, (i) {
                   return Expanded(
@@ -39,7 +39,7 @@ class OrderProgressTracker extends StatelessWidget {
                   );
                 }),
               ),
-              // --- النقاط (فوق الخطوط) ---
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(_steps.length, (i) {

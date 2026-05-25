@@ -8,11 +8,6 @@ import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/features/user/available_drivers/logic/available_drivers_cubit.dart';
 import 'package:graduation_progect/features/user/driver_details/ui/widgets/driver_details_bottom_sheet.dart';
 
-/// Driver card header — uses cubit's session image cache.
-///
-/// No direct API call from this widget.
-/// Image is fetched once per session via AvailableDriversCubit and held
-/// in Map<int,Uint8List> — safe across scroll reuse.
 class DriverCardHeader extends StatefulWidget {
   final int    driverId;
   final String firstName;
@@ -49,14 +44,14 @@ class _DriverCardHeaderState extends State<DriverCardHeader> {
   void _loadImage() {
     final cubit = context.read<AvailableDriversCubit>();
 
-    // Check if already in session cache — instant, no rebuild
+
     final cached = cubit.getDriverImageSync(widget.driverId);
     if (cached != null) {
       _imageBytes = cached;
       return;
     }
 
-    // Not in cache → ask cubit to fetch (once) and notify us via callback
+
     cubit.prefetchDriverImage(
       widget.driverId,
       onLoaded: (bytes) {

@@ -9,6 +9,8 @@ import 'package:graduation_progect/features/driver/driverReviews/data/repo/drive
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/driver_posts/data/repo/driver_posts_repo.dart';
+import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
 import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/repo/instant_orders_repo.dart';
@@ -244,4 +246,8 @@ void setupGetIt() {
   getIt.registerFactory<PostDetailsCubit>(
     () => PostDetailsCubit(getIt<PostDetailsRepo>()),
   );
+
+  // ── Driver Posts ────────────────────────────────────────────────────────────
+  getIt.registerLazySingleton<DriverPostsRepo>(() => DriverPostsRepo(getIt()));
+  getIt.registerFactory<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
 }

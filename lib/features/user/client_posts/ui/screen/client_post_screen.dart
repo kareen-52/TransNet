@@ -7,7 +7,7 @@ import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widge
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_state.dart';
-import 'package:graduation_progect/features/user/client_posts/ui/screen/client_posts_shimmer.dart';
+import 'package:graduation_progect/features/user/client_posts/ui/screen/posts_shimmer.dart';
 import '../widgets/client_post_card.dart';
 
 class ClientPostsScreen extends StatelessWidget {
@@ -19,7 +19,7 @@ class ClientPostsScreen extends StatelessWidget {
 
     return BlocProvider.value(
       value: getIt<ClientPostsCubit>()..fetchMyPosts(),
-      // create: (context) => getIt<ClientPostsCubit>()..fetchMyPosts(),
+
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
 
@@ -31,8 +31,6 @@ class ClientPostsScreen extends StatelessWidget {
                 context,
                 Routes.createClientPostScreen,
               );
-
-              // if (!context.mounted) return;
 
               if (result == true || result == null) {
                 context.read<ClientPostsCubit>().fetchMyPosts();
@@ -55,8 +53,8 @@ class ClientPostsScreen extends StatelessWidget {
         body: BlocBuilder<ClientPostsCubit, ClientPostsState>(
           builder: (context, state) {
             return state.when(
-              initial: () => const ClientPostsShimmer(),
-              loading: () => const ClientPostsShimmer(),
+              initial: () => const PostsShimmer(),
+              loading: () => const PostsShimmer(),
               empty: () => EmptyStateWidget(
                 title: 'لا توجد إعلانات',
                 subTitle:

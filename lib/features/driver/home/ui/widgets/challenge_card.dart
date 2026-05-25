@@ -138,15 +138,16 @@ class ChallengeCard extends StatelessWidget {
                   height: 6.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey..withOpacity(0.08),
+                    // ✅ تم إصلاح خطأ النقطتين هنا
+                    color: Colors.grey.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
 
                 Positioned(
                   right: 0,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
+                  // ✅ تم التبديل إلى Container عادي لحماية الـ LayoutBuilder من الانهيار
+                  child: Container(
                     height: 6.h,
                     width: progressWidth,
                     decoration: BoxDecoration(

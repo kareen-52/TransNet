@@ -20,7 +20,7 @@ import 'package:graduation_progect/features/shared_screens/verification_code/dat
 import 'package:graduation_progect/features/shared_screens/verification_code/data/models/verification_response.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/models/driver_model.dart';
 import 'package:graduation_progect/features/user/available_drivers/data/models/send_to_driver_request.dart';
-import 'package:graduation_progect/features/user/client_posts/data/models/client_post_model.dart';
+import 'package:graduation_progect/features/user/client_posts/data/models/post_model.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/models/create_shipment_request_body.dart';
 import 'package:graduation_progect/features/user/create_shipment/data/models/governorate_model.dart';
 import 'package:graduation_progect/features/user/vehicle_types/data/models/vehicle_type_model.dart';
@@ -150,18 +150,18 @@ abstract class ApiService {
   Future<NotificationListResponse> getNotifications(@Path('latest') int latest);
 
   @GET('${ApiConstants.shipmentDetails}/{id}')
-   Future<ShipmentDetailsResponseModel> getShipmentDetails(@Path('id') int id);
+  Future<ShipmentDetailsResponseModel> getShipmentDetails(@Path('id') int id);
 
-
-@POST(ApiConstants.searchShipmentsByDate)
-Future<List<ShipmentModel>> searchShipmentsByDate(
-  @Body() SearchShipmentsRequest request,
-);
+  @POST(ApiConstants.searchShipmentsByDate)
+  Future<List<ShipmentModel>> searchShipmentsByDate(
+    @Body() SearchShipmentsRequest request,
+  );
 
   @GET(ApiConstants.activeOrdersClient)
   Future<dynamic> getActiveOrders();
 
-  @GET(ApiConstants.activeShipmentsDriver) Future<dynamic> getActiveShipmentsForDriver();
+  @GET(ApiConstants.activeShipmentsDriver)
+  Future<dynamic> getActiveShipmentsForDriver();
 
   @POST(ApiConstants.confirmPickup)
   Future<dynamic> confirmPickup(@Body() Map<String, dynamic> body);
@@ -171,10 +171,9 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
 
   @POST(ApiConstants.createReview)
   Future<dynamic> createReview(@Body() Map<String, dynamic> body);
-  
 
   @GET(ApiConstants.clientPosts)
-  Future<List<ClientPostModel>> getClientPosts();
+  Future<List<PostModel>> getClientPosts();
 
   @POST(ApiConstants.createPost)
   Future<dynamic> createPost(@Body() Map<String, dynamic> body);
@@ -188,6 +187,6 @@ Future<List<ShipmentModel>> searchShipmentsByDate(
   @GET(ApiConstants.postDetails)
   Future<PostDetailsModel> getPostDetails(@Path('id') int id);
 
-  
-
+  @GET(ApiConstants.suitablePostsForDriver)
+  Future<List<PostModel>> getSuitablePostsForDriver();
 }

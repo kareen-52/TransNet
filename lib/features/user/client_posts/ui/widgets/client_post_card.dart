@@ -6,10 +6,10 @@ import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
-import '../../data/models/client_post_model.dart';
+import '../../data/models/post_model.dart';
 
 class ClientPostCard extends StatefulWidget {
-  final ClientPostModel post;
+  final PostModel post;
   const ClientPostCard({super.key, required this.post});
 
   @override
@@ -67,18 +67,18 @@ class _ClientPostCardState extends State<ClientPostCard> {
 
   Future<void> _deletePost() async {
     setState(() => isDeleting = true);
-    // final scaffoldMessenger = ScaffoldMessenger.of(context);
+
 
     final result = await context.read<ClientPostsCubit>().deletePost(
       widget.post.id,
     );
 
-    // if (!mounted) return;
+
 
     result.when(
       success: (msg) {
         SnackBarHelper.showSuccess(context, msg);
-        // setState(() => isDeleting = false);
+
       },
       failure: (error) {
         if (mounted) setState(() => isDeleting = false);
@@ -95,13 +95,19 @@ class _ClientPostCardState extends State<ClientPostCard> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.postDetailsScreen, arguments: widget.post.id);
+        Navigator.pushNamed(
+          context,
+          Routes.postDetailsScreen,
+          arguments: widget.post.id,
+        );
       },
       child: Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: theme.colorScheme.outline.withOpacity(0.15)),
+          border: Border.all(
+            color: theme.colorScheme.outline.withOpacity(0.15),
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -159,7 +165,7 @@ class _ClientPostCardState extends State<ClientPostCard> {
                       ],
                     ),
                   ),
-      
+
                   if (isDeleting)
                     SizedBox(
                       width: 24.w,
@@ -190,9 +196,12 @@ class _ClientPostCardState extends State<ClientPostCard> {
                 ],
               ),
             ),
-      
-            Divider(height: 1, color: theme.colorScheme.outline.withOpacity(0.3)),
-      
+
+            Divider(
+              height: 1,
+              color: theme.colorScheme.outline.withOpacity(0.3),
+            ),
+
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Row(
@@ -219,7 +228,7 @@ class _ClientPostCardState extends State<ClientPostCard> {
                     ],
                   ),
                   horizontalSpace(12),
-      
+
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,7 +256,7 @@ class _ClientPostCardState extends State<ClientPostCard> {
                 ],
               ),
             ),
-      
+
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
@@ -268,14 +277,18 @@ class _ClientPostCardState extends State<ClientPostCard> {
                         Icon(
                           Icons.calendar_month_rounded,
                           size: 16.sp,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.7),
                         ),
                         horizontalSpace(6),
                         Flexible(
                           child: Text(
                             'أقصى موعد:\n${widget.post.lastDate ?? 'غير محدد'}',
                             style: theme.textTheme.labelMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.7),
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 2,
@@ -286,7 +299,7 @@ class _ClientPostCardState extends State<ClientPostCard> {
                     ),
                   ),
                   horizontalSpace(8),
-      
+
                   Expanded(
                     flex: 4,
                     child: Column(
@@ -295,7 +308,9 @@ class _ClientPostCardState extends State<ClientPostCard> {
                         Text(
                           'نطاق السعر',
                           style: theme.textTheme.labelSmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.7),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

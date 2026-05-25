@@ -66,7 +66,7 @@ class Step1PostLocations extends StatelessWidget {
     );
   }
 
-  // دالة الخريطة المنسوخة والمعدلة
+
   void _openMap(BuildContext context, bool isStart) async {
     final selectedGov = isStart ? cubit.startGovernorate : cubit.endGovernorate;
     if (selectedGov == null) {

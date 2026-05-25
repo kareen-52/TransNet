@@ -69,4 +69,6 @@ class ApiConstants {
 
   static const String postDetails = 'post/{id}';
 
+  static const String suitablePostsForDriver = 'posts/driver/suitable';
+
 }

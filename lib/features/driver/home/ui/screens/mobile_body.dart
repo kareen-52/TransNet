@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/screens/driver_shipments_screen.dart';
+import 'package:graduation_progect/features/driver/driver_posts/ui/screen/driver_posts_screen.dart';
 import 'package:graduation_progect/features/driver/home/logic/driver_home_state.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_bottom_nav_bar.dart';
@@ -28,7 +29,7 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
 
   final List<Widget> _screens = const [
     HomeContent(isTablet: false),
-    AdsScreen(),
+    DriverPostsScreen(),
     MyOrdersScreen(),
     AcountDriverScreen(),
   ];
@@ -149,11 +150,6 @@ Widget build(BuildContext context) {
   }
 }
 
-class AdsScreen extends StatelessWidget {
-  const AdsScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('الإعلانات '));
-}
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});

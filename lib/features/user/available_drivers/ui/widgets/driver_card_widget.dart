@@ -17,7 +17,7 @@ class DriverCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     return Container(
       margin: EdgeInsets.only(bottom: 32.h, top: 10.h),
       child: Stack(

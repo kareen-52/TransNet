@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ClientPostsShimmer extends StatelessWidget {
-  const ClientPostsShimmer({super.key});
+class PostsShimmer extends StatelessWidget {
+  const PostsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

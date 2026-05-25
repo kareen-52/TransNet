@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'client_posts_state.dart';
+part of 'driver_posts_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,7 +12,7 @@ part of 'client_posts_state.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ClientPostsState {
+mixin _$DriverPostsState {
 
 
 
@@ -20,7 +20,7 @@ mixin _$ClientPostsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientPostsState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DriverPostsState);
 }
 
 
@@ -29,20 +29,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ClientPostsState()';
+  return 'DriverPostsState()';
 }
 
 
 }
 
 /// @nodoc
-class $ClientPostsStateCopyWith<$Res>  {
-$ClientPostsStateCopyWith(ClientPostsState _, $Res Function(ClientPostsState) __);
+class $DriverPostsStateCopyWith<$Res>  {
+$DriverPostsStateCopyWith(DriverPostsState _, $Res Function(DriverPostsState) __);
 }
 
 
-/// Adds pattern-matching-related methods to [ClientPostsState].
-extension ClientPostsStatePatterns on ClientPostsState {
+/// Adds pattern-matching-related methods to [DriverPostsState].
+extension DriverPostsStatePatterns on DriverPostsState {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -198,7 +198,7 @@ return error(_that.error);case _:
 /// @nodoc
 
 
-class _Initial implements ClientPostsState {
+class _Initial implements DriverPostsState {
   const _Initial();
   
 
@@ -218,7 +218,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ClientPostsState.initial()';
+  return 'DriverPostsState.initial()';
 }
 
 
@@ -230,7 +230,7 @@ String toString() {
 /// @nodoc
 
 
-class _Loading implements ClientPostsState {
+class _Loading implements DriverPostsState {
   const _Loading();
   
 
@@ -250,7 +250,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ClientPostsState.loading()';
+  return 'DriverPostsState.loading()';
 }
 
 
@@ -262,7 +262,7 @@ String toString() {
 /// @nodoc
 
 
-class _Empty implements ClientPostsState {
+class _Empty implements DriverPostsState {
   const _Empty();
   
 
@@ -282,7 +282,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ClientPostsState.empty()';
+  return 'DriverPostsState.empty()';
 }
 
 
@@ -294,7 +294,7 @@ String toString() {
 /// @nodoc
 
 
-class _Success implements ClientPostsState {
+class _Success implements DriverPostsState {
   const _Success(final  List<PostModel> posts): _posts = posts;
   
 
@@ -306,7 +306,7 @@ class _Success implements ClientPostsState {
 }
 
 
-/// Create a copy of ClientPostsState
+/// Create a copy of DriverPostsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -325,14 +325,14 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'ClientPostsState.success(posts: $posts)';
+  return 'DriverPostsState.success(posts: $posts)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$SuccessCopyWith<$Res> implements $ClientPostsStateCopyWith<$Res> {
+abstract mixin class _$SuccessCopyWith<$Res> implements $DriverPostsStateCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
 @useResult
 $Res call({
@@ -351,7 +351,7 @@ class __$SuccessCopyWithImpl<$Res>
   final _Success _self;
   final $Res Function(_Success) _then;
 
-/// Create a copy of ClientPostsState
+/// Create a copy of DriverPostsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? posts = null,}) {
   return _then(_Success(
@@ -366,13 +366,13 @@ as List<PostModel>,
 /// @nodoc
 
 
-class _Error implements ClientPostsState {
+class _Error implements DriverPostsState {
   const _Error(this.error);
   
 
  final  ApiErrorModel error;
 
-/// Create a copy of ClientPostsState
+/// Create a copy of DriverPostsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -391,14 +391,14 @@ int get hashCode => Object.hash(runtimeType,error);
 
 @override
 String toString() {
-  return 'ClientPostsState.error(error: $error)';
+  return 'DriverPostsState.error(error: $error)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ErrorCopyWith<$Res> implements $ClientPostsStateCopyWith<$Res> {
+abstract mixin class _$ErrorCopyWith<$Res> implements $DriverPostsStateCopyWith<$Res> {
   factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
 @useResult
 $Res call({
@@ -417,7 +417,7 @@ class __$ErrorCopyWithImpl<$Res>
   final _Error _self;
   final $Res Function(_Error) _then;
 
-/// Create a copy of ClientPostsState
+/// Create a copy of DriverPostsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
   return _then(_Error(

@@ -42,7 +42,7 @@ class CreateShipmentStepper extends StatelessWidget {
               },
               
               submitError: (errorModel) {
-                // SnackBarHelper.showError(context, errorModel.getAllErrorMessages());
+
                 AppDialogs.showErrorDialog(
                   context,
                   errorModel.getAllErrorMessages(),
@@ -50,17 +50,7 @@ class CreateShipmentStepper extends StatelessWidget {
               },
 
               govError: (errorModel) {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     content: Text(
-                //       errorModel.getAllErrorMessages(),
-                //       style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                //         color: Theme.of(context).colorScheme.onPrimary,
-                //       ),
-                //     ),
-                //     backgroundColor: Theme.of(context).colorScheme.error,
-                //   ),
-                // );
+            
                 AppDialogs.showErrorDialog(
                   context,
                   errorModel.getAllErrorMessages(),
@@ -156,29 +146,4 @@ class CreateShipmentStepper extends StatelessWidget {
       ),
     );
   }
-
-  // void _showErrorDialog(BuildContext context, String errorMsg) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) => AlertDialog(
-  //       title: Row(
-  //         children: [
-  //           Icon(
-  //             Icons.error_outline,
-  //             color: Theme.of(context).colorScheme.error,
-  //           ),
-  //           horizontalSpace(8),
-  //           const Text('تنبيه'),
-  //         ],
-  //       ),
-  //       content: Text(errorMsg),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(context),
-  //           child: const Text('حسناً'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

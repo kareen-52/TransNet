@@ -13,22 +13,6 @@ class Step1Locations extends StatelessWidget {
   final CreateShipmentCubit cubit;
   const Step1Locations({super.key, required this.cubit});
 
-  // static const Map<int, LatLng> _governorateCoordinates = {
-  //   1: LatLng(33.5138, 36.2765), // دمشق
-  //   2: LatLng(33.5000, 36.5000), // ريف دمشق
-  //   3: LatLng(36.2012, 37.1612), // حلب
-  //   4: LatLng(35.5206, 35.7793), // اللاذقية
-  //   5: LatLng(35.1318, 36.7578), // حماة
-  //   6: LatLng(34.7324, 36.7137), // حمص
-  //   7: LatLng(32.6241, 36.1048), // درعا
-  //   8: LatLng(33.1256, 35.8215), // القنيطرة
-  //   9: LatLng(35.9500, 39.0167), // الرقة
-  //   10: LatLng(35.3333, 40.1500), // دير الزور
-  //   11: LatLng(36.5000, 40.7500), // الحسكة
-  //   12: LatLng(35.9306, 36.6339), // إدلب
-  //   13: LatLng(32.7090, 36.5695), // السويداء
-  //   14: LatLng(34.8890, 35.8866), // طرطوس
-  // };
 
   @override
   Widget build(BuildContext context) {
