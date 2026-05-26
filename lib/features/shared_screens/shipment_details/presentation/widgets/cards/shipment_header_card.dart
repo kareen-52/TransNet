@@ -6,7 +6,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/copy_chip.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/status_badge.dart';
 
-
 class ShipmentHeaderCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;
@@ -19,23 +18,29 @@ class ShipmentHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColor =
-        shipment.isCompleted ? AppColors.success : AppColors.secondary;
-    final surface =
-        isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final statusColor = shipment.isCompleted
+        ? AppColors.success
+        : AppColors.secondary;
+    final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: buildCardDecoration(
-          surface: surface, border: border, isDark: isDark),
+        surface: surface,
+        border: border,
+        isDark: isDark,
+      ),
       child: Row(
         children: [
           _ShipmentIcon(color: statusColor),
           SizedBox(width: 14.w),
           Expanded(
             child: _ShipmentInfo(
-                shipment: shipment, statusColor: statusColor, context: context),
+              shipment: shipment,
+              statusColor: statusColor,
+              context: context,
+            ),
           ),
           CopyChip(
             value: shipment.shipmentNumber.toString(),
@@ -85,15 +90,12 @@ class _ShipmentInfo extends StatelessWidget {
         Text(
           'شحنة #${shipment.shipmentNumber}',
           style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.2,
-              ),
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.2,
+          ),
         ),
         SizedBox(height: 6.h),
-        StatusBadge(
-          label: shipment.displayStatus,
-          color: statusColor,
-        ),
+        StatusBadge(label: shipment.displayStatus, color: statusColor),
       ],
     );
   }

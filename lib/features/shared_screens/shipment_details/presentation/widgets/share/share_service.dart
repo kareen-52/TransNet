@@ -25,7 +25,7 @@ abstract class ShareService {
     buf.writeln('📦 تفاصيل الشحنة');
     buf.writeln('━━━━━━━━━━━━━━━━━━━━');
     buf.writeln('🔢 رقم الشحنة: #${s.shipmentNumber}');
-    buf.writeln('📌 الحالة: ${s.displayStatus}');
+    buf.writeln('📌 الحالة: ${s.status}');
     buf.writeln('━━━━━━━━━━━━━━━━━━━━');
     buf.writeln('📍 من: ${s.startGovernorate}');
     buf.writeln('🏁 إلى: ${s.endGovernorate}');
@@ -37,11 +37,11 @@ abstract class ShareService {
     if (s.hasInsurance) {
       buf.writeln('🛡 التأمين: مؤمَّن ✅');
     }
-    // Only show paid status if the API returned it
-    if (s.paid != null) {
-      buf.writeln('━━━━━━━━━━━━━━━━━━━━');
-      buf.writeln('💳 الدفع: ${s.isPaid ? "مدفوع ✅" : "غير مدفوع ❌"}');
-    }
+
+    // if (s.paid != null) {
+    //   buf.writeln('━━━━━━━━━━━━━━━━━━━━');
+    // //  buf.writeln('💳 الدفع: ${s.isPaid ? "مدفوع ✅" : "غير مدفوع ❌"}');
+    // }
 
     if (s.deliveryDeadline != null) {
       buf.writeln(

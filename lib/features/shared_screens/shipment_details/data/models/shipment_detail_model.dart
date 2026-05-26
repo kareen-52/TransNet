@@ -61,7 +61,6 @@ class ShipmentDetailModel {
   @JsonKey(name: 'delivery_deadline')
   final String? deliveryDeadline;
 
-  final int? paid;
 
   const ShipmentDetailModel({
     required this.id,
@@ -88,7 +87,7 @@ class ShipmentDetailModel {
     this.status,
     this.success,
     this.deliveryDeadline,
-    this.paid,
+
   });
 
   factory ShipmentDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -122,6 +121,6 @@ class ShipmentDetailModel {
         status: status,
         success: success,
         deliveryDeadline: deliveryDeadline,
-        paid: paid,
+   
       );
 }

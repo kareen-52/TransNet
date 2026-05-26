@@ -140,12 +140,12 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
         SnackBarHelper.showSuccess(context, response.message);
         widget.onOrderProcessed();
 
-      // 🛠️ الحل هنا: نقوم بتحويل البيانات إلى المودل الذي تنتظره شاشة التتبع
+ 
       final activeShipment = ActiveDriverShipmentModel(
         id: response.shipmentData!.id,
         userId: widget.orderData.userId,
         driverId: widget.orderData.driverId,
-        shipmentNumber: 0, // يتم توليده في الباك إند
+        shipmentNumber: 0, 
         price: widget.orderData.price,
         status: 'جارية',
         startLat: response.shipmentData!.startLat,
@@ -155,7 +155,7 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
         startGovernorate: widget.orderData.fromLocation,
         endGovernorate: widget.orderData.toLocation,
         pathCoordinates: response.shipmentData!.pathCoordinates,
-        client: null, // سيعرض "غير معروف" مؤقتاً في شاشة التتبع
+        client: null, 
       );
 
       Navigator.pushNamed(

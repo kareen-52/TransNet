@@ -23,7 +23,6 @@ class ShipmentItemCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-       
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -78,33 +77,10 @@ class ShipmentItemCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 4.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isCompleted
-                          ? Colors.green.withOpacity(0.2)
-                          : Colors.orange.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Text(
-                      shipment.status ??
-                          (isCompleted ? "مكتملة" : "قيد التنفيذ"),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: isCompleted
-                            ? Colors.green[800]
-                            : Colors.orange[800],
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
-         
+
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Column(

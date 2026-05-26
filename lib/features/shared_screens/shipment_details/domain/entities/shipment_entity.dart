@@ -12,9 +12,7 @@ class ShipmentEntity {
   final String? width;
   final String? length;
   final String? object;
-
   final int? insurance;
-
   final String startPositionLat;
   final String startPositionLng;
   final String endPositionLat;
@@ -25,7 +23,6 @@ class ShipmentEntity {
   final String? status;
   final int? success;
   final String? deliveryDeadline;
-  final int? paid;
 
   const ShipmentEntity({
     required this.id,
@@ -52,19 +49,18 @@ class ShipmentEntity {
     this.status,
     this.success,
     this.deliveryDeadline,
-    this.paid,
+   
   });
 
+  bool get isCompleted => success == 1 || status == 'مستلمة';
 
 
- bool get isCompleted => success == 1 || status == 'مستلمة';
-  bool get isPaid => paid == 1;
   bool get hasPin => pin != null && pin!.isNotEmpty;
   bool get hasQrPin => qrPin != null && qrPin!.isNotEmpty;
   bool get hasDimensions => width != null || height != null || length != null;
 
-
   bool get hasInsurance => insurance == 1;
 
-  String get displayStatus => status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ');
+  String get displayStatus =>
+      status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ');
 }

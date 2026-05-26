@@ -206,7 +206,7 @@ class _MobileBody extends StatelessWidget {
     final shipment = data.shipment;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bool isCompleted =
-        shipment.success == 1 || shipment.status == 'مستلمة';
+        shipment.success == 1 ;
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -342,7 +342,7 @@ class _TabletBody extends StatelessWidget {
     final shipment = data.shipment;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bool isCompleted =
-        shipment.success == 1 || shipment.status == 'مستلمة';
+        shipment.success == 1 ;
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),

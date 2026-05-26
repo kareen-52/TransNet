@@ -56,10 +56,8 @@ class ShipmentAppBar extends StatelessWidget {
   }
 }
 
-// ─── Private title widget ──────────────────────────────────────────────────────
-
 class _AppBarTitle extends StatelessWidget {
-  final dynamic shipment; // ShipmentEntity
+  final dynamic shipment; 
   final Color statusColor;
 
   const _AppBarTitle({

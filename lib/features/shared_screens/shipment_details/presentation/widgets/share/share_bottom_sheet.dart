@@ -38,18 +38,15 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
   bool _copied = false;
   bool _generatingPdf = false;
 
-  // ── Share as plain text ───────────────────────────────────────────────────
   Future<void> _shareViaApp() async {
     HapticFeedback.lightImpact();
     await Share.share(widget.shareText, subject: 'تفاصيل الشحنة');
   }
 
-  // ── Generate & share PDF (Arabic-safe) ───────────────────────────────────
   Future<void> _shareAsPdf() async {
     setState(() => _generatingPdf = true);
     HapticFeedback.lightImpact();
     try {
-      // ── Step 1: load Arabic font ──────────────────────────────────────────
       final regularFontData = await rootBundle.load(
         'assets/fonts/NotoNaskhArabic-Regular.ttf',
       );
@@ -59,15 +56,12 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
       final arabicRegular = pw.Font.ttf(regularFontData);
       final arabicBold = pw.Font.ttf(boldFontData);
 
-      // ── Step 2: build PDF ─────────────────────────────────────────────────
       final pdf = pw.Document(
         theme: pw.ThemeData.withFont(base: arabicRegular, bold: arabicBold),
       );
 
       final s = widget.data.shipment;
 
-      // FIX: extract driver before entering the builder closure
-      // so we avoid using `final` inside a spread `...[]`
       final driver = widget.data.hasDriver ? widget.data.driver : null;
       final client = widget.data.hasClient ? widget.data.client : null;
 
@@ -81,7 +75,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  // ── Header ───────────────────────────────────────────────
                   pw.Container(
                     width: double.infinity,
                     padding: const pw.EdgeInsets.all(16),
@@ -97,18 +90,16 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                           style: pw.TextStyle(
                             font: arabicBold,
                             fontSize: 22,
-                            color: PdfColors
-                                .white, // FIX: was PdfColors.white70 (doesn't exist)
+                            color: PdfColors.white,
                           ),
                         ),
                         pw.SizedBox(height: 4),
                         pw.Text(
-                          'شحنة #${s.shipmentNumber}  •  ${s.displayStatus}',
+                          'شحنة #${s.shipmentNumber}  •  ${s.status}',
                           style: pw.TextStyle(
                             font: arabicRegular,
                             fontSize: 12,
-                            color: PdfColors
-                                .grey300, // FIX: use grey300 for subtitle
+                            color: PdfColors.grey300,
                           ),
                         ),
                       ],
@@ -116,7 +107,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                   ),
                   pw.SizedBox(height: 24),
 
-                  // ── Route ────────────────────────────────────────────────
                   _pdfSection(
                     arabicBold,
                     arabicRegular,
@@ -128,7 +118,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                   ),
                   pw.SizedBox(height: 16),
 
-                  // ── Financial ────────────────────────────────────────────
                   if (s.price != null)
                     _pdfSection(
                       arabicBold,
@@ -138,12 +127,11 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                         if (s.price != null) ['${s.price} ل.س', 'السعر'],
                         if (s.insurance != null)
                           [s.hasInsurance ? 'مؤمَّن' : 'غير مؤمَّن', 'التأمين'],
-                        [s.isPaid ? 'مدفوع' : 'غير مدفوع', 'حالة الدفع'],
+                        //  [s.isPaid ? 'مدفوع' : 'غير مدفوع', 'حالة الدفع'],
                       ],
                     ),
                   pw.SizedBox(height: 16),
 
-                  // ── Cargo ────────────────────────────────────────────────
                   if (s.object != null || s.weight != null)
                     _pdfSection(
                       arabicBold,
@@ -156,8 +144,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                     ),
                   pw.SizedBox(height: 16),
 
-                  // ── Driver ───────────────────────────────────────────────
-                  // FIX: driver extracted above — no `final` inside spread
                   if (driver != null)
                     _pdfSection(
                       arabicBold,
@@ -180,7 +166,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                     ),
                   pw.SizedBox(height: 16),
 
-                  // ── PIN ──────────────────────────────────────────────────
                   if (s.hasPin)
                     _pdfSection(
                       arabicBold,
@@ -193,7 +178,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
 
                   pw.Spacer(),
 
-                  // ── Footer ───────────────────────────────────────────────
                   pw.Divider(),
                   pw.Text(
                     " تم الإنشاء عبر تطبيق الشحن     •  ${DateFormatter.format(DateTime.now().toIso8601String())}",
@@ -210,7 +194,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         ),
       );
 
-      // ── Step 3: save & share ──────────────────────────────────────────────
       final dir = await getTemporaryDirectory();
       final path = '${dir.path}/shipment_${s.shipmentNumber}.pdf';
       final file = File(path);
@@ -225,7 +208,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     }
   }
 
-  // ── PDF section helper ────────────────────────────────────────────────────
   static pw.Widget _pdfSection(
     pw.Font boldFont,
     pw.Font regularFont, {
@@ -271,7 +253,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     );
   }
 
-  // ── Copy to clipboard ─────────────────────────────────────────────────────
   Future<void> _copyToClipboard({bool pop = false}) async {
     await Clipboard.setData(ClipboardData(text: widget.shareText));
     HapticFeedback.lightImpact();
@@ -297,7 +278,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     );
   }
 
-  // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -362,8 +342,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     );
   }
 }
-
-// ─── Sub-widgets ──────────────────────────────────────────────────────────────
 
 class _SheetHeader extends StatelessWidget {
   final int shipmentNumber;
