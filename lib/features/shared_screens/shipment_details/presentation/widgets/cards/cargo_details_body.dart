@@ -5,7 +5,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/info_row.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/row_divider.dart';
 
-/// Body section of the cargo card — object type, weight and dimensions.
+
 class CargoDetailsBody extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;

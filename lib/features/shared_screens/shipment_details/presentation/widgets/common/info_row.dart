@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Standardised info row with an icon container on the left,
-/// a dimmed label in the middle, and a bold value on the right.
-///
-/// Used uniformly across status, cargo and party cards.
 class InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;

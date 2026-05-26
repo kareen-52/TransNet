@@ -57,7 +57,7 @@ class ShipmentEntity {
 
 
 
-  bool get isCompleted => success == 1;
+ bool get isCompleted => success == 1 || status == 'مستلمة';
   bool get isPaid => paid == 1;
   bool get hasPin => pin != null && pin!.isNotEmpty;
   bool get hasQrPin => qrPin != null && qrPin!.isNotEmpty;

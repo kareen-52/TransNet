@@ -4,14 +4,7 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/party_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
 import 'package:graduation_progect/features/user/active_orders/ui/widgets/driver_info_row.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
-/// Displays a single party's avatar, role, full name, phone number
-/// and a quick-call action button.
-///
-/// Call button launches the dialer via url_launcher.
-/// Works for both driver and client — role, icon and accent colour
-/// are injected externally so the card stays generic and reusable.
 class ShipmentPartyCard extends StatelessWidget {
   final PartyEntity party;
   final String role;
@@ -58,8 +51,6 @@ class ShipmentPartyCard extends StatelessWidget {
   }
 }
 
-// ─── Avatar ────────────────────────────────────────────────────────────────────
-
 class _PartyAvatar extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -81,7 +72,6 @@ class _PartyAvatar extends StatelessWidget {
   }
 }
 
-// ─── Info ──────────────────────────────────────────────────────────────────────
 
 class _PartyInfo extends StatelessWidget {
   final PartyEntity party;
@@ -121,7 +111,6 @@ class _PartyInfo extends StatelessWidget {
   }
 }
 
-// ─── Call button ───────────────────────────────────────────────────────────────
 
 class _CallButton extends StatelessWidget {
   final Color iconColor;

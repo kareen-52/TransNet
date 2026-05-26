@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Reusable shimmer animation box used in skeleton loading views.
-///
-/// Uses a single [AnimationController] per instance for independent
-/// animation timing — no shared controllers, no unnecessary rebuilds.
 class ShimmerBox extends StatefulWidget {
   final double w;
   final double h;

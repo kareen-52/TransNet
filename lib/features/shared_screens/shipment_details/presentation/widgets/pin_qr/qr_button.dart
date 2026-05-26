@@ -4,10 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_fullscreen_modal.dart';
 
-/// Compact QR card button that opens the full-screen QR viewer on tap.
-///
-/// The card itself is purely decorative — a gradient icon + label
-/// that clearly communicates "tap me to see the QR code".
+
 class QrButton extends StatelessWidget {
   final String qrPin;
   final bool isDark;
@@ -17,7 +14,6 @@ class QrButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
-    final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
     return GestureDetector(
       onTap: () {

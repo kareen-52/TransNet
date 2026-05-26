@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Bottom legend bar shown on the fullscreen map screen.
-/// Labels start/end markers and indicates read-only mode.
+
 class MapLegendBar extends StatelessWidget {
   final bool isDark;
 

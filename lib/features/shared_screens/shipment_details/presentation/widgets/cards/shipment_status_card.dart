@@ -7,9 +7,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/row_divider.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/date_formatter.dart';
 
-/// Displays shipment dates and current payment/completion status pills.
-/// Status pills (مدفوع / قيد التنفيذ) are shown ONLY when the API
-/// returns the corresponding field — they are hidden when null.
 class ShipmentStatusCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;
@@ -25,7 +22,8 @@ class ShipmentStatusCard extends StatelessWidget {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
-    // Only show pills for fields the API actually returned
+    // final showPaidPill = true;
+    // final showSuccessPill = true;
     final showPaidPill = shipment.paid != null;
     final showSuccessPill = shipment.success != null;
     final showPillsRow = showPaidPill || showSuccessPill;
@@ -33,7 +31,10 @@ class ShipmentStatusCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: buildCardDecoration(
-          surface: surface, border: border, isDark: isDark),
+        surface: surface,
+        border: border,
+        isDark: isDark,
+      ),
       child: Column(
         children: [
           InfoRow(
@@ -83,8 +84,6 @@ class ShipmentStatusCard extends StatelessWidget {
   }
 }
 
-// ─── Status Pill ──────────────────────────────────────────────────────────────
-
 class _StatusPill extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -114,9 +113,10 @@ class _StatusPill extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                  color: color,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w700),
+                color: color,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),

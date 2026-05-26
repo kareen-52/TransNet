@@ -6,12 +6,7 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/copy_button.dart';
 
-/// Card that displays the shipment PIN code.
-///
-/// Features:
-///   - Masked by default (dots). Toggleable via the eye icon.
-///   - Full-width animated copy button with haptic feedback.
-///   - Self-contained state: no external state management needed.
+
 class PinCard extends StatefulWidget {
   final String pin;
   final bool isDark;

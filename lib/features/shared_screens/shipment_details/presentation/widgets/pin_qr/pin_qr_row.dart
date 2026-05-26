@@ -4,10 +4,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/pin_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_button.dart';
 
-/// Composes [PinCard] and [QrButton] side-by-side in a single row.
-///
-/// Shown only when the shipment has at least one of: pin or qrPin.
-/// Uses [IntrinsicHeight] so both children stretch to the same height.
 class PinQrRow extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;

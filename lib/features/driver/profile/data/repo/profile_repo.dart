@@ -8,10 +8,6 @@ import 'package:graduation_progect/features/driver/profile/data/models/edit_prof
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Profile repository — ONLINE FIRST + CACHE FALLBACK. No TTL.
-///
-/// When online  → always fetch fresh from server, update cache, return server data.
-/// When offline → return cached profile (or error if no cache).
 class ProfileRepo {
   final ApiService _apiService;
   ProfileRepo(this._apiService);
@@ -74,7 +70,7 @@ class ProfileRepo {
     }
   }
 
-  // ── Private helpers ─────────────────────────────────────────────────────────
+
 
   ApiResult<ProfileResponse>? _fromCache() {
     final cached = HiveCacheService.getCachedProfile();

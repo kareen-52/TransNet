@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Full-width animated copy button used inside [PinCard].
-///
-/// Transitions smoothly between its default and "copied" states
-/// using [AnimatedContainer] — no extra state hoisting needed.
-/// The parent controls the [copied] flag and [onTap] callback.
+
 class CopyButton extends StatelessWidget {
   final bool copied;
   final String label;

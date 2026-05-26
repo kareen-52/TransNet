@@ -6,10 +6,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/copy_chip.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/status_badge.dart';
 
-/// Hero card displayed at the top of the screen.
-///
-/// Shows the shipment icon, number, status badge and an inline
-/// [CopyChip] so the tracking number is always one tap away.
+
 class ShipmentHeaderCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;

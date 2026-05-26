@@ -6,7 +6,6 @@ import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/driver/profile/data/repo/profile_repo.dart';
 import 'profile_state.dart';
 
-/// Driver profile cubit — driver-only. Do NOT use for client profile.
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo _profileRepo;
   ProfileCubit(this._profileRepo) : super(const ProfileState.initial());

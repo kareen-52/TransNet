@@ -4,8 +4,7 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
 
-/// Displays the origin and destination governorates connected
-/// by a dashed line with a directional arrow.
+
 class ShipmentRouteCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;
@@ -67,7 +66,7 @@ class ShipmentRouteCard extends StatelessWidget {
   }
 }
 
-// ─── Endpoint (from / to) ─────────────────────────────────────────────────────
+
 
 class _RouteEndpoint extends StatelessWidget {
   final String label;
@@ -124,7 +123,7 @@ class _RouteEndpoint extends StatelessWidget {
   }
 }
 
-// ─── Location dot ─────────────────────────────────────────────────────────────
+
 
 class _LocationDot extends StatelessWidget {
   final Color color;
@@ -149,7 +148,7 @@ class _LocationDot extends StatelessWidget {
   }
 }
 
-// ─── Dashed connector ─────────────────────────────────────────────────────────
+
 
 class _DashedConnector extends StatelessWidget {
   final bool isDark;

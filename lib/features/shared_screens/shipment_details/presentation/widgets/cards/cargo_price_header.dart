@@ -3,9 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_entity.dart';
 
-/// Gradient price banner at the top of the cargo card.
-/// Shows total price prominently and an optional insurance badge.
-/// Note: [ShipmentEntity.insurance] is a 0/1 flag — not a monetary amount.
+
 class CargoPriceHeader extends StatelessWidget {
   final ShipmentEntity shipment;
 
@@ -82,8 +80,6 @@ class _PriceLabel extends StatelessWidget {
   }
 }
 
-/// Insurance badge — shows "مؤمَّن" because insurance is a boolean flag (0/1),
-/// not a monetary amount. There is no amount to display.
 class _InsuranceBadge extends StatelessWidget {
   const _InsuranceBadge();
 

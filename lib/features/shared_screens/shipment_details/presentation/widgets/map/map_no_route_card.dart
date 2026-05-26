@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Placeholder shown in place of the map when no route data is available.
+
 class MapNoRouteCard extends StatelessWidget {
   final bool isDark;
 

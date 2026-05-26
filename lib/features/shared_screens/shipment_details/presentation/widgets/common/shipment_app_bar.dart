@@ -5,10 +5,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/doma
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/glass_icon_button.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/share/share_service.dart';
 
-/// Collapsing SliverAppBar for the Shipment Details screen.
-///
-/// Shows the shipment title, live status indicator, a back button
-/// and a share action. Delegates sharing to [ShareService].
 class ShipmentAppBar extends StatelessWidget {
   final ShipmentDetailsEntity data;
   final bool isDark;

@@ -4,26 +4,19 @@ import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/repo/notification_repo.dart';
 import 'notification_state.dart';
 
-/// Notification cubit.
-///
-/// OFFLINE RULE (per spec):
-///  Callers MUST check ConnectivityHelper.isOnline BEFORE calling
-///  fetchRecentNotifications/fetchAllNotifications. The screen and bell
-///  icon both guard access — this cubit never receives an offline call.
-///
-/// Unread count: online → always fetch fresh + cache. Offline → cached count.
+
 class NotificationCubit extends Cubit<NotificationState> {
   final NotificationRepo _repo;
   int  unreadCount  = 0;
   bool isShowingAll = false;
-  bool _isFetching  = false;   // guard against concurrent fetches
+  bool _isFetching  = false;  
 
   NotificationCubit(this._repo) : super(const NotificationState.initial());
 
-  // ── Unread count (bell badge) ───────────────────────────────────────────────
+
 
   Future<void> fetchUnreadCount() async {
-    if (!ConnectivityHelper.isOnline) return; // serve cached count silently
+    if (!ConnectivityHelper.isOnline) return; 
     final result = await _repo.getNewNotificationsCount();
     if (isClosed) return;
     result.when(
@@ -35,10 +28,8 @@ class NotificationCubit extends Cubit<NotificationState> {
     );
   }
 
-  // ── Notifications list ──────────────────────────────────────────────────────
-
   Future<void> fetchRecentNotifications() async {
-    if (_isFetching) return;   // prevent parallel calls on rapid navigation
+    if (_isFetching) return;   
     _isFetching = true;
 
     if (!isClosed) emit(const NotificationState.loading());

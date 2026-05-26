@@ -10,7 +10,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/map/map_no_route_card.dart';
 import 'package:latlong2/latlong.dart';
 
-/// Tappable map thumbnail card. Opens [MapFullscreenScreen] on press.
 class ShipmentMapCard extends StatelessWidget {
   final RouteGeometryEntity? routeGeometry;
   final ShipmentEntity shipment;

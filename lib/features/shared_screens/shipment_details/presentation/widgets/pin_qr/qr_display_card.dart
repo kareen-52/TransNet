@@ -4,11 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-/// White card containing the scannable QR code with branding strip
-/// and scan hint. Wrapped in [RepaintBoundary] for PNG capture.
-///
-/// Replace [_QrCodeView] with qr_flutter's [QrImageView] once
-/// `qr_flutter` is added to pubspec.yaml.
 class QrDisplayCard extends StatelessWidget {
   final GlobalKey repaintKey;
   final String qrPin;
@@ -137,8 +132,7 @@ class _ScanHint extends StatelessWidget {
   }
 }
 
-/// Placeholder QR painter — mimics a real QR code visually until
-/// qr_flutter is installed. Replace [_QrCodeView] with QrImageView.
+
 class QrPlaceholderPainter extends CustomPainter {
   final int seed;
   const QrPlaceholderPainter({required this.seed});

@@ -6,10 +6,7 @@ import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/data/models/notification_model.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Notification repository.
-///
-/// Per spec: NO notifications caching. Notifications are always fetched fresh.
-/// Only the unread count is cached (with a 30s anti-spam window).
+
 class NotificationRepo {
   final ApiService _apiService;
   NotificationRepo(this._apiService);
@@ -22,8 +19,7 @@ class NotificationRepo {
     }
   }
 
-  /// Fetches notifications — always from server, no local cache returned here.
-  /// The cubit guards offline access before calling this.
+
   Future<ApiResult<List<NotificationModel>>> getNotifications({
     required int latest,
   }) async {
@@ -35,7 +31,7 @@ class NotificationRepo {
     }
   }
 
-  /// Unread count — online: always fresh + cache. Offline: use cache.
+
   Future<ApiResult<int>> getNewNotificationsCount() async {
     if (!ConnectivityHelper.isOnline) {
       final cached = HiveCacheService.getCachedNotificationCount();
@@ -43,7 +39,6 @@ class NotificationRepo {
       return ApiResult.success(0);
     }
 
-    // Anti-spam: skip server call if we fetched count very recently
     if (HiveCacheService.isNotifCountFresh()) {
       final cached = HiveCacheService.getCachedNotificationCount();
       if (cached != null) return ApiResult.success(cached);

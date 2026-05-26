@@ -3,12 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Compact animated copy chip.
-///
-/// Tapping it copies [value] to the clipboard, plays a haptic pulse,
-/// and briefly switches to a green "تم!" confirmation state before
-/// reverting. Scale animation is handled by a dedicated
-/// [AnimationController] — no external state needed.
 class CopyChip extends StatefulWidget {
   final String value;
   final String label;

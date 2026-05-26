@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/map/map_route_view.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/map/map_legend_bar.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/lat_lng_parser.dart';
 import 'package:latlong2/latlong.dart';
 
-/// Full-screen interactive route preview.
-/// Read-only from business perspective — no editing. Pan/zoom enabled.
+
 class MapFullscreenScreen extends StatefulWidget {
   final List<LatLng> points;
   final LatLng start;

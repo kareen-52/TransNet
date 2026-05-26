@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Small coloured badge that communicates a status label.
-///
-/// Used in both the header card and the status card.
-/// Accepts any [Color] so it works for payment, completion and other states.
 class StatusBadge extends StatelessWidget {
   final String label;
   final Color color;

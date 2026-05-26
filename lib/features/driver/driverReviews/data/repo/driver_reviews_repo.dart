@@ -6,11 +6,7 @@ import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/features/driver/driverReviews/data/model/review_response.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 
-/// Driver reviews repository.
-///
-/// Strategy: ONLINE REFRESH + OFFLINE CACHE. No TTL.
-/// Uses dedicated reviews_box (NOT profile_box).
-/// Server updates always appear when online.
+
 class DriverReviewsRepo {
   final ApiService _apiService;
   DriverReviewsRepo(this._apiService);
@@ -25,7 +21,7 @@ class DriverReviewsRepo {
 
     try {
       final response = await _apiService.getDriverReviews(driverId);
-      // Always update cache when online
+
       await HiveCacheService.cacheDriverReviews(driverId, _toJson(response));
       return ApiResult.success(response);
     } catch (error) {
@@ -34,7 +30,7 @@ class DriverReviewsRepo {
     }
   }
 
-  // ── Private ─────────────────────────────────────────────────────────────────
+ 
 
   ApiResult<ReviewResponse>? _fromCache(int driverId) {
     final cached = HiveCacheService.getCachedDriverReviews(driverId);

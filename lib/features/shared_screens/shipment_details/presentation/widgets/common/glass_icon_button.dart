@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Frosted-glass-style circular icon button used in the AppBar.
-///
-/// Adapts its background and border to dark/light mode automatically.
+
 class GlassIconButton extends StatelessWidget {
   final IconData icon;
   final bool isDark;

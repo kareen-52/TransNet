@@ -19,11 +19,11 @@ class ShipmentItemCard extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
-    final bool isCompleted = shipment.success == 1;
+    final bool isCompleted = shipment.isCompleted;
 
     return GestureDetector(
       onTap: () {
-        // ✅ فقط نمرر shipmentId للشاشة، لا نستخدم getIt أو BlocProvider هنا
+       
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -104,7 +104,7 @@ class ShipmentItemCard extends StatelessWidget {
                 ],
               ),
             ),
-            // باقي المحتوى (تعامل معه كما هو)
+         
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Column(

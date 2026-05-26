@@ -5,10 +5,7 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/lat_lng_parser.dart';
 import 'package:latlong2/latlong.dart';
 
-/// Reusable map view shared between the preview card and the fullscreen screen.
-///
-/// Renders a tile layer, the route polyline, and start/end markers.
-/// [interactive] controls whether the user can pan/zoom.
+
 class MapRouteView extends StatelessWidget {
   final List<LatLng> points;
   final LatLng start;

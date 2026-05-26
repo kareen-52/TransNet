@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Reusable section header used throughout the Shipment Details screen.
-///
-/// Renders an icon in a tinted container + a label beside it.
-/// Visually separates content groups without heavy dividers.
+
 class SectionHeader extends StatelessWidget {
   final String label;
   final IconData icon;

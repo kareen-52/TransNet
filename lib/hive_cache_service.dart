@@ -181,7 +181,6 @@ class HiveCacheService {
     return raw != null ? int.tryParse(raw) : null;
   }
 
-  /// True if the cached count is still within the anti-spam window.
   static bool isNotifCountFresh() {
     final atStr = _metaBoxInst.get(_notifCountAtKey);
     if (atStr == null) return false;
