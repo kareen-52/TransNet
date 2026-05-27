@@ -32,7 +32,6 @@ ShipmentDetailModel _$ShipmentDetailModelFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       success: (json['success'] as num?)?.toInt(),
       deliveryDeadline: json['delivery_deadline'] as String?,
-
     );
 
 Map<String, dynamic> _$ShipmentDetailModelToJson(
@@ -62,5 +61,4 @@ Map<String, dynamic> _$ShipmentDetailModelToJson(
   'status': instance.status,
   'success': instance.success,
   'delivery_deadline': instance.deliveryDeadline,
- 
 };

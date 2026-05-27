@@ -6,16 +6,6 @@ import '../../data/models/post_details_model.dart';
 class PostPriceInfoCard extends StatelessWidget {
   final PostDetailsModel post;
   const PostPriceInfoCard({super.key, required this.post});
-
-  // String _formatNumber(num number) {
-  //   return number
-  //       .toStringAsFixed(0)
-  //       .replaceAllMapped(
-  //         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-  //         (Match m) => '${m[1]},',
-  //       );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

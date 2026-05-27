@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/helpers/constants.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_cubit.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/data/models/post_details_model.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/ui/screen/post_details_shimmer.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/ui/widgets/post_location_card.dart';
@@ -91,6 +96,43 @@ class PostDetailsScreen extends StatelessWidget {
               data.drivers!.isEmpty &&
               !data.isFinished) ...[
             _buildEmptyDriversState(context),
+          ],
+
+          if (!data.isFinished) ...[
+            FutureBuilder<String>(
+              future: Future.value(
+                SharedPrefHelper.getString(SharedPrefKeys.userRole),
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data == 'driver') {
+                  return Column(
+                    children: [
+                      // verticalSpace(32),
+                      AppTextButton(
+                          text: 'تقديم عرض على الإعلان',
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (_) => BlocProvider(
+                                create: (context) => getIt<ApplyToPostCubit>(),
+                                child: ApplyPostBottomSheet(
+                                  postId: data.id,
+                                  minPrice: data.minPrice ?? 0,
+                                  maxPrice: data.maxPrice ?? 0,
+                                  lastDate: data.lastDate ?? DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ],
         ],
       ),

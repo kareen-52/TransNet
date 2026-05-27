@@ -5,6 +5,8 @@ import 'package:graduation_progect/core/networking/dio_factory.dart';
 // ── Features ──────────────────────────────────────────────────────────────────
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/repos/active_driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/data/repo/apply_to_post_repo.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_cubit.dart';
 import 'package:graduation_progect/features/driver/driverReviews/data/repo/driver_reviews_repo.dart';
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
@@ -65,12 +67,12 @@ import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_typ
 final getIt = GetIt.instance;
 
 void setupGetIt() {
-  // ── Networking 
+  // ── Networking
   getIt.registerLazySingleton<ApiService>(
     () => ApiService(DioFactory.getDio()),
   );
 
-  // ── Auth 
+  // ── Auth
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
 
@@ -108,7 +110,7 @@ void setupGetIt() {
   );
 
   // ── Home (Client) ──────────────────────────────────────────────────────────
-  
+
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
 
   // ── Available Drivers ──────────────────────────────────────────────────────
@@ -137,7 +139,7 @@ void setupGetIt() {
   getIt.registerLazySingleton<NotificationRepo>(
     () => NotificationRepo(getIt<ApiService>()),
   );
- 
+
   getIt.registerLazySingleton<NotificationCubit>(
     () => NotificationCubit(getIt()),
   );
@@ -148,7 +150,7 @@ void setupGetIt() {
 
   // ── Driver Home ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
-  
+
   getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
 
   // ── Instant Orders ─────────────────────────────────────────────────────────
@@ -166,7 +168,7 @@ void setupGetIt() {
   );
 
   // ── Driver Shipment History ────────────────────────────────────────────────
-  
+
   getIt.registerLazySingleton<DriverShipmentsRepo>(
     () => DriverShipmentsRepo(getIt()),
   );
@@ -235,13 +237,15 @@ void setupGetIt() {
   // ── Client Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
   // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
-  getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+  getIt.registerLazySingleton<ClientPostsCubit>(
+    () => ClientPostsCubit(getIt()),
+  );
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
   getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));
 
   getIt.registerLazySingleton<PostDetailsRepo>(
-  () => PostDetailsRepo(getIt<ApiService>()),
+    () => PostDetailsRepo(getIt<ApiService>()),
   );
   getIt.registerFactory<PostDetailsCubit>(
     () => PostDetailsCubit(getIt<PostDetailsRepo>()),
@@ -250,4 +254,7 @@ void setupGetIt() {
   // ── Driver Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverPostsRepo>(() => DriverPostsRepo(getIt()));
   getIt.registerFactory<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
+
+  getIt.registerLazySingleton<ApplyToPostRepo>(() => ApplyToPostRepo(getIt()));
+  getIt.registerFactory<ApplyToPostCubit>(() => ApplyToPostCubit(getIt()));
 }
