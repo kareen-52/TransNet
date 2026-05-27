@@ -39,7 +39,7 @@ class ActiveOrdersSection extends StatelessWidget {
                 height: 280.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-
+                  shrinkWrap: true,
                   itemCount: orders.length,
                   separatorBuilder: (context, index) => horizontalSpace(16),
                   itemBuilder: (context, index) =>
@@ -71,9 +71,9 @@ class ActiveOrdersSection extends StatelessWidget {
         children: [
           Text(
             'الطلبات النشطة',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           if (count > 0)
             Container(

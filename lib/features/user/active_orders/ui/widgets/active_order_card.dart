@@ -42,16 +42,17 @@ class ActiveOrderCard extends StatelessWidget {
               status: order.status,
               shipmentNumber: order.shipmentNumber,
             ),
-            verticalSpace(24),
+            verticalSpace(20),
 
             OrderProgressTracker(status: order.status),
-            verticalSpace(24),
+            Spacer(flex: 1),
 
             Divider(color: theme.dividerColor.withOpacity(0.5), height: 1),
-            verticalSpace(16),
+            Spacer(flex: 1),
+            verticalSpace(12),
 
             OrderPriceRow(price: order.price),
-            verticalSpace(24),
+            Spacer(flex: 1),
 
             DriverInfoRow(driver: order.driver),
           ],
