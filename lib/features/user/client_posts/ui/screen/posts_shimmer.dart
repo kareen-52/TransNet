@@ -8,21 +8,49 @@ class PostsShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return Shimmer.fromColors(
       baseColor: theme.colorScheme.onSurface.withOpacity(0.1),
       highlightColor: theme.colorScheme.onSurfaceVariant.withOpacity(0.2),
-      child: ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: 6,
-        padding: EdgeInsets.all(16.w),
-        separatorBuilder: (_, __) => SizedBox(height: 16.h),
-        itemBuilder: (_, __) => Container(
-          height: 180.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
+      child: isTablet
+          ? GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16.w,
+                mainAxisSpacing: 16.h,
+
+                childAspectRatio: ((screenWidth - 48.w) / 2) / 180.h,
+              ),
+              itemBuilder: (_, __) => const _ShimmerCardItem(),
+            )
+          : Column(
+              children: List.generate(5, (index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: const _ShimmerCardItem(),
+                );
+              }),
+            ),
+    );
+  }
+}
+
+class _ShimmerCardItem extends StatelessWidget {
+  const _ShimmerCardItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 180.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
       ),
     );
   }

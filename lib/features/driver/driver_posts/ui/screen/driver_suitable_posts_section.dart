@@ -9,8 +9,8 @@ import 'package:graduation_progect/features/driver/driver_posts/logic/driver_pos
 import 'package:graduation_progect/features/driver/driver_posts/ui/widgets/driver_post_card.dart';
 import 'package:graduation_progect/features/user/client_posts/ui/screen/posts_shimmer.dart';
 
-class ScheduledOrdersSection extends StatelessWidget {
-  const ScheduledOrdersSection({super.key});
+class DriverSuitablePostsSection extends StatelessWidget {
+  const DriverSuitablePostsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,6 @@ class ScheduledOrdersSection extends StatelessWidget {
             return state.when(
               initial: () => const PostsShimmer(),
               loading: () => const PostsShimmer(),
-
               empty: () => EmptyStateWidget(
                 title: 'لا توجد إعلانات حالياً',
                 subTitle:
@@ -52,7 +51,6 @@ class ScheduledOrdersSection extends StatelessWidget {
                 onRetry: () =>
                     context.read<DriverPostsCubit>().fetchSuitablePosts(),
               ),
-
               success: (posts) {
                 if (isTablet) {
                   return GridView.builder(
@@ -62,7 +60,8 @@ class ScheduledOrdersSection extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 16.w,
                       mainAxisSpacing: 16.h,
-                      childAspectRatio: 1.2,
+                      // childAspectRatio: 1.2,
+                      mainAxisExtent: 302.h,
                     ),
                     itemCount: posts.length,
                     itemBuilder: (context, index) {

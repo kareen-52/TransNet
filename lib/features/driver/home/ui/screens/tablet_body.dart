@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/features/driver/driver_posts/ui/screen/driver_posts_screen.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_tablet_appbar.dart';
 import 'package:graduation_progect/features/driver/profile/ui/screen/profile_driver_screen.dart';
@@ -16,12 +15,18 @@ class TabletBody extends StatefulWidget {
 class _TabletBodyState extends State<TabletBody> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeContent(isTablet: true),
-    DriverPostsScreen(),
-    MyOrdersScreen(),
-    ProfileDriverScreen(),
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = const [
+      HomeContent(isTablet: true),
+      AdsScreen(),
+      MyOrdersScreen(),
+      ProfileDriverScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,4 +45,10 @@ class _TabletBodyState extends State<TabletBody> {
       ),
     );
   }
+}
+
+class AdsScreen extends StatelessWidget {
+  const AdsScreen({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: Text('اعلاناتي'));
 }

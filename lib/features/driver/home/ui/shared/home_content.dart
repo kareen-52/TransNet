@@ -6,12 +6,11 @@ import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/ui/sections/active_driver_shipments_section.dart';
 import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
+import 'package:graduation_progect/features/driver/driver_posts/ui/screen/driver_suitable_posts_section.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/availability_toggle.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/challenge_card.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/home/logic/driver_home_state.dart';
-
-import 'package:graduation_progect/features/driver/driver_posts/ui/screen/scheduled_orders_section.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/ui/screens/instant_orders_section.dart';
 import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
@@ -45,7 +44,6 @@ class HomeContent extends StatelessWidget {
             await Future.wait([
               context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
               context.read<ProfileCubit>().getProfileData(),
-              // getIt<ActiveDriverShipmentsCubit>().silentRefresh(),
             ]);
 
             if (isAvailable) {
@@ -53,8 +51,7 @@ class HomeContent extends StatelessWidget {
                 showLoading: false,
               );
               getIt<ActiveDriverShipmentsCubit>().silentRefresh();
-            }
-            else if (isAvailable == false) {
+            } else if (isAvailable == false) {
               await context.read<DriverPostsCubit>().fetchSuitablePosts();
             }
           },
@@ -83,26 +80,29 @@ class HomeContent extends StatelessWidget {
                       ? MultiBlocProvider(
                           providers: [
                             BlocProvider.value(
-                              value: getIt<InstantOrdersCubit>()..fetchPendingOrders(),
+                              value: getIt<InstantOrdersCubit>()
+                                ..fetchPendingOrders(),
                             ),
-
                             BlocProvider.value(
-                              value: getIt<ActiveDriverShipmentsCubit>()..fetch(),
+                              value: getIt<ActiveDriverShipmentsCubit>()
+                                ..fetch(),
                             ),
                           ],
-                          child: Column(
+                          child: const Column(
                             children: [
-                              const ActiveDriverShipmentsSection(),
-                              const InstantOrdersSection(
+                              ActiveDriverShipmentsSection(),
+                              InstantOrdersSection(
                                 key: ValueKey('instant'),
                               ),
                             ],
                           ),
                         )
                       : BlocProvider.value(
-
-                          value: getIt<DriverPostsCubit>()..fetchSuitablePosts(),
-                          child: const ScheduledOrdersSection(key: ValueKey('scheduled')),
+                          value: getIt<DriverPostsCubit>()
+                            ..fetchSuitablePosts(),
+                          child: const DriverSuitablePostsSection(
+                            key: ValueKey('scheduled'),
+                          ),
                         ),
                 ),
                 verticalSpace(60),

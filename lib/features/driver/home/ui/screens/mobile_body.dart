@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/screens/driver_shipments_screen.dart';
-import 'package:graduation_progect/features/driver/driver_posts/ui/screen/driver_posts_screen.dart';
 import 'package:graduation_progect/features/driver/home/logic/driver_home_state.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
+import 'package:graduation_progect/features/driver/home/ui/screens/tablet_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_bottom_nav_bar.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_header.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_header_shimmer.dart';
@@ -29,7 +29,7 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
 
   final List<Widget> _screens = const [
     HomeContent(isTablet: false),
-    DriverPostsScreen(),
+    AdsScreen(),
     MyOrdersScreen(),
     AcountDriverScreen(),
   ];
@@ -48,65 +48,55 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
   }
 
   @override
-
-
-
-@override
-Widget build(BuildContext context) {
-  return PopScope(
-    canPop: false,
-    onPopInvokedWithResult: (didPop, result) async {
-      if (didPop) return;
-      
-      final cubit = context.read<DriverHomeCubit>();
-      
-    
-      if (cubit.isAvailable) {
-        bool? confirm = await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => AlertDialog(
-            title: Text("تأكيد الخروج"),
-            content: Text("إذا خرجت من التطبيق، ستصبح حالتك **غير متاح** ولن تظهر للعملاء. هل تريد المتابعة؟"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text("إلغاء"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text("نعم، أريد الخروج"),
-              ),
-            ],
-          ),
-        );
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
         
-        if (confirm != true) return;
+        final cubit = context.read<DriverHomeCubit>();
         
-    
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.primary,
+        if (cubit.isAvailable) {
+          bool? confirm = await showDialog<bool>(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+              title: const Text("تأكيد الخروج"),
+              content: const Text("إذا خرجت من التطبيق، ستصبح حالتك **غير متاح** ولن تظهر للعملاء. هل تريد المتابعة؟"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text("إلغاء"),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text("نعم، أريد الخروج"),
+                ),
+              ],
             ),
-          ),
-        );
-        
-    
-        await cubit.setOfflineAndClose();
-        
-  
-        if (mounted) Navigator.pop(context);
-        
-  
-        await SystemNavigator.pop();
-      } else {
-      
-        await SystemNavigator.pop();
-      }
-    },
+          );
+          
+          if (confirm != true) return;
+          
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+          
+          await cubit.setOfflineAndClose();
+          
+          if (mounted) Navigator.pop(context);
+          
+          await SystemNavigator.pop();
+        } else {
+          await SystemNavigator.pop();
+        }
+      },
       child: BlocListener<DriverHomeCubit, DriverHomeState>(
         listenWhen: (prev, curr) => curr is AvailabilityChanged,
         listener: (context, state) {
@@ -150,14 +140,13 @@ Widget build(BuildContext context) {
   }
 }
 
-
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});
   @override
   Widget build(BuildContext context) => Center(
     child: BlocProvider(
       create: (context) => getIt<DriverShipmentsCubit>(),
-      child: DriverShipmentsScreen(),
+      child: const DriverShipmentsScreen(),
     ),
   );
 }

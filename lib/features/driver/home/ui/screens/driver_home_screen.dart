@@ -52,13 +52,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
         return MultiBlocProvider(
           providers: [
-            // DriverHomeCubit is a Factory — fresh instance, no stale state
             BlocProvider(
               create: (_) => getIt<DriverHomeCubit>()..loadAllData(driverId),
             ),
             BlocProvider(create: (_) => getIt<DriverLocationCubit>()),
             BlocProvider(create: (_) => getIt<ProfileCubit>()),
-            // NotificationCubit is a Singleton shared across screens (badge count)
             BlocProvider.value(
               value: getIt<NotificationCubit>()..fetchUnreadCount(),
             ),

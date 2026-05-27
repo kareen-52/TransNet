@@ -159,20 +159,18 @@ class DriverPostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
+                      // تم التعديل هنا: استخدام Expanded وإزالة mainAxisSize: MainAxisSize.min لمنع أخطاء الـ RenderFlex
+                      Expanded(
                         flex: 3,
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               Icons.calendar_month_rounded,
                               size: 16.sp,
-                              color: theme.colorScheme.onSurface.withOpacity(
-                                0.7,
-                              ),
+                              color: theme.colorScheme.onSurface.withOpacity(0.7),
                             ),
                             horizontalSpace(6),
-                            Flexible(
+                            Expanded(
                               child: RichText(
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
