@@ -29,6 +29,8 @@ import 'package:graduation_progect/features/user/create_shipment/ui/screens/crea
 import 'package:graduation_progect/features/user/home_screen/ui/screens/client_home_screen.dart';
 import 'package:graduation_progect/features/user/sign_up/logic/sign_up_cubit.dart';
 import 'package:graduation_progect/features/user/sign_up/ui/screens/sign_up_screen.dart';
+import 'package:graduation_progect/features/user/vehicle_types/data/models/vehicle_type_model.dart';
+import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/vehicle_details_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -181,6 +183,12 @@ class AppRouter {
         final postId = arguments as int;
         return MaterialPageRoute(
           builder: (_) => PostDetailsScreen(postId: postId),
+        );
+
+      case Routes.vehicleDetailsScreen:
+        final vehicle = arguments as VehicleTypeModel;
+        return MaterialPageRoute(
+          builder: (_) => VehicleDetailsScreen(vehicle: vehicle),
         );
 
 

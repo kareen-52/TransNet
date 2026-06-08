@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/shadow_card.dart';
 import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/vehicle_ui_helper.dart';
 import '../../data/models/vehicle_type_model.dart';
-import 'vehicle_details_bottom_sheet.dart';
+import 'vehicle_details_screen.dart';
 
 class TransportItemCard extends StatelessWidget {
   final VehicleTypeModel vehicle;
@@ -20,11 +21,10 @@ class TransportItemCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (context) => VehicleDetailsBottomSheet(vehicle: vehicle, icon: icon, color: color),
+        Navigator.pushNamed(
+          context,
+          Routes.vehicleDetailsScreen,
+          arguments: vehicle,
         );
       },
       borderRadius: BorderRadius.circular(16.r),

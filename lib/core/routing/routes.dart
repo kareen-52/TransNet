@@ -31,5 +31,7 @@ class Routes {
   static const String priceAdjustmentScreen = '/priceAdjustmentScreen';
   static const String postDetailsScreen = '/postDetailsScreen';
 
+  static const String vehicleDetailsScreen = '/vehicleDetailsScreen';
+
 
 }

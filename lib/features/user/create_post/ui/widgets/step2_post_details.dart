@@ -29,18 +29,30 @@ class Step2PostDetails extends StatelessWidget {
             heightController: cubit.heightCtrl,
           ),
           verticalSpace(16),
-          
 
           Text('أقصى موعد متاح للتوصيل', style: theme.textTheme.titleMedium),
           verticalSpace(8),
+
           InkWell(
             onTap: () async {
+              final now = DateTime.now();
               final date = await showDatePicker(
                 context: context,
-                initialDate: DateTime.now().add(const Duration(days: 1)),
-                firstDate: DateTime.now(), // لا يمكن اختيار تاريخ ماضي
-                lastDate: DateTime.now().add(const Duration(days: 30)),
+                initialDate: cubit.lastDate ?? now,
+                firstDate: now,
+                lastDate: DateTime(now.year, now.month + 6, now.day),
+                builder: (context, child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: Theme.of(context).colorScheme.copyWith(
+                        primary: theme.colorScheme.primary,
+                      ),
+                    ),
+                    child: child!,
+                  );
+                },
               );
+
               if (date != null) cubit.updateDate(date);
             },
             child: Container(
@@ -48,24 +60,35 @@ class Step2PostDetails extends StatelessWidget {
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(color: theme.colorScheme.outline),
+                border: Border.all(
+                  color: cubit.lastDate == null
+                      ? theme.colorScheme.outline
+                      : theme.colorScheme.primary,
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     cubit.lastDate == null
-                        ? 'اختر التاريخ'
-                        : "${cubit.lastDate!.year}/${cubit.lastDate!.month}/${cubit.lastDate!.day}",
+                        ? 'اختر التاريخ (متاح لغاية 6 أشهر)'
+                        : "${cubit.lastDate!.year}/${cubit.lastDate!.month.toString().padLeft(2, '0')}/${cubit.lastDate!.day.toString().padLeft(2, '0')}",
                     style: theme.textTheme.bodyLarge?.copyWith(
-                        color: cubit.lastDate == null ? Colors.grey : theme.colorScheme.primary,
-                        fontWeight: FontWeight.bold),
+                      color: cubit.lastDate == null
+                          ? Colors.grey
+                          : theme.colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Icon(Icons.calendar_month_rounded, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.calendar_month_rounded,
+                    color: theme.colorScheme.primary,
+                  ),
                 ],
               ),
             ),
           ),
+
           verticalSpace(16),
 
           ShipmentInsuranceSection(
@@ -81,7 +104,10 @@ class Step2PostDetails extends StatelessWidget {
                 child: AppTextButton(
                   text: 'السابق',
                   backgroundColor: Colors.transparent,
-                  textStyle: TextStyle(color: theme.colorScheme.secondary, fontWeight: FontWeight.bold),
+                  textStyle: TextStyle(
+                    color: theme.colorScheme.secondary,
+                    fontWeight: FontWeight.bold,
+                  ),
                   onPressed: cubit.previousStep,
                 ),
               ),

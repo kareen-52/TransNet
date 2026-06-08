@@ -17,9 +17,15 @@ class PostsShimmer extends StatelessWidget {
       highlightColor: theme.colorScheme.onSurfaceVariant.withOpacity(0.2),
       child: isTablet
           ? GridView.builder(
+              padding: EdgeInsets.only(
+                left: 32.w,
+                right: 32.w,
+                top: 32.h,
+                bottom: 16.h,
+              ),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
+              itemCount: 16,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
@@ -32,7 +38,11 @@ class PostsShimmer extends StatelessWidget {
           : Column(
               children: List.generate(5, (index) {
                 return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
+                  padding: EdgeInsets.only(
+                    bottom: 16.h,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
                   child: const _ShimmerCardItem(),
                 );
               }),
