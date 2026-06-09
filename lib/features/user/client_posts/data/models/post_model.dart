@@ -67,6 +67,11 @@ class PostModel {
   @JsonKey(name: 'created_at')
   final String? createdAt;
 
+  @JsonKey(name: 'my_price')
+  final num? myPrice;
+  @JsonKey(name: 'my_date')
+  final String? myDate;
+
   PostModel({
     required this.id,
     required this.userId,
@@ -89,6 +94,8 @@ class PostModel {
     this.startGovernorate,
     this.endGovernorate,
     this.createdAt,
+    this.myPrice,
+    this.myDate,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>

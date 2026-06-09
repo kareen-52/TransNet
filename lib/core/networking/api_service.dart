@@ -195,4 +195,9 @@ abstract class ApiService {
 
   @POST(ApiConstants.chooseDriverForPost)
   Future<dynamic> chooseDriverForPost(@Body() Map<String, dynamic> body);
+
+  @GET(ApiConstants.appliedPostsDriver)
+  Future<List<PostModel>> getAppliedPostsDriver();
+
+
 }

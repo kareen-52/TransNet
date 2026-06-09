@@ -95,7 +95,6 @@ class PostDriverOfferCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Price
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [

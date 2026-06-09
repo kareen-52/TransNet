@@ -44,6 +44,8 @@ class HomeContent extends StatelessWidget {
             await Future.wait([
               context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
               context.read<ProfileCubit>().getProfileData(),
+              context.read<DriverPostsCubit>().fetchSuitablePosts(),
+              
             ]);
 
             if (isAvailable) {
@@ -98,8 +100,7 @@ class HomeContent extends StatelessWidget {
                           ),
                         )
                       : BlocProvider.value(
-                          value: getIt<DriverPostsCubit>()
-                            ..fetchSuitablePosts(),
+                          value: getIt<DriverPostsCubit>()..fetchSuitablePosts(),
                           child: const DriverSuitablePostsSection(
                             key: ValueKey('scheduled'),
                           ),
