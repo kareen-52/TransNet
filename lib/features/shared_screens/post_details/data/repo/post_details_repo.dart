@@ -16,4 +16,16 @@ class PostDetailsRepo {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
+
+  Future<ApiResult<String>> acceptDriverOffer(int postId, int driverId) async {
+    try {
+      final response = await _apiService.chooseDriverForPost({
+        'post_id': postId,
+        'driver_id': driverId,
+      });
+      return ApiResult.success(response['message'] ?? 'تم قبول العرض بنجاح');
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
 }

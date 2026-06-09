@@ -33,7 +33,7 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
       listener: (context, state) {
         state.whenOrNull(
           success: (msg) {
-            Navigator.pop(context); // إغلاق النافذة
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(msg), backgroundColor: AppColors.success),
             );

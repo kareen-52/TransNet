@@ -192,4 +192,7 @@ abstract class ApiService {
 
   @POST(ApiConstants.applyToPost)
   Future<dynamic> applyToPost(@Body() Map<String, dynamic> body);
+
+  @POST(ApiConstants.chooseDriverForPost)
+  Future<dynamic> chooseDriverForPost(@Body() Map<String, dynamic> body);
 }

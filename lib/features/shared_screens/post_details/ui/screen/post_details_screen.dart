@@ -7,12 +7,15 @@ import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
+import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_cubit.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/data/models/post_details_model.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/ui/screen/post_details_shimmer.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/ui/widgets/post_location_card.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/ui/widgets/post_price_info_card.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
+import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import '../../logic/post_details_cubit.dart';
 import '../../logic/post_details_state.dart';
 import '../widgets/post_cargo_card.dart';
@@ -31,19 +34,54 @@ class PostDetailsScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(title: const Text('تفاصيل الإعلان'), centerTitle: true),
-        body: BlocBuilder<PostDetailsCubit, PostDetailsState>(
+        
+
+        body: BlocConsumer<PostDetailsCubit, PostDetailsState>(
+          listener: (context, state) {
+            state.whenOrNull(
+
+              acceptSuccess: (msg) {
+                SnackBarHelper.showSuccess(context, msg);
+                Navigator.pop(context);
+                try {
+                  getIt<ClientPostsCubit>().fetchMyPosts();
+                  getIt<ActiveOrdersCubit>().silentRefresh();
+                } catch (_) {}
+              },
+
+              acceptError: (err) {
+                SnackBarHelper.showError(context, err.getAllErrorMessages());
+              },
+            );
+          },
+          
+
+          buildWhen: (previous, current) {
+            return current.maybeWhen(
+              acceptSuccess: (_) => false,
+              acceptError: (_) => true,
+              orElse: () => true,
+            );
+          },
+
           builder: (context, state) {
-            return state.when(
+            final cubit = context.read<PostDetailsCubit>();
+            final data = cubit.currentPostDetails;
+
+
+            if (data != null) {
+              return _buildSuccessContent(context, data, state);
+            }
+
+
+            return state.maybeWhen(
               initial: () => const PostDetailsShimmer(),
               loading: () => const PostDetailsShimmer(),
               error: (err) => ErrorStateWidget(
-                message: err.message ?? 'حدث خطأ',
-                onRetry: () =>
-                    context.read<PostDetailsCubit>().getPostDetails(postId),
+                message: err.message ?? 'حدث خطأ أثناء جلب التفاصيل',
+                onRetry: () => cubit.getPostDetails(postId),
               ),
-              success: (data) {
-                return _buildSuccessContent(context, data);
-              },
+              orElse: () => const SizedBox.shrink(),
             );
           },
         ),
@@ -51,9 +89,14 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSuccessContent(BuildContext context, PostDetailsModel data) {
-    // final theme = Theme.of(context);
-    // final isDark = theme.brightness == Brightness.dark;
+
+  Widget _buildSuccessContent(BuildContext context, PostDetailsModel data, PostDetailsState state) {
+    
+
+    final loadingDriverId = state.maybeWhen(
+      acceptLoading: (id) => id,
+      orElse: () => null,
+    );
 
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -64,8 +107,6 @@ class PostDetailsScreen extends StatelessWidget {
           _buildStatusBanner(context, data),
           verticalSpace(24),
 
-          // PostMapCard(post: data, isDark: isDark),
-          // verticalSpace(16),
           _buildSectionTitle(context, 'تفاصيل الشحنة'),
           verticalSpace(8),
           PostCargoCard(post: data),
@@ -81,74 +122,76 @@ class PostDetailsScreen extends StatelessWidget {
           PostPriceInfoCard(post: data),
           verticalSpace(32),
 
-          if (data.drivers != null && data.drivers!.isNotEmpty) ...[
-            _buildDriversSectionHeader(context, data),
-            verticalSpace(12),
-            ...data.drivers!
-                .map(
-                  (d) => PostDriverOfferCard(
-                    driver: d,
-                    isFinished: data.isFinished,
-                  ),
-                )
-                .toList(),
-          ] else if (data.drivers != null &&
-              data.drivers!.isEmpty &&
-              !data.isFinished) ...[
-            _buildEmptyDriversState(context),
-          ],
+          FutureBuilder<String>(
+            future: Future.value(SharedPrefHelper.getString(SharedPrefKeys.userRole)),
+            builder: (context, snapshot) {
+              final isClient = snapshot.hasData && snapshot.data == 'client';
+              final isDriver = snapshot.hasData && snapshot.data == 'driver';
 
-          if (!data.isFinished) ...[
-            FutureBuilder<String>(
-              future: Future.value(
-                SharedPrefHelper.getString(SharedPrefKeys.userRole),
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data == 'driver') {
-                  return Column(
-                    children: [
-                      // verticalSpace(32),
-                      AppTextButton(
-                          text: 'تقديم عرض على الإعلان',
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (_) => BlocProvider(
-                                create: (context) => getIt<ApplyToPostCubit>(),
-                                child: ApplyPostBottomSheet(
-                                  postId: data.id,
-                                  minPrice: data.minPrice ?? 0,
-                                  maxPrice: data.maxPrice ?? 0,
-                                  lastDate: data.lastDate ?? DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                    ],
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ],
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  if (data.drivers != null && data.drivers!.isNotEmpty) ...[
+                    _buildDriversSectionHeader(context, data),
+                    verticalSpace(12),
+                    ...data.drivers!.map((d) {
+                      final isThisLoading = loadingDriverId == d.id;
+                      final isAnyLoading = loadingDriverId != null;
+
+                      return PostDriverOfferCard(
+                        driver: d,
+                        isFinished: data.isFinished,
+                        isClient: isClient,
+                        isLoading: isThisLoading,
+                        onAccept: isAnyLoading
+                            ? null
+                            : () => context.read<PostDetailsCubit>().acceptDriverOffer(data.id, d.id),
+                      );
+                    }).toList(),
+                  ] else if (data.drivers != null && data.drivers!.isEmpty && !data.isFinished) ...[
+                    _buildEmptyDriversState(context),
+                  ],
+
+
+                  if (!data.isFinished && isDriver && data.drivers == null) ...[
+                    AppTextButton(
+                      text: 'تقديم عرض على الإعلان',
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => BlocProvider(
+                            create: (context) => getIt<ApplyToPostCubit>(),
+                            child: ApplyPostBottomSheet(
+                              postId: data.id,
+                              minPrice: data.minPrice ?? 0,
+                              maxPrice: data.maxPrice ?? 0,
+                              lastDate: data.lastDate ?? DateTime.now().add(const Duration(days: 30)).toString().split(' ')[0],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
+
+
   Widget _buildStatusBanner(BuildContext context, PostDetailsModel data) {
     final theme = Theme.of(context);
     final isFinished = data.isFinished;
     final statusColor = isFinished ? Colors.green : theme.colorScheme.primary;
-    final statusText = isFinished
-        ? 'مكتمل - تم التوصيل'
-        : 'مفتوح - بانتظار العروض';
-    final statusIcon = isFinished
-        ? Icons.check_circle_rounded
-        : Icons.pending_rounded;
+    final statusText = isFinished ? 'مكتمل - تم التوصيل' : 'مفتوح - بانتظار العروض';
+    final statusIcon = isFinished ? Icons.check_circle_rounded : Icons.pending_rounded;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -174,17 +217,12 @@ class PostDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   'حالة الإعلان',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
+                  style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.7)),
                 ),
                 verticalSpace(2),
                 Text(
                   statusText,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.titleSmall?.copyWith(color: statusColor, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -198,28 +236,18 @@ class PostDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Text(
       title,
-      style: theme.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.bold,
-        color: theme.colorScheme.onSurface,
-      ),
+      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
     );
   }
 
-  Widget _buildDriversSectionHeader(
-    BuildContext context,
-    PostDetailsModel data,
-  ) {
+  Widget _buildDriversSectionHeader(BuildContext context, PostDetailsModel data) {
     final theme = Theme.of(context);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           data.isFinished ? 'السائقون المتقدمون' : 'عروض السائقين',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
+          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
@@ -229,11 +257,7 @@ class PostDetailsScreen extends StatelessWidget {
           ),
           child: Text(
             '${data.drivers!.length} ${data.isFinished ? 'سائق' : 'عروض'}',
-            style: TextStyle(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
-            ),
+            style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 12.sp),
           ),
         ),
       ],
@@ -247,18 +271,11 @@ class PostDetailsScreen extends StatelessWidget {
         padding: EdgeInsets.all(20.w),
         child: Column(
           children: [
-            Icon(
-              Icons.hourglass_empty_rounded,
-              color: theme.colorScheme.onSurface.withOpacity(0.7),
-              size: 48.sp,
-            ),
+            Icon(Icons.hourglass_empty_rounded, color: theme.colorScheme.onSurface.withOpacity(0.7), size: 48.sp),
             verticalSpace(8),
             Text(
               'بانتظار تقديم عروض من السائقين...',
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-                fontSize: 14.sp,
-              ),
+              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7), fontSize: 14.sp),
             ),
           ],
         ),

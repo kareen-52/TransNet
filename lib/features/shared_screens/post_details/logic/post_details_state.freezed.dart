@@ -55,14 +55,17 @@ extension PostDetailsStatePatterns on PostDetailsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Error value)?  error,TResult Function( _AcceptLoading value)?  acceptLoading,TResult Function( _AcceptSuccess value)?  acceptSuccess,TResult Function( _AcceptError value)?  acceptError,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
 return success(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _AcceptLoading() when acceptLoading != null:
+return acceptLoading(_that);case _AcceptSuccess() when acceptSuccess != null:
+return acceptSuccess(_that);case _AcceptError() when acceptError != null:
+return acceptError(_that);case _:
   return orElse();
 
 }
@@ -80,14 +83,17 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Error value)  error,required TResult Function( _AcceptLoading value)  acceptLoading,required TResult Function( _AcceptSuccess value)  acceptSuccess,required TResult Function( _AcceptError value)  acceptError,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case _Success():
 return success(_that);case _Error():
-return error(_that);case _:
+return error(_that);case _AcceptLoading():
+return acceptLoading(_that);case _AcceptSuccess():
+return acceptSuccess(_that);case _AcceptError():
+return acceptError(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +110,17 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Error value)?  error,TResult? Function( _AcceptLoading value)?  acceptLoading,TResult? Function( _AcceptSuccess value)?  acceptSuccess,TResult? Function( _AcceptError value)?  acceptError,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
 return success(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _AcceptLoading() when acceptLoading != null:
+return acceptLoading(_that);case _AcceptSuccess() when acceptSuccess != null:
+return acceptSuccess(_that);case _AcceptError() when acceptError != null:
+return acceptError(_that);case _:
   return null;
 
 }
@@ -128,13 +137,16 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( PostDetailsModel data)?  success,TResult Function( ApiErrorModel error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( PostDetailsModel data)?  success,TResult Function( ApiErrorModel error)?  error,TResult Function( int driverId)?  acceptLoading,TResult Function( String message)?  acceptSuccess,TResult Function( ApiErrorModel error)?  acceptError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
 return success(_that.data);case _Error() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case _AcceptLoading() when acceptLoading != null:
+return acceptLoading(_that.driverId);case _AcceptSuccess() when acceptSuccess != null:
+return acceptSuccess(_that.message);case _AcceptError() when acceptError != null:
+return acceptError(_that.error);case _:
   return orElse();
 
 }
@@ -152,13 +164,16 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( PostDetailsModel data)  success,required TResult Function( ApiErrorModel error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( PostDetailsModel data)  success,required TResult Function( ApiErrorModel error)  error,required TResult Function( int driverId)  acceptLoading,required TResult Function( String message)  acceptSuccess,required TResult Function( ApiErrorModel error)  acceptError,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Success():
 return success(_that.data);case _Error():
-return error(_that.error);case _:
+return error(_that.error);case _AcceptLoading():
+return acceptLoading(_that.driverId);case _AcceptSuccess():
+return acceptSuccess(_that.message);case _AcceptError():
+return acceptError(_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +190,16 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( PostDetailsModel data)?  success,TResult? Function( ApiErrorModel error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( PostDetailsModel data)?  success,TResult? Function( ApiErrorModel error)?  error,TResult? Function( int driverId)?  acceptLoading,TResult? Function( String message)?  acceptSuccess,TResult? Function( ApiErrorModel error)?  acceptError,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
 return success(_that.data);case _Error() when error != null:
-return error(_that.error);case _:
+return error(_that.error);case _AcceptLoading() when acceptLoading != null:
+return acceptLoading(_that.driverId);case _AcceptSuccess() when acceptSuccess != null:
+return acceptSuccess(_that.message);case _AcceptError() when acceptError != null:
+return acceptError(_that.error);case _:
   return null;
 
 }
@@ -377,6 +395,204 @@ class __$ErrorCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
   return _then(_Error(
+null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ApiErrorModel,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _AcceptLoading implements PostDetailsState {
+  const _AcceptLoading(this.driverId);
+  
+
+ final  int driverId;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AcceptLoadingCopyWith<_AcceptLoading> get copyWith => __$AcceptLoadingCopyWithImpl<_AcceptLoading>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AcceptLoading&&(identical(other.driverId, driverId) || other.driverId == driverId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,driverId);
+
+@override
+String toString() {
+  return 'PostDetailsState.acceptLoading(driverId: $driverId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AcceptLoadingCopyWith<$Res> implements $PostDetailsStateCopyWith<$Res> {
+  factory _$AcceptLoadingCopyWith(_AcceptLoading value, $Res Function(_AcceptLoading) _then) = __$AcceptLoadingCopyWithImpl;
+@useResult
+$Res call({
+ int driverId
+});
+
+
+
+
+}
+/// @nodoc
+class __$AcceptLoadingCopyWithImpl<$Res>
+    implements _$AcceptLoadingCopyWith<$Res> {
+  __$AcceptLoadingCopyWithImpl(this._self, this._then);
+
+  final _AcceptLoading _self;
+  final $Res Function(_AcceptLoading) _then;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? driverId = null,}) {
+  return _then(_AcceptLoading(
+null == driverId ? _self.driverId : driverId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _AcceptSuccess implements PostDetailsState {
+  const _AcceptSuccess(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AcceptSuccessCopyWith<_AcceptSuccess> get copyWith => __$AcceptSuccessCopyWithImpl<_AcceptSuccess>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AcceptSuccess&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'PostDetailsState.acceptSuccess(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AcceptSuccessCopyWith<$Res> implements $PostDetailsStateCopyWith<$Res> {
+  factory _$AcceptSuccessCopyWith(_AcceptSuccess value, $Res Function(_AcceptSuccess) _then) = __$AcceptSuccessCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class __$AcceptSuccessCopyWithImpl<$Res>
+    implements _$AcceptSuccessCopyWith<$Res> {
+  __$AcceptSuccessCopyWithImpl(this._self, this._then);
+
+  final _AcceptSuccess _self;
+  final $Res Function(_AcceptSuccess) _then;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_AcceptSuccess(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _AcceptError implements PostDetailsState {
+  const _AcceptError(this.error);
+  
+
+ final  ApiErrorModel error;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AcceptErrorCopyWith<_AcceptError> get copyWith => __$AcceptErrorCopyWithImpl<_AcceptError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AcceptError&&(identical(other.error, error) || other.error == error));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,error);
+
+@override
+String toString() {
+  return 'PostDetailsState.acceptError(error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AcceptErrorCopyWith<$Res> implements $PostDetailsStateCopyWith<$Res> {
+  factory _$AcceptErrorCopyWith(_AcceptError value, $Res Function(_AcceptError) _then) = __$AcceptErrorCopyWithImpl;
+@useResult
+$Res call({
+ ApiErrorModel error
+});
+
+
+
+
+}
+/// @nodoc
+class __$AcceptErrorCopyWithImpl<$Res>
+    implements _$AcceptErrorCopyWith<$Res> {
+  __$AcceptErrorCopyWithImpl(this._self, this._then);
+
+  final _AcceptError _self;
+  final $Res Function(_AcceptError) _then;
+
+/// Create a copy of PostDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(_AcceptError(
 null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as ApiErrorModel,
   ));

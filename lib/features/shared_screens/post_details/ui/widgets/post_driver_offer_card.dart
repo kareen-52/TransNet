@@ -9,11 +9,17 @@ import '../../data/models/post_details_model.dart';
 class PostDriverOfferCard extends StatelessWidget {
   final PostDriverOfferModel driver;
   final bool isFinished;
+  final bool isClient;
+  final bool isLoading;
+  final VoidCallback? onAccept;
 
   const PostDriverOfferCard({
     super.key,
     required this.driver,
     required this.isFinished,
+    required this.isClient,
+    this.isLoading = false,
+    this.onAccept,
   });
 
   @override
@@ -38,19 +44,9 @@ class PostDriverOfferCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Driver Header
+
           Row(
             children: [
-              // CircleAvatar(
-              //   radius: 24.r,
-              //   backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-              //   child: Icon(
-              //     Icons.person_rounded,
-              //     color: theme.colorScheme.primary,
-              //     size: 24.sp,
-              //   ),
-              // ),
-              // horizontalSpace(12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,48 +118,66 @@ class PostDriverOfferCard extends StatelessWidget {
             ],
           ),
 
-          // Badge Section
+
           if (driver.badge != null && driver.badge!.isNotEmpty) ...[
             verticalSpace(12),
             _buildBadgeWithHelper(theme, driver),
           ],
 
-          // Date Info
-          if (driver.date != null) ...[
-            verticalSpace(12),
-            Row(
-              children: [
-                Icon(
-                  Icons.event_rounded,
-                  color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  size: 16.sp,
-                ),
-                horizontalSpace(8),
-                Text(
-                  'تاريخ العرض: ${driver.date}',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                ),
-              ],
-            ),
-          ],
 
-          if (!isFinished) ...[
+          if (driver.date != null || (!isFinished && isClient)) ...[
             verticalSpace(16),
-            AppTextButton(
-              text: 'قبول هذا العرض',
-              height: 44.h,
-              backgroundColor: theme.colorScheme.secondary,
-              textStyle: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              onPressed: () {
-                // TODO: Implement accept offer logic
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                if (driver.date != null)
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.event_rounded,
+                          color: theme.colorScheme.onSurface,
+                          size: 16.sp,
+                        ),
+                        horizontalSpace(6),
+                        Expanded(
+                          child: Text(
+                            'تاريخ العرض: ${driver.date}',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: theme.colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  const Spacer(),
+
+
+                if (!isFinished && isClient) ...[
+                  horizontalSpace(12),
+                  AppTextButton(
+                    width:
+                        135,
+                    height: 40,
+                    text: 'قبول العرض',
+                    backgroundColor: theme.colorScheme.secondary,
+                    textStyle: TextStyle(
+                      fontSize: 13.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    isLoading: isLoading,
+                    onPressed: onAccept,
+                  ),
+                ],
+              ],
             ),
           ],
         ],

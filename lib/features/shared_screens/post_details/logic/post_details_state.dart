@@ -10,4 +10,8 @@ class PostDetailsState with _$PostDetailsState {
   const factory PostDetailsState.loading() = _Loading;
   const factory PostDetailsState.success(PostDetailsModel data) = _Success;
   const factory PostDetailsState.error(ApiErrorModel error) = _Error;
+
+  const factory PostDetailsState.acceptLoading(int driverId) = _AcceptLoading;
+  const factory PostDetailsState.acceptSuccess(String message) = _AcceptSuccess;
+  const factory PostDetailsState.acceptError(ApiErrorModel error) = _AcceptError;
 }
