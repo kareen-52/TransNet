@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/shadow_card.dart';
-import 'package:graduation_progect/features/user/home_screen/ui/widgets/appbar/appbar_user_section.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/widgets/appbar/notification_icon.dart';
 
 class TabletAppBar extends StatelessWidget {
@@ -37,7 +36,7 @@ class TabletAppBar extends StatelessWidget {
               GestureDetector(
                 onTap: () => onTap(1),
                 child: _NavTextItem(
-                  title: 'الاعلانات',
+                  title: 'الإعلانات',
                   icon: Icons.campaign_rounded,
                   isActive: currentIndex == 1,
                 ),

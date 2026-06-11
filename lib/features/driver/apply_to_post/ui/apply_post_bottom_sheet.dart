@@ -102,6 +102,7 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
             } catch (_) {}
           },
           error: (err) {
+            Navigator.pop(context);
             SnackBarHelper.showError(context, err.getAllErrorMessages());
           },
         );

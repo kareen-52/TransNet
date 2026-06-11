@@ -33,6 +33,7 @@ class _DriverAppliedPostCardState extends State<DriverAppliedPostCard> {
   void _confirmDelete() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
@@ -62,12 +63,42 @@ class _DriverAppliedPostCardState extends State<DriverAppliedPostCard> {
 
   Future<void> _cancelOffer() async {
     setState(() => isDeleting = true);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     final result = await context.read<DriverAppliedPostsCubit>().cancelOffer(widget.post.id);
+    if (!mounted) return;
+
     result.when(
-      success: (msg) => SnackBarHelper.showSuccess(context, msg),
-      failure: (error) {
-        if (mounted) setState(() => isDeleting = false);
-        SnackBarHelper.showError(context, error.getAllErrorMessages());
+      success: (msg) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle_outline, color: Colors.white),
+                horizontalSpace(8),
+                Expanded(child: Text(msg, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+              ],
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      },
+      failure: (error)  {
+        setState(() => isDeleting = false);
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                horizontalSpace(8),
+                Expanded(child: Text(error.getAllErrorMessages(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+              ],
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       },
     );
   }

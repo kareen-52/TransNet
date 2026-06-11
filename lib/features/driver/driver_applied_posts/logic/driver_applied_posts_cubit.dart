@@ -41,6 +41,7 @@ class DriverAppliedPostsCubit extends Cubit<DriverAppliedPostsState> {
     result.whenOrNull(
       success: (_) {
         _currentPosts.removeWhere((post) => post.id == postId);
+        emit(const DriverAppliedPostsState.loading());
         if (_currentPosts.isEmpty) {
           emit(const DriverAppliedPostsState.empty());
         } else {

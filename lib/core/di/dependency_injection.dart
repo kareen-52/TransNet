@@ -251,7 +251,8 @@ void setupGetIt() {
 
   // ── Driver Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverPostsRepo>(() => DriverPostsRepo(getIt()));
-  getIt.registerFactory<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
+  // getIt.registerFactory<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
+  getIt.registerLazySingleton<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
 
   getIt.registerLazySingleton<ApplyToPostRepo>(() => ApplyToPostRepo(getIt()));
   getIt.registerFactory<ApplyToPostCubit>(() => ApplyToPostCubit(getIt()));

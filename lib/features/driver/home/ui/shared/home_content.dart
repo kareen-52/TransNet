@@ -44,8 +44,7 @@ class HomeContent extends StatelessWidget {
             await Future.wait([
               context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
               context.read<ProfileCubit>().getProfileData(),
-              context.read<DriverPostsCubit>().fetchSuitablePosts(),
-              
+              // getIt<DriverPostsCubit>().fetchSuitablePosts(),
             ]);
 
             if (isAvailable) {
@@ -53,8 +52,8 @@ class HomeContent extends StatelessWidget {
                 showLoading: false,
               );
               getIt<ActiveDriverShipmentsCubit>().silentRefresh();
-            } else if (isAvailable == false) {
-              await context.read<DriverPostsCubit>().fetchSuitablePosts();
+            } else {
+              getIt<DriverPostsCubit>().fetchSuitablePosts();
             }
           },
           child: SingleChildScrollView(
@@ -93,14 +92,13 @@ class HomeContent extends StatelessWidget {
                           child: const Column(
                             children: [
                               ActiveDriverShipmentsSection(),
-                              InstantOrdersSection(
-                                key: ValueKey('instant'),
-                              ),
+                              InstantOrdersSection(key: ValueKey('instant')),
                             ],
                           ),
                         )
                       : BlocProvider.value(
-                          value: getIt<DriverPostsCubit>()..fetchSuitablePosts(),
+                          value: getIt<DriverPostsCubit>()
+                            ..fetchSuitablePosts(),
                           child: const DriverSuitablePostsSection(
                             key: ValueKey('scheduled'),
                           ),

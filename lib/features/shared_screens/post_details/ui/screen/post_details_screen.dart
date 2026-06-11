@@ -33,7 +33,7 @@ class PostDetailsScreen extends StatelessWidget {
       create: (context) => getIt<PostDetailsCubit>()..getPostDetails(postId),
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: AppBar(title: const Text('تفاصيل الإعلان'), centerTitle: true),
+        appBar: AppBar(title: const Text('تفاصيل الإعلان')),
         
 
         body: BlocConsumer<PostDetailsCubit, PostDetailsState>(

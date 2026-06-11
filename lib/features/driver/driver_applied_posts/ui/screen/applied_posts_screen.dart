@@ -16,15 +16,13 @@ class AppliedPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider(
-      create: (context) => getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
+    return BlocProvider.value(
+      value: getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
+      // create: (context) => getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
       child: Scaffold(
+        extendBody: true,
         backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: AppBar(
-          title: const Text('عروضي المقدمة'),
-          centerTitle: true,
-          elevation: 0,
-        ),
+      
         body: BlocBuilder<DriverAppliedPostsCubit, DriverAppliedPostsState>(
           builder: (context, state) {
             return state.when(

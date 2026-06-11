@@ -41,7 +41,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
         items: [
           _buildNavItem(context, Icons.home_rounded, 'الرئيسية', 0),
-          _buildNavItem(context, Icons.campaign_rounded, 'الاعلانات', 1),
+          _buildNavItem(context, Icons.campaign_rounded, 'الإعلانات', 1),
           _buildNavItem(context, Icons.receipt_long_rounded, 'السجلات', 2),
           _buildNavItem(context, Icons.person_rounded, 'الحساب', 3),
         ],
