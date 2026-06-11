@@ -41,7 +41,6 @@ class ErrorStateWidget extends StatelessWidget {
               prefixIcon: const Icon(Icons.refresh),
               onPressed: onRetry,
             ),
-            // verticalSpace(88),
           ],
         ),
       ),

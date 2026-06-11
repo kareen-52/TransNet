@@ -23,7 +23,7 @@ class _AppbarUserSectionState extends State<AppbarUserSection> {
         SizedBox(
           width: 60.r,
           height: 60.r,
-          // color: theme.colorScheme.surface,
+
           child: Image.asset('assets/icons/app_icon.png', fit: BoxFit.contain),
         ),
         horizontalSpace(8),

@@ -268,7 +268,7 @@ class _TransportLinesScreenState extends State<TransportLinesScreen> {
   }
 
   void _confirmDelete(BuildContext context, GovernorateData governorate) {
-    // 🔥 منع حذف آخر خط نقل
+
     if (widget.governorates != null && widget.governorates!.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

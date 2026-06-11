@@ -199,5 +199,7 @@ abstract class ApiService {
   @GET(ApiConstants.appliedPostsDriver)
   Future<List<PostModel>> getAppliedPostsDriver();
 
+  @DELETE('${ApiConstants.cancelPostDriver}/{id}')
+  Future<dynamic> cancelPostDriver(@Path('id') int id);
 
 }

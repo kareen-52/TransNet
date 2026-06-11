@@ -45,19 +45,7 @@ class ProfileDriverScreen extends StatelessWidget {
                 message: error.message ?? "فشل تحميل البيانات",
                 onRetry: () => context.read<ProfileCubit>().getProfileData(),
               ),
-              // Center(
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Text(error.message ?? "فشل تحميل البيانات"),
-              //       TextButton(
-              //         onPressed: () =>
-              //             context.read<ProfileCubit>().getProfileData(),
-              //         child: const Text("إعادة المحاولة"),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+           
               orElse: () => const SizedBox.shrink(),
             );
           },

@@ -39,7 +39,7 @@ class ProfileClientScreen extends StatelessWidget {
           },
           child: BlocBuilder<ClientProfileCubit, ClientProfileState>(
             buildWhen: (prev, curr) => curr.maybeWhen(
-              editSuccess: (_) => false, // don't rebuild on edit — avoid flash
+              editSuccess: (_) => false,
               orElse: () => true,
             ),
             builder: (context, state) {

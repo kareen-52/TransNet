@@ -92,7 +92,7 @@ class _MapPreviewCard extends StatelessWidget {
             child: MapRouteView(
                 points: points, start: start, end: end, interactive: false),
           ),
-          // Gradient overlay
+
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15.r),
@@ -110,7 +110,7 @@ class _MapPreviewCard extends StatelessWidget {
               ),
             ),
           ),
-          // Bottom chips
+
           Positioned(
             bottom: 12.h,
             left: 12.w,
@@ -124,7 +124,7 @@ class _MapPreviewCard extends StatelessWidget {
               ],
             ),
           ),
-          // Badge
+
           Positioned(
             top: 10.h,
             right: 10.w,

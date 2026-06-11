@@ -38,7 +38,7 @@ class DriverBadgeWidget extends StatelessWidget {
           border: Border.all(color: color, width: 1.w),
         ),
         child: Row(
-          // mainAxisSize: MainAxisSize.min,
+
           children: [
             Image.asset(iconPath, width: 20.w, fit: BoxFit.contain),
             horizontalSpace(2),

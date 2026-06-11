@@ -36,8 +36,7 @@ class AppTheme {
       foregroundColor: AppColors.lightTextPrimary,
       elevation: 0,
       scrolledUnderElevation: 0,
-      // centerTitle: true,
-      // toolbarHeight: 56,
+
     ),
 
     cardTheme: CardThemeData(
@@ -263,8 +262,7 @@ class AppTheme {
       foregroundColor: AppColors.darkTextPrimary,
       elevation: 0,
       scrolledUnderElevation: 0,
-      // centerTitle: true,
-      // toolbarHeight: 56,
+   
     ),
 
     cardTheme: CardThemeData(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/features/driver/driver_applied_posts/ui/screen/applied_posts_screen.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_tablet_appbar.dart';
 import 'package:graduation_progect/features/driver/profile/ui/screen/profile_driver_screen.dart';
@@ -22,7 +23,7 @@ class _TabletBodyState extends State<TabletBody> {
     super.initState();
     _screens = const [
       HomeContent(isTablet: true),
-      AdsScreen(),
+      AppliedPostsScreen(),
       MyOrdersScreen(),
       ProfileDriverScreen(),
     ];
@@ -47,8 +48,3 @@ class _TabletBodyState extends State<TabletBody> {
   }
 }
 
-class AdsScreen extends StatelessWidget {
-  const AdsScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('اعلاناتي'));
-}

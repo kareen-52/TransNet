@@ -159,14 +159,14 @@ class DriverDetailsBottomSheet extends StatelessWidget {
             title: 'رقم المستخدم',
             value: details.user.userNumber,
           ),
-          // verticalSpace(8),
+
           _buildCopyableRow(
             context: context,
             icon: Icons.phone_android,
             title: 'رقم الهاتف',
             value: details.user.phoneNumber,
           ),
-          // verticalSpace(8),
+
           const Divider(),
 
           verticalSpace(24),

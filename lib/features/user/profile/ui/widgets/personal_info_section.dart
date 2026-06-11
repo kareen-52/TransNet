@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
-import 'package:graduation_progect/features/shared_screens/profile_widgets/shared_profile_dialogs.dart'; // المشترك
+import 'package:graduation_progect/features/shared_screens/profile_widgets/shared_profile_dialogs.dart';
 import 'profile_client_info_card.dart';
 
 class PersonalInfoSection extends StatelessWidget {

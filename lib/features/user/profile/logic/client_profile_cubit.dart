@@ -3,11 +3,8 @@ import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/features/user/profile/repo/client_profile_repo.dart';
-
 import 'client_profile_state.dart';
 
-/// Client-specific profile cubit.
-/// Completely separate from ProfileCubit (which is driver-only).
 class ClientProfileCubit extends Cubit<ClientProfileState> {
   final ClientProfileRepo _repo;
   ClientProfileCubit(this._repo) : super(const ClientProfileState.initial());

@@ -27,7 +27,7 @@ class DriversShimmerLoading extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 16.h),
                   padding: EdgeInsets.all(16.r),
                   decoration: BoxDecoration(
-                    // color: theme.colorScheme.surface,
+
                     color: theme.colorScheme.onSurfaceVariant.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(24.r),
                   ),

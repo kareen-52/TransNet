@@ -19,35 +19,32 @@ class PostDetailsShimmer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Status Banner Shimmer
             _buildStatusBannerShimmer(context),
             verticalSpace(24),
 
-            // Section Title Shimmer
             _buildSectionTitleShimmer(context),
             verticalSpace(8),
-            // Cargo Card Shimmer
             _buildCargoCardShimmer(context),
             verticalSpace(24),
 
-            // Section Title Shimmer
+
             _buildSectionTitleShimmer(context),
             verticalSpace(8),
-            // Locations Card Shimmer
+
             _buildLocationsCardShimmer(context),
             verticalSpace(24),
 
-            // Section Title Shimmer
+
             _buildSectionTitleShimmer(context),
             verticalSpace(8),
-            // Price Info Card Shimmer
+
             _buildPriceInfoCardShimmer(context),
             verticalSpace(32),
 
-            // Drivers Section Header Shimmer
+
             _buildDriversSectionHeaderShimmer(context),
             verticalSpace(12),
-            // Driver Cards Shimmer
+
             _buildDriverCardShimmer(context),
             verticalSpace(12),
             _buildDriverCardShimmer(context),

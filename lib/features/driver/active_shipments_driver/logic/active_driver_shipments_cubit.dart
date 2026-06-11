@@ -22,7 +22,7 @@ class ActiveDriverShipmentsCubit extends Cubit<ActiveDriverShipmentsState> {
     await _fetchAndEmit();
   }
 
-  // ── حذف شحنة فورياً محلياً (بعد confirm_delivery) ────────────────────────
+
   void removeShipment(int shipmentId) {
     _currentShipments.removeWhere((s) => s.id == shipmentId);
     _emitCurrentState();

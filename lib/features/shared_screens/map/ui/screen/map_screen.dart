@@ -210,12 +210,12 @@ class _MapScreenState extends State<MapScreen> {
                     heroTag: "btn_locate",
                     mini: true,
                     backgroundColor: Colors.white,
-                    child: const Icon(Icons.my_location, color: Colors.blue),
                     onPressed: _goToMyLocation,
+                    child: const Icon(Icons.my_location, color: Colors.blue),
                   ),
                 ),
 
-                // 3. زر "الذهاب إلى هنا"
+
                 if (_destination != null && _distance == null)
                   Positioned(
                     bottom: 30,
@@ -224,7 +224,7 @@ class _MapScreenState extends State<MapScreen> {
                     child: _buildConfirmRouteButton(),
                   ),
 
-                // 4. بطاقة المعلومات الاحترافية
+
                 if (_distance != null)
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -250,7 +250,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // ويدجت البحث
+
   Widget _buildSearchArea() {
     return Column(
       children: [
@@ -337,7 +337,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  // ويدجت البطاقة المصغرة
+
   Widget _buildMinimizedInfo() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),

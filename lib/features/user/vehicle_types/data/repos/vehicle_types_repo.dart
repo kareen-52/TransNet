@@ -25,18 +25,18 @@ class VehicleTypesRepo {
       final rawList  = response.map(_toJson).toList();
 
       if (HiveCacheService.vehicleTypesChanged(rawList)) {
-        // Data changed on server → update cache and return fresh
+
         await HiveCacheService.cacheVehicleTypes(rawList);
         return ApiResult.success(response);
       }
-      // Data unchanged → serve from cache (avoids unnecessary UI rebuild)
+
       return _fromCache() ?? ApiResult.success(response);
     } catch (error) {
       return _fromCache() ?? ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
 
-  // ── Private ─────────────────────────────────────────────────────────────────
+
 
   ApiResult<List<VehicleTypeModel>>? _fromCache() {
     final cached = HiveCacheService.getCachedVehicleTypes();

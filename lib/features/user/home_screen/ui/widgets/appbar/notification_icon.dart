@@ -15,7 +15,6 @@ class NotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Offline guard at navigation point — show message, don't navigate
         if (!ConnectivityHelper.isOnline) {
           SnackBarHelper.showError(
             context,
@@ -52,7 +51,6 @@ class NotificationIcon extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Text(
-                    // ← Cap at 99+ to prevent badge overflow
                     count > 99 ? '99+' : count.toString(),
                     style: TextStyle(
                       color: Colors.white,

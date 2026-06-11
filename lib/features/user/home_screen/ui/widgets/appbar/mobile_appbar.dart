@@ -13,8 +13,6 @@ class MobileAppBar extends StatelessWidget {
         horizontalSpace(16),
         AppbarUserSection(),
         const Spacer(),
-        // const IconButtonHeader(icon: Icons.search),
-        // horizontalSpace(4),
         const NotificationIcon(),
         horizontalSpace(16),
       ],

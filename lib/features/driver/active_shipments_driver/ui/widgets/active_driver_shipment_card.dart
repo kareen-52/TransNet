@@ -282,17 +282,8 @@ class ActiveDriverShipmentCard extends StatelessWidget {
     );
   }
 
-  // ─── Actions ──────────────────────────────────────────────────────────────
+
   void _navigateToTracking(BuildContext context) {
-    // نبني الـ ShipmentMapData من بيانات الشحنة النشطة
-    // final mapData = ShipmentMapData(
-    //   id: shipment.id,
-    //   startLat: shipment.startLat,
-    //   startLng: shipment.startLng,
-    //   endLat: shipment.endLat,
-    //   endLng: shipment.endLng,
-    //   pathCoordinates: shipment.pathCoordinates,
-    // );
 
     Navigator.pushNamed(
       context,

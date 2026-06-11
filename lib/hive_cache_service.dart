@@ -215,7 +215,7 @@ class HiveCacheService {
     ]);
   }
 
-  // ─── Client Shipments (paginated) ──────────────────────────────────────────
+
   static String _clientShipmentKey(int page) => 'cli_page_$page';
 
   static Future<void> cacheClientShipmentsPage(

@@ -49,7 +49,7 @@ class ProfileClientInfoCard extends StatelessWidget {
       padding: EdgeInsets.all(16.r),
       child: Row(
         children: [
-          // 🔥 أيقونة بخلفية شفافة
+
           Container(
             padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(color: colorScheme.primary.withOpacity(0.1), shape: BoxShape.circle),

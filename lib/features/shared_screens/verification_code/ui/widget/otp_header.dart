@@ -13,8 +13,6 @@ class OtpHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          // width: 80.w,
-          // height: 80.h,
           padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceVariant,
@@ -27,7 +25,7 @@ class OtpHeader extends StatelessWidget {
             size: 48,
           ),
         ),
-        // const SizedBox(height: 24),
+
         verticalSpace(24),
 
         Text('كود التحقق', style: theme.textTheme.displayMedium),

@@ -31,7 +31,7 @@ class EnterEmailHeader extends StatelessWidget {
                   width: 100.r,
                   height: 100.r,
                   decoration: BoxDecoration(
-                    // color: Theme.of(context).colorScheme.secondary.withOpacity(0.05),
+
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(

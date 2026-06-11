@@ -35,7 +35,7 @@ class DriverHeader extends StatelessWidget {
                   SizedBox(
                     width: 60.r,
                     height: 60.r,
-                    // color: theme.colorScheme.surface,
+
                     child: Image.asset(
                       'assets/icons/app_icon.png',
                       fit: BoxFit.contain,
@@ -65,7 +65,7 @@ class DriverHeader extends StatelessWidget {
                             style: textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w600,
-                              // fontSize: 12.sp,
+
                             ),
                           ),
                         ),
@@ -76,24 +76,6 @@ class DriverHeader extends StatelessWidget {
 
               const NotificationIcon(),
 
-              // Container(
-              //   padding: EdgeInsets.all(8.w),
-              //   decoration: BoxDecoration(
-              //     color: theme.colorScheme.surface,
-              //     shape: BoxShape.circle,
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.black.withOpacity(0.05),
-              //         blurRadius: 6,
-              //       ),
-              //     ],
-              //   ),
-              //   child: Icon(
-              //     Icons.notifications_none_outlined,
-              //     size: 24.sp,
-              //     color: theme.colorScheme.onSurface,
-              //   ),
-              // ),
             ],
           ),
         );

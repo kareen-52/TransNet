@@ -17,7 +17,7 @@ class ActiveOrdersShimmer extends StatelessWidget {
         highlightColor: theme.colorScheme.onSurfaceVariant.withOpacity(0.2),
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+
           itemCount: 5,
           physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (_, __) => horizontalSpace(16),

@@ -36,7 +36,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
           }),
         ),
         verticalSpace(8),
-        // النص الوصفي
+
         if (strengthInfo.text.isNotEmpty)
           Align(
             alignment: Alignment.centerRight,
@@ -49,7 +49,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
               ),
             ),
           ),
-        // المتطلبات المفقودة
+
         if (showMissingRequirements && missing.isNotEmpty)
           Align(
             alignment: Alignment.centerRight,

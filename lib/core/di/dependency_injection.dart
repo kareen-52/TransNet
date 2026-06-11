@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:graduation_progect/core/networking/api_service.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
-
-// ── Features ──────────────────────────────────────────────────────────────────
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/repos/active_driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/data/repo/apply_to_post_repo.dart';
@@ -11,6 +9,8 @@ import 'package:graduation_progect/features/driver/driverReviews/data/repo/drive
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/driver_applied_posts/data/repos/driver_applied_posts_repo.dart';
+import 'package:graduation_progect/features/driver/driver_applied_posts/logic/driver_applied_posts_cubit.dart';
 import 'package:graduation_progect/features/driver/driver_posts/data/repo/driver_posts_repo.dart';
 import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
 import 'package:graduation_progect/features/driver/home/data/repo/home_driver_repo.dart';
@@ -237,9 +237,7 @@ void setupGetIt() {
   // ── Client Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
   // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
-  getIt.registerLazySingleton<ClientPostsCubit>(
-    () => ClientPostsCubit(getIt()),
-  );
+  getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()),);
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
   getIt.registerFactory<CreatePostCubit>(() => CreatePostCubit(getIt()));
@@ -257,4 +255,7 @@ void setupGetIt() {
 
   getIt.registerLazySingleton<ApplyToPostRepo>(() => ApplyToPostRepo(getIt()));
   getIt.registerFactory<ApplyToPostCubit>(() => ApplyToPostCubit(getIt()));
+
+  getIt.registerLazySingleton<DriverAppliedPostsRepo>(() => DriverAppliedPostsRepo(getIt()));
+  getIt.registerLazySingleton<DriverAppliedPostsCubit>(() => DriverAppliedPostsCubit(getIt()));
 }

@@ -34,12 +34,12 @@ class ShipmentMapData {
   });
 
   factory ShipmentMapData.fromJson(Map<String, dynamic> json) {
-    // تحويل المصفوفة القادمة من الباك إند (GeoJSON [lng, lat]) إلى LatLng(lat, lng)
+
     List<LatLng> parsedPath = [];
     if (json['path'] != null && json['path']['coordinates'] != null) {
       final List<dynamic> coords = json['path']['coordinates'];
       for (var point in coords) {
-        // GeoJSON يعيد [خط الطول, خط العرض]
+
         if (point is List && point.length >= 2) {
           parsedPath.add(LatLng(
             double.tryParse(point[1].toString()) ?? 0.0, // Latitude

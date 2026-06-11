@@ -61,7 +61,7 @@ class _PinCardState extends State<PinCard> {
   }
 }
 
-// ─── Sub-widgets ──────────────────────────────────────────────────────────────
+
 
 class _PinHeader extends StatelessWidget {
   final Color secondary;

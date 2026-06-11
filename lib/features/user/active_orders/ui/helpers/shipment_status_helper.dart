@@ -18,10 +18,6 @@ class ShipmentStatusHelper {
     }
   }
 
-  // static String getText(String? status, {bool isCompleted = false}) {
-  //   if (isCompleted || status == 'مستلمة') return 'مستلمة';
-  //   return status ?? 'قيد التنفيذ';
-  // }
 
   static int getStepIndex(String? status, {bool isCompleted = false}) {
     if (isCompleted || status == 'مستلمة') return 3;

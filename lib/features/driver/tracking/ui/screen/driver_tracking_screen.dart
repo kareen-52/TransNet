@@ -50,9 +50,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
         });
         _mapController.move(_driverCurrentLocation!, 14.0);
       }
-    } catch (e) {
-      // Ignore
-    }
+    } catch (e) {    }
   }
 
   @override
@@ -70,7 +68,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
       ),
       body: Stack(
         children: [
-          // 1. الخريطة المباشرة
+
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(initialCenter: startPoint, initialZoom: 13.0),
@@ -129,7 +127,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
             ],
           ),
 
-          // زر التمركز
+
           Positioned(
             top: 20.h,
             right: 20.w,
@@ -141,7 +139,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
             ),
           ),
 
-          // 2. القسم السفلي الذكي (التفاصيل + الأزرار)
+
           Align(
             alignment: Alignment.bottomCenter,
             child: TrackingBottomSheet(initialShipment: widget.shipment),

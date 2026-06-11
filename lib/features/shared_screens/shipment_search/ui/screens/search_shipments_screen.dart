@@ -12,7 +12,7 @@ class SearchShipmentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // نوفر الكيوبت هنا بنفسنا
+
     return BlocProvider<SearchShipmentsCubit>(
       create: (_) =>  getIt<SearchShipmentsCubit>(),
       child: const _SearchShipmentsBody(),

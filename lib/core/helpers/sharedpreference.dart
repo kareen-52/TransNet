@@ -42,7 +42,6 @@ class SharedPrefHelper {
   static String getString(String key) =>
       _sharedPreferences?.getString(key) ?? '';
 
-  // Secure Storage
 
   static Future<void> setSecuredString(String key, String value) async {
     debugPrint('SecureStorage : set key : $key');

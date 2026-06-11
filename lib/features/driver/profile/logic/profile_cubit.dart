@@ -70,7 +70,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     return response.when(
       success: (_) async {
-        // Guard: check isClosed before the inner refresh
+
         if (!isClosed) await getProfileData();
         return true;
       },

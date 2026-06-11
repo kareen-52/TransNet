@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Title + close button row at the top of [QrFullscreenModal].
 class QrModalHeader extends StatelessWidget {
   final VoidCallback onClose;
 

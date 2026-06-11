@@ -8,34 +8,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit(this._shipmentRepo) : super(const HomeState.initial());
 
-  // void checkActiveShipment() async {
-  //   emit(const HomeState.loading());
 
-  //   final result = await _shipmentRepo.getActiveShipment();
-
-  //   if (isClosed) return;
-
-  //   result.when(
-  //     success: (shipment) {
-  //       if (shipment.driver != null) {
-  //         emit(HomeState.waitingForDriver(shipment));
-  //       } else {
-  //         emit(HomeState.hasActiveShipment(shipment));
-  //       }
-  //     },
-  //     failure: (error) {
-  //       final bool isServerError = error.code == 500;
-  //       final String errorMsg = error.getAllErrorMessages();
-
-  //       if (isServerError || errorMsg.contains('لا يوجد') || errorMsg.contains('No active')) {
-  //         emit(const HomeState.noActiveShipment());
-  //       }
-  //       else {
-  //         emit(HomeState.error(error));
-  //       }
-  //     },
-  //   );
-  // }
   void checkActiveShipment() async {
     emit(const HomeState.loading());
     await _fetchShipmentData();

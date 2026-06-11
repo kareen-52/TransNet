@@ -127,7 +127,6 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                         if (s.price != null) ['${s.price} ل.س', 'السعر'],
                         if (s.insurance != null)
                           [s.hasInsurance ? 'مؤمَّن' : 'غير مؤمَّن', 'التأمين'],
-                        //  [s.isPaid ? 'مدفوع' : 'غير مدفوع', 'حالة الدفع'],
                       ],
                     ),
                   pw.SizedBox(height: 16),

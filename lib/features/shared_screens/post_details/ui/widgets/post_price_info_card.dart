@@ -26,7 +26,7 @@ class PostPriceInfoCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Price Range
+
           Row(
             children: [
               Container(
@@ -69,7 +69,7 @@ class PostPriceInfoCard extends StatelessWidget {
           Divider(color: theme.colorScheme.outline.withOpacity(0.2)),
           verticalSpace(16),
 
-          // Last Date
+
           Row(
             children: [
               Container(

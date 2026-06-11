@@ -16,7 +16,6 @@ class QrDisplayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Responsive card: constrain max size on large screens.
     final cardSize = math.min(MediaQuery.of(context).size.width - 48.w, 360.0);
 
     return RepaintBoundary(
@@ -80,11 +79,8 @@ class _QrCodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // QR size = card width minus horizontal padding (2×24)
     final qrSize = (cardSize - 48).clamp(180.0, 280.0);
 
-    // ▶ Replace with real QR once qr_flutter is in pubspec.yaml:
-    //
     return QrImageView(
       data: data,
       version: QrVersions.auto,
@@ -94,7 +90,7 @@ class _QrCodeView extends StatelessWidget {
       embeddedImage: const AssetImage('assets/images/logo.png'),
       embeddedImageStyle: QrEmbeddedImageStyle(size: Size(qrSize * 0.18, qrSize * 0.18)),
     );
-    //
+ 
     return SizedBox(
       width: qrSize,
       height: qrSize,

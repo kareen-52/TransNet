@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_cubit.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_state.dart';
+import 'package:graduation_progect/features/driver/driver_applied_posts/logic/driver_applied_posts_cubit.dart';
+import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
 
 class ApplyPostBottomSheet extends StatefulWidget {
   final int postId;
@@ -93,10 +96,13 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
           success: (msg) {
             Navigator.pop(context);
             SnackBarHelper.showSuccess(context, msg);
+            try {
+              getIt<DriverPostsCubit>().fetchSuitablePosts();
+              getIt<DriverAppliedPostsCubit>().fetchAppliedPosts();
+            } catch (_) {}
           },
           error: (err) {
             SnackBarHelper.showError(context, err.getAllErrorMessages());
-            // Navigator.pop(context);
           },
         );
       },
@@ -213,7 +219,7 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
                 ),
                 verticalSpace(32),
 
-                // زر التقديم
+
                 BlocBuilder<ApplyToPostCubit, ApplyToPostState>(
                   builder: (context, state) {
                     final isLoading = state == const ApplyToPostState.loading();

@@ -38,10 +38,6 @@ abstract class ShareService {
       buf.writeln('🛡 التأمين: مؤمَّن ✅');
     }
 
-    // if (s.paid != null) {
-    //   buf.writeln('━━━━━━━━━━━━━━━━━━━━');
-    // //  buf.writeln('💳 الدفع: ${s.isPaid ? "مدفوع ✅" : "غير مدفوع ❌"}');
-    // }
 
     if (s.deliveryDeadline != null) {
       buf.writeln(

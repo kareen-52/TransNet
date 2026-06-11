@@ -28,6 +28,8 @@ PostModel _$PostModelFromJson(Map<String, dynamic> json) => PostModel(
   startGovernorate: json['start_governorate'] as String?,
   endGovernorate: json['end_governorate'] as String?,
   createdAt: json['created_at'] as String?,
+  myPrice: json['my_price'] as num?,
+  myDate: json['my_date'] as String?,
 );
 
 Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
@@ -52,4 +54,6 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
   'start_governorate': instance.startGovernorate,
   'end_governorate': instance.endGovernorate,
   'created_at': instance.createdAt,
+  'my_price': instance.myPrice,
+  'my_date': instance.myDate,
 };

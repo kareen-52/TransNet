@@ -22,10 +22,6 @@ class ShipmentStatusCard extends StatelessWidget {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
 
-    // final showPaidPill = shipment.paid != null;
-    // final showSuccessPill = shipment.success != null;
-    // final showPillsRow = showPaidPill || showSuccessPill;
-
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: buildCardDecoration(
@@ -48,69 +44,11 @@ class ShipmentStatusCard extends StatelessWidget {
             value: DateFormatter.format(shipment.createdAt),
             isDark: isDark,
           ),
-          // if (showPillsRow) ...[
+
             RowDivider(isDark: isDark),
-            // Row(
-            //   children: [
-            //     if (showSuccessPill) SizedBox(width: 10.w),
-            //     if (showSuccessPill)
-            //       Expanded(
-            //         child: _StatusPill(
-                 
-            //           icon: Icons.check_circle_outline_rounded,
-            //           label: shipment.isCompleted ? 'مكتملة' : 'قيد التنفيذ',
-            //           color: shipment.isCompleted
-            //               ? AppColors.success
-            //               : AppColors.secondary,
-            //         ),
-            //       ),
-            //   ],
-            // ),
-          // ],
+           
         ],
       ),
     );
   }
 }
-
-// class _StatusPill extends StatelessWidget {
-//   final IconData icon;
-//   final String label;
-//   final Color color;
-
-//   const _StatusPill({
-//     required this.icon,
-//     required this.label,
-//     required this.color,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
-//       decoration: BoxDecoration(
-//         color: color.withValues(alpha: 0.10),
-//         borderRadius: BorderRadius.circular(10.r),
-//         border: Border.all(color: color.withValues(alpha: 0.25)),
-//       ),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Icon(icon, color: color, size: 14.sp),
-//           SizedBox(width: 6.w),
-//           Flexible(
-//             child: Text(
-//               label,
-//               style: TextStyle(
-//                 color: color,
-//                 fontSize: 12.sp,
-//                 fontWeight: FontWeight.w700,
-//               ),
-//               overflow: TextOverflow.ellipsis,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

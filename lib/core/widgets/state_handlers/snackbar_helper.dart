@@ -12,7 +12,7 @@ class SnackBarHelper {
               Icons.check_circle_outline,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
-            // const SizedBox(width: 8),
+
             horizontalSpace(8),
             Expanded(
               child: Text(
@@ -41,7 +41,7 @@ class SnackBarHelper {
               Icons.error_outline,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
-            // const SizedBox(width: 8),
+
             horizontalSpace(8),
             Expanded(
               child: Text(

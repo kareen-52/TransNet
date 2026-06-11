@@ -16,7 +16,6 @@ class DriverTabletAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
 
     return CustomShadowCard(
       padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
@@ -32,7 +31,6 @@ class DriverTabletAppbar extends StatelessWidget {
               _buildNavItem(context, 'السجلات', Icons.history_rounded, 2),
               horizontalSpace(16),
               _buildNavItem(context, 'الحساب', Icons.person_rounded, 3),
-              // horizontalSpace(64),
             ],
           ),
           const NotificationIcon(),

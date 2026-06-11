@@ -25,8 +25,7 @@ class ApiErrorHandler {
           return ApiErrorModel(message: "انتهت مهلة إرسال البيانات");
         case DioExceptionType.badCertificate:
           return ApiErrorModel(message: "شهادة SSL غير صالحة");
-        // default:
-        //   return ApiErrorModel(message: "حدث خطأ في الشبكة: ${error.type}");
+  
       }
     } else {
       print('Non-Dio Error: $error');

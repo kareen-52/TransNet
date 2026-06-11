@@ -22,7 +22,6 @@ class TabletAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // const AppbarUserSection(),
           Row(
             children: [
               GestureDetector(
@@ -64,7 +63,6 @@ class TabletAppBar extends StatelessWidget {
                 ),
               ),
 
-              // horizontalSpace(64),
             ],
           ),
           const NotificationIcon(),

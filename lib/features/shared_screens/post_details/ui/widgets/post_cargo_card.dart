@@ -86,7 +86,7 @@ class PostCargoCard extends StatelessWidget {
           ),
           verticalSpace(20),
 
-          // Dimensions Grid
+
           Row(
             children: [
               Expanded(

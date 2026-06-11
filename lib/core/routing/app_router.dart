@@ -59,7 +59,7 @@ class AppRouter {
       case Routes.driverHomeScreen:
         return MaterialPageRoute(
           builder: (_) => const DriverHomeScreen(),
-        ); //DriverHomeScreen
+        ); 
 
       case Routes.onboardingScreens:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
@@ -141,11 +141,7 @@ class AppRouter {
         if (shipment == null) {
           return MaterialPageRoute(builder: (_) => const ClientHomeScreen());
         }
-        // return MaterialPageRoute(
-        //   builder: (_) => WaitingDriverScreen(shipment: shipment),
-        //   settings: settings,
-        // );
-
+     
 
       case Routes.driverTrackingScreen:
         final shipment = arguments as ActiveDriverShipmentModel;

@@ -50,7 +50,7 @@ class LocationSection extends StatelessWidget {
                   filled: true,
                   fillColor: theme.colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
-                    // borderRadius: BorderRadius.circular(12.r),
+
                     borderSide: BorderSide.none,
                   ),
                 ),

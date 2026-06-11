@@ -170,9 +170,9 @@ class DriverEarningsScreen extends StatelessWidget {
     );
   }
 
-  // ── الكارد النهائي الذكي ──
+
   Widget _buildFinalAmountCard(ThemeData theme) {
-    // اللوجيك: إذا كان المبلغ موجب، السائق يدفع للتطبيق. إذا كان سالب، التطبيق يدين للسائق!
+
     final bool isAppOwesDriver = stats.totalAmountToPay < 0;
     final double absoluteAmount = stats.totalAmountToPay.abs();
     final Color cardColor = isAppOwesDriver

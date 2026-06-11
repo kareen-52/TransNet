@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// Share actions shown at the bottom of the QR full-screen modal.
-///
-/// Intentionally minimal — one primary action: share as image.
-/// The PIN copy is handled separately by [QrPinRow] above.
-/// This avoids the anti-pattern of offering "copy as text" inside
-/// a QR viewer, which undermines the purpose of the QR code itself.
 class QrShareActions extends StatelessWidget {
   final bool isSavingImage;
   final VoidCallback onShareImage;

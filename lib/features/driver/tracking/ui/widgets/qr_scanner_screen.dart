@@ -9,7 +9,7 @@ class QRScannerScreen extends StatefulWidget {
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
-  // قفل لمنع المكتبة من قراءة الكود أكثر من مرة
+
   bool _hasScanned = false; 
 
   @override
@@ -18,14 +18,14 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       appBar: AppBar(title: const Text('امسح رمز العميل (QR)')),
       body: MobileScanner(
         onDetect: (capture) {
-          // إذا تم المسح مسبقاً، تجاهل أي قراءات أخرى
+
           if (_hasScanned) return; 
 
           final List<Barcode> barcodes = capture.barcodes;
           if (barcodes.isNotEmpty && barcodes.first.rawValue != null) {
-            _hasScanned = true; // تفعيل القفل
+            _hasScanned = true;
             final String code = barcodes.first.rawValue!;
-            Navigator.pop(context, code); // العودة مرة واحدة فقط
+            Navigator.pop(context, code);
           }
         },
       ),

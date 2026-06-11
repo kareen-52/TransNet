@@ -62,7 +62,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 14.h),
-                  // Route skeleton
+
                   ShimmerBox(
                       w: double.infinity,
                       h: 80.h,
@@ -78,7 +78,7 @@ class ShipmentDetailsLoadingView extends StatelessWidget {
                       base: base,
                       high: high),
                   SizedBox(height: 14.h),
-                  // Cargo skeleton
+
                   ShimmerBox(
                       w: double.infinity,
                       h: 180.h,

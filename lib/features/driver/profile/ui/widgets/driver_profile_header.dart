@@ -27,7 +27,7 @@ class DriverProfileHeader extends StatelessWidget {
 
     return Column(
       children: [
-        // ── Profile image — rebuilds ONLY when image loads/changes ─────────
+
         BlocBuilder<DriverHomeCubit, DriverHomeState>(
           buildWhen: (prev, curr) => curr.maybeWhen(
             driverImageLoaded: (_) => true,

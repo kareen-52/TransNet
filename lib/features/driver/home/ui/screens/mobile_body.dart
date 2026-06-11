@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/screens/driver_shipments_screen.dart';
+import 'package:graduation_progect/features/driver/driver_applied_posts/ui/screen/applied_posts_screen.dart';
 import 'package:graduation_progect/features/driver/home/logic/driver_home_state.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
-import 'package:graduation_progect/features/driver/home/ui/screens/tablet_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_bottom_nav_bar.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_header.dart';
 import 'package:graduation_progect/features/driver/home/ui/widgets/driver_header_shimmer.dart';
@@ -29,7 +29,7 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
 
   final List<Widget> _screens = const [
     HomeContent(isTablet: false),
-    AdsScreen(),
+    AppliedPostsScreen(),
     MyOrdersScreen(),
     AcountDriverScreen(),
   ];
@@ -53,16 +53,18 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
-        
+
         final cubit = context.read<DriverHomeCubit>();
-        
+
         if (cubit.isAvailable) {
           bool? confirm = await showDialog<bool>(
             context: context,
             barrierDismissible: false,
             builder: (context) => AlertDialog(
               title: const Text("تأكيد الخروج"),
-              content: const Text("إذا خرجت من التطبيق، ستصبح حالتك **غير متاح** ولن تظهر للعملاء. هل تريد المتابعة؟"),
+              content: const Text(
+                "إذا خرجت من التطبيق، ستصبح حالتك **غير متاح** ولن تظهر للعملاء. هل تريد المتابعة؟",
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
@@ -75,9 +77,9 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
               ],
             ),
           );
-          
+
           if (confirm != true) return;
-          
+
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -87,11 +89,11 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
               ),
             ),
           );
-          
+
           await cubit.setOfflineAndClose();
-          
+
           if (mounted) Navigator.pop(context);
-          
+
           await SystemNavigator.pop();
         } else {
           await SystemNavigator.pop();

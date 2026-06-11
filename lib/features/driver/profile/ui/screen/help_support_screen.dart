@@ -267,7 +267,7 @@ class HelpSupportScreen extends StatelessWidget {
   }
 
   Future<void> _openWhatsApp(String phoneNumber, BuildContext context) async {
-    // تنظيف رقم الهاتف
+
     String cleanNumber = phoneNumber
         .replaceAll('+', '')
         .replaceAll(' ', '')

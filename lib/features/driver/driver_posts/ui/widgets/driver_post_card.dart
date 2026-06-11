@@ -52,7 +52,7 @@ class DriverPostCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── 1. العنوان والغرض ──
+
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Row(
@@ -90,7 +90,7 @@ class DriverPostCard extends StatelessWidget {
               color: theme.colorScheme.outline.withOpacity(0.3),
             ),
 
-            // ── 2. المسار ──
+
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Row(

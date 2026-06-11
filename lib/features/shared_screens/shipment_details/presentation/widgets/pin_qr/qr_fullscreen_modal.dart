@@ -8,21 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_display_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_modal_header.dart';
-import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_pin_row.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/qr_share_actions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-// import 'package:share_plus/share_plus.dart';
-// import 'package:path_provider/path_provider.dart';
 
-/// Full-screen QR code viewer presented over a blurred dark backdrop.
-///
-/// Features:
-///   - Fade + scale entrance animation.
-///   - Capture QR as PNG via [RepaintBoundary] for image sharing.
-///   - Share as image (WhatsApp, Telegram, …) via share_plus.
-///   - PIN displayed separately with its own copy button.
-///   - No "copy as text" duplicating the PIN — QrPinRow handles that.
 class QrFullscreenModal extends StatefulWidget {
   final String qrPin;
 
@@ -62,7 +51,6 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     super.dispose();
   }
 
-  // ── Actions ──────────────────────────────────────────────────────────────────
 
   Future<void> _shareAsImage() async {
     setState(() => _isSavingImage = true);
@@ -71,8 +59,6 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
       final bytes = await _captureQrAsPng();
       if (bytes == null || !mounted) return;
 
-      // ▶ Uncomment when share_plus + path_provider are in pubspec.yaml:
-      //
       final dir = await getTemporaryDirectory();
       final file = File('${dir.path}/qr_${widget.qrPin}.png');
       await file.writeAsBytes(bytes);
@@ -114,7 +100,6 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
     );
   }
 
-  // ── Build ────────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -140,17 +125,13 @@ class _QrFullscreenModalState extends State<QrFullscreenModal>
                       QrModalHeader(onClose: () => Navigator.pop(context)),
                       SizedBox(height: 24.h),
 
-                      // QR card — captured for image sharing
                       QrDisplayCard(
                         repaintKey: _qrRepaintKey,
                         qrPin: widget.qrPin,
                       ),
                       SizedBox(height: 20.h),
 
-                      // PIN + copy button
-        
-
-                      // Share as image
+                 
                       QrShareActions(
                         isSavingImage: _isSavingImage,
                         onShareImage: _shareAsImage,

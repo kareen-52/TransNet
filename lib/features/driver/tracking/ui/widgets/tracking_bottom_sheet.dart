@@ -90,7 +90,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── مقبض السحب ──
+
             Container(
               width: 40.w,
               height: 4.h,
@@ -101,7 +101,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
             ),
             verticalSpace(16),
 
-            // ── معلومات الشحنة ──
+
             _buildInfoRow(
               theme,
               "الحالة",
@@ -116,7 +116,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
 
             verticalSpace(24),
 
-            // ── الأزرار الذكية ──
+
             BlocBuilder<DriverTrackingCubit, DriverTrackingState>(
               builder: (context, state) {
                 final loading = state.maybeWhen(
@@ -125,7 +125,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                   orElse: () => false,
                 );
 
-                // المرحلة الأولى: جارية (إما بيمسح QR أو بيتخطى)
+
                 if (currentStatus == 'جارية') {
                   return Row(
                     children: [
@@ -212,7 +212,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
     );
   }
 
-  // دالة بناء أسطر المعلومات
+
   Widget _buildInfoRow(
     ThemeData theme,
     String label,

@@ -10,7 +10,7 @@ class NotificationModel {
   final int shipmentId;
   final String title;
   final String message;
-  final int status; // 0 = غير مقروء, 1 = مقروء
+  final int status;
   @JsonKey(name: 'created_at')
   final String createdAt;
 

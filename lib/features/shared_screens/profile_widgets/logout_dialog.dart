@@ -44,7 +44,7 @@ void showLogoutConfirmDialog(BuildContext context) {
                   onPressed: isLoading
                       ? null
                       : () async {
-                          // تحقق من الاتصال بالإنترنت
+
                           if (!ConnectivityHelper.isOnline) {
                             SnackbarHelper.showError(
                                 message: 'لا يوجد اتصال بالإنترنت');
@@ -53,15 +53,15 @@ void showLogoutConfirmDialog(BuildContext context) {
 
                           setState(() => isLoading = true);
 
-                          // انتظر نتيجة عملية الخروج (true = نجاح, false = فشل)
+
                           final success =
                               await LogoutService.execute(context);
 
-                          // إذا فشلت العملية، أرجع التحميل إلى حالته الأصلية
+
                           if (!success && dialogContext.mounted) {
                             setState(() => isLoading = false);
                           }
-                          // إذا نجحت، سينتقل المستخدم تلقائيًا وتختفي الحوارات
+
                         },
                   child: isLoading
                       ? SizedBox(
@@ -89,7 +89,7 @@ void showLogoutConfirmDialog(BuildContext context) {
 
 
 class SnackbarHelper {
-  // رسالة خطأ
+
   static void showError({required String message}) {
     final context = navigatorKey.currentContext;
     if (context == null) return;
@@ -102,7 +102,7 @@ class SnackbarHelper {
     );
   }
 
-  // رسالة نجاح
+
   static void showSuccess({required String message}) {
     final context = navigatorKey.currentContext;
     if (context == null) return;

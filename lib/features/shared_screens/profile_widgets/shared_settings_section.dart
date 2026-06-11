@@ -33,9 +33,9 @@ class SharedSettingsSection extends StatelessWidget {
               ProfileNavItem(
                 title: 'الإشعارات',
                 icon: Icons.notifications_none_outlined,
-                // badge: context.read<NotificationCubit>().unreadCount,
+
                 onTap: () =>
-                    // Navigator.pushNamed(context, Routes.getAllNotifications),
+
                     Navigator.pushNamed(
                       context,
                       Routes.getAllNotifications,

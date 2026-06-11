@@ -26,7 +26,6 @@ class ShippingSubmitButton extends StatelessWidget {
             text: 'فشل الاتصال، أعد المحاولة',
             backgroundColor: theme.colorScheme.outline,
             textStyle: theme.textTheme.titleMedium?.copyWith(
-              // color: Colors.white,
               color: theme.colorScheme.onSurface.withOpacity(0.6),
               fontWeight: FontWeightHelper.bold,
             ),
@@ -47,15 +46,11 @@ class ShippingSubmitButton extends StatelessWidget {
 
           hasActiveShipment: (shipment) => AppTextButton(
             text: 'لديك طلب قيد البحث',
-            // backgroundColor: theme.colorScheme.error.withOpacity(0.9),
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
-              // width: 2,
             ),
             backgroundColor: theme.colorScheme.secondary.withOpacity(0.1),
-            // backgroundColor: AppColors.success,
             textStyle: theme.textTheme.titleMedium?.copyWith(
-              // color: theme.colorScheme.surface,
               color: theme.colorScheme.secondary,
               fontWeight: FontWeightHelper.extraBold,
             ),
@@ -99,7 +94,6 @@ class ShippingSubmitButton extends StatelessWidget {
             text: 'جاري التحقق...',
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.secondary,
-              // width: 2,
             ),
             backgroundColor: theme.colorScheme.secondary.withOpacity(0.1),
             isLoading: true,

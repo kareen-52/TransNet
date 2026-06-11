@@ -60,7 +60,7 @@ class DriverSuitablePostsSection extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 16.w,
                       mainAxisSpacing: 16.h,
-                      // childAspectRatio: 1.2,
+
                       mainAxisExtent: 302.h,
                     ),
                     itemCount: posts.length,

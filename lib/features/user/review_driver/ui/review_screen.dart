@@ -73,7 +73,7 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
               ),
               SizedBox(height: 20.h),
 
-              // نجوم التقييم التفاعلية
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(5, (index) {
@@ -95,7 +95,6 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
               ),
               SizedBox(height: 20.h),
 
-              // حقل النص
               TextField(
                 controller: _reviewController,
                 maxLines: 3,
@@ -112,7 +111,6 @@ class _ReviewBottomSheetState extends State<ReviewBottomSheet> {
               ),
               SizedBox(height: 24.h),
 
-              // زر الإرسال
               BlocBuilder<ReviewDriverCubit, ReviewDriverState>(
                 builder: (context, state) {
                   final isLoading = state == const ReviewDriverState.loading();
