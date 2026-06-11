@@ -18,7 +18,6 @@ class AppliedPostsScreen extends StatelessWidget {
 
     return BlocProvider.value(
       value: getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
-      // create: (context) => getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
       child: Scaffold(
         extendBody: true,
         backgroundColor: theme.scaffoldBackgroundColor,

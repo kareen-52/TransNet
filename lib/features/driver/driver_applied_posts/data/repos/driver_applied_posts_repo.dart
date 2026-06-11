@@ -20,7 +20,7 @@ class DriverAppliedPostsRepo {
   Future<ApiResult<String>> cancelOffer(int postId) async {
     try {
       final response = await _apiService.cancelPostDriver(postId);
-      return ApiResult.success(response['message'] ?? 'تم سحب عرضك بنجاح');
+      return ApiResult.success(response['message'] ?? 'تم إلغاء عرضك بنجاح');
     } catch (error) {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
