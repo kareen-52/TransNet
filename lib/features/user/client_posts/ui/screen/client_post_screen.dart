@@ -17,12 +17,13 @@ class ClientPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return BlocProvider.value(
       value: getIt<ClientPostsCubit>()..fetchMyPosts(),
-
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 80),
           child: FloatingActionButton.extended(
@@ -33,7 +34,9 @@ class ClientPostsScreen extends StatelessWidget {
               );
 
               if (result == true || result == null) {
-                context.read<ClientPostsCubit>().fetchMyPosts();
+                if (context.mounted) {
+                  context.read<ClientPostsCubit>().fetchMyPosts();
+                }
               }
             },
             backgroundColor: theme.colorScheme.primary,
@@ -49,7 +52,6 @@ class ClientPostsScreen extends StatelessWidget {
             ),
           ),
         ),
-
         body: BlocBuilder<ClientPostsCubit, ClientPostsState>(
           builder: (context, state) {
             return state.when(
@@ -69,16 +71,35 @@ class ClientPostsScreen extends StatelessWidget {
                 color: theme.colorScheme.primary,
                 onRefresh: () async =>
                     context.read<ClientPostsCubit>().fetchMyPosts(),
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
-                  itemCount: posts.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                  itemBuilder: (context, index) => ClientPostCard(
-                    key: ValueKey(posts[index].id),
-                    post: posts[index],
-                  ),
-                ),
+
+                child: isTablet
+                    ? GridView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
+                        itemCount: posts.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16.w,
+                          mainAxisSpacing: 16.h,
+
+                          mainAxisExtent: 294.h,
+                        ),
+                        itemBuilder: (context, index) => ClientPostCard(
+                          key: ValueKey(posts[index].id),
+                          post: posts[index],
+                        ),
+                      )
+                    : ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
+                        itemCount: posts.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 16.h),
+                        itemBuilder: (context, index) => ClientPostCard(
+                          key: ValueKey(posts[index].id),
+                          post: posts[index],
+                        ),
+                      ),
               ),
             );
           },

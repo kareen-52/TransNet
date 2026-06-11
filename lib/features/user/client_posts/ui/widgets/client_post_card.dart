@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/networking/api_result.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
+import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/user/client_posts/logic/client_posts_cubit.dart';
 import '../../data/models/post_model.dart';
@@ -68,17 +69,13 @@ class _ClientPostCardState extends State<ClientPostCard> {
   Future<void> _deletePost() async {
     setState(() => isDeleting = true);
 
-
     final result = await context.read<ClientPostsCubit>().deletePost(
       widget.post.id,
     );
 
-
-
     result.when(
       success: (msg) {
         SnackBarHelper.showSuccess(context, msg);
-
       },
       failure: (error) {
         if (mounted) setState(() => isDeleting = false);
@@ -265,69 +262,87 @@ class _ClientPostCardState extends State<ClientPostCard> {
                   bottom: Radius.circular(20.r),
                 ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Flexible(
-                    flex: 3,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.calendar_month_rounded,
-                          size: 16.sp,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withOpacity(0.7),
-                        ),
-                        horizontalSpace(6),
-                        Flexible(
-                          child: Text(
-                            'أقصى موعد:\n${widget.post.lastDate ?? 'غير محدد'}',
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurface.withOpacity(0.7),
-                              fontWeight: FontWeight.bold,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                'أقصى موعد:\n${widget.post.lastDate ?? 'غير محدد'}',
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.7),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  horizontalSpace(8),
+                      ),
+                      horizontalSpace(8),
 
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'نطاق السعر',
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${_formatNumber(widget.post.minPrice ?? 0)} - ${_formatNumber(widget.post.maxPrice ?? 0)}',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              color: theme.colorScheme.primary,
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'نطاق السعر',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withOpacity(0.7),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${_formatNumber(widget.post.minPrice ?? 0)} - ${_formatNumber(widget.post.maxPrice ?? 0)}',
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.7),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  verticalSpace(16),
+                  AppTextButton(
+                    text: 'عرض التفاصيل',
+                    height: 44.h,
+                    textStyle: TextStyle(
+                      fontSize: 13.sp,
+                      color: theme.colorScheme.primary,
+                      fontWeight: FontWeight.w900,
                     ),
+                    backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                    borderSide: BorderSide(color: theme.colorScheme.primary),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        Routes.postDetailsScreen,
+                        arguments: widget.post.id,
+                      );
+                    },
                   ),
                 ],
               ),

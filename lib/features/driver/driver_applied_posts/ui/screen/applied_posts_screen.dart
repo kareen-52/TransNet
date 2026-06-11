@@ -16,12 +16,15 @@ class AppliedPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return BlocProvider.value(
       value: getIt<DriverAppliedPostsCubit>()..fetchAppliedPosts(),
       child: Scaffold(
         extendBody: true,
         backgroundColor: theme.scaffoldBackgroundColor,
-      
+
         body: BlocBuilder<DriverAppliedPostsCubit, DriverAppliedPostsState>(
           builder: (context, state) {
             return state.when(
@@ -30,25 +33,46 @@ class AppliedPostsScreen extends StatelessWidget {
               empty: () => EmptyStateWidget(
                 title: 'لا توجد عروض',
                 subTitle: 'لم تقم بتقديم أي عرض على إعلانات العملاء حتى الآن.',
-                onRetry: () => context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
+                onRetry: () =>
+                    context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
               ),
               error: (errorModel) => ErrorStateWidget(
                 message: errorModel.message ?? 'حدث خطأ أثناء جلب البيانات',
-                onRetry: () => context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
+                onRetry: () =>
+                    context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
               ),
               success: (posts) => RefreshIndicator(
                 color: theme.colorScheme.primary,
-                onRefresh: () async => context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
-                  itemCount: posts.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                  itemBuilder: (context, index) => DriverAppliedPostCard(
-                    key: ValueKey(posts[index].id),
-                    post: posts[index],
-                  ),
-                ),
+                onRefresh: () async =>
+                    context.read<DriverAppliedPostsCubit>().fetchAppliedPosts(),
+                child: isTablet
+                    ? GridView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
+                        itemCount: posts.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16.w,
+                          mainAxisSpacing: 16.h,
+
+                          mainAxisExtent: 310.h,
+                        ),
+                        itemBuilder: (context, index) => DriverAppliedPostCard(
+                          key: ValueKey(posts[index].id),
+                          post: posts[index],
+                        ),
+                      )
+                    : ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 85.h),
+                        itemCount: posts.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 16.h),
+                        itemBuilder: (context, index) => DriverAppliedPostCard(
+                          key: ValueKey(posts[index].id),
+                          post: posts[index],
+                        ),
+                      ),
               ),
             );
           },
