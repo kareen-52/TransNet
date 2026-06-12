@@ -15,7 +15,7 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/map/shipment_map_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/pin_qr/pin_qr_row.dart';
 import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
-import 'package:graduation_progect/features/user/review_driver/ui/review_screen.dart';
+import 'package:graduation_progect/features/user/review_driver/ui/review_dialog.dart';
 
 class ShipmentDetailsBody extends StatelessWidget {
   final ShipmentDetailsEntity data;
@@ -36,6 +36,7 @@ class _MobileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final shipment = data.shipment;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bool isCompleted =
@@ -59,7 +60,7 @@ class _MobileBody extends StatelessWidget {
               SectionHeader(
                 label: 'مسار الشحنة',
                 icon: Icons.route_rounded,
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
               ),
               SizedBox(height: 8.h),
               ShipmentRouteCard(shipment: shipment, isDark: isDark),
@@ -67,7 +68,7 @@ class _MobileBody extends StatelessWidget {
               SectionHeader(
                 label: 'خريطة الرحلة',
                 icon: Icons.map_rounded,
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
               ),
               SizedBox(height: 8.h),
               ShipmentMapCard(
@@ -79,7 +80,7 @@ class _MobileBody extends StatelessWidget {
               SectionHeader(
                 label: 'تفاصيل الشحنة',
                 icon: Icons.inventory_2_outlined,
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
               ),
               SizedBox(height: 8.h),
               ShipmentCargoCard(shipment: shipment, isDark: isDark),
@@ -87,7 +88,7 @@ class _MobileBody extends StatelessWidget {
               SectionHeader(
                 label: 'حالة الشحنة',
                 icon: Icons.info_outline_rounded,
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
               ),
               SizedBox(height: 8.h),
               ShipmentStatusCard(shipment: shipment, isDark: isDark),
@@ -96,7 +97,7 @@ class _MobileBody extends StatelessWidget {
                 SectionHeader(
                   label: 'الأطراف',
                   icon: Icons.people_outline_rounded,
-                  color: AppColors.primary,
+                  color: theme.colorScheme.primary,
                 ),
                 SizedBox(height: 8.h),
                 if (data.hasDriver) ...[
@@ -105,47 +106,48 @@ class _MobileBody extends StatelessWidget {
                     role: 'السائق',
                     isDark: isDark,
                     icon: Icons.drive_eta_outlined,
-                    iconColor: AppColors.primary,
+                    iconColor: theme.colorScheme.primary,
+                    isCompleted: isCompleted,
                   ),
                   SizedBox(height: 10.h),
-                  if (isCompleted) ...[
-                    SizedBox(height: 12.h),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (_) => BlocProvider(
-                            create: (context) => getIt<ReviewDriverCubit>(),
-                            child: ReviewBottomSheet(driverId: data.driver!.id),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.star_rate_rounded,
-                        color: AppColors.warning,
-                        size: 22.sp,
-                      ),
-                      label: Text(
-                        'تقييم السائق',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.warning,
-                        backgroundColor: AppColors.warning.withOpacity(0.05),
-                        side: BorderSide(color: AppColors.warning, width: 1.5),
-                        minimumSize: Size(double.infinity, 50.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                        ),
-                      ),
-                    ),
-                  ],
-                  SizedBox(height: 10.h),
+                //   if (isCompleted) ...[
+                //     SizedBox(height: 12.h),
+                //     OutlinedButton.icon(
+                //       onPressed: () {
+                //         showModalBottomSheet(
+                //           context: context,
+                //           isScrollControlled: true,
+                //           backgroundColor: Colors.transparent,
+                //           builder: (_) => BlocProvider(
+                //             create: (context) => getIt<ReviewDriverCubit>(),
+                //             child: ReviewBottomSheet(driverId: data.driver!.id),
+                //           ),
+                //         );
+                //       },
+                //       icon: Icon(
+                //         Icons.star_rate_rounded,
+                //         color: AppColors.warning,
+                //         size: 22.sp,
+                //       ),
+                //       label: Text(
+                //         'تقييم السائق',
+                //         style: TextStyle(
+                //           fontSize: 14.sp,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //       style: OutlinedButton.styleFrom(
+                //         foregroundColor: AppColors.warning,
+                //         backgroundColor: AppColors.warning.withOpacity(0.05),
+                //         side: BorderSide(color: AppColors.warning, width: 1.5),
+                //         minimumSize: Size(double.infinity, 50.h),
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(16.r),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                //   SizedBox(height: 10.h),
                 ],
                 if (data.hasClient)
                   ShipmentPartyCard(
@@ -153,7 +155,8 @@ class _MobileBody extends StatelessWidget {
                     role: 'العميل',
                     isDark: isDark,
                     icon: Icons.person_outline_rounded,
-                    iconColor: AppColors.secondary,
+                    iconColor: theme.colorScheme.secondary,
+                    isCompleted: isCompleted,
                   ),
                 SizedBox(height: 4.h),
               ],
@@ -172,6 +175,7 @@ class _TabletBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final shipment = data.shipment;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bool isCompleted =
@@ -210,7 +214,7 @@ class _TabletBody extends StatelessWidget {
                           SectionHeader(
                             label: 'مسار الشحنة',
                             icon: Icons.route_rounded,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                           SizedBox(height: 8.h),
                           ShipmentRouteCard(shipment: shipment, isDark: isDark),
@@ -219,7 +223,7 @@ class _TabletBody extends StatelessWidget {
                           SectionHeader(
                             label: 'تفاصيل الشحنة',
                             icon: Icons.inventory_2_outlined,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                           SizedBox(height: 8.h),
                           ShipmentCargoCard(shipment: shipment, isDark: isDark),
@@ -229,7 +233,7 @@ class _TabletBody extends StatelessWidget {
                             SectionHeader(
                               label: 'الأطراف',
                               icon: Icons.people_outline_rounded,
-                              color: AppColors.primary,
+                              color: theme.colorScheme.primary,
                             ),
                             SizedBox(height: 8.h),
                             if (data.hasDriver) ...[
@@ -238,55 +242,56 @@ class _TabletBody extends StatelessWidget {
                                 role: 'السائق',
                                 isDark: isDark,
                                 icon: Icons.drive_eta_outlined,
-                                iconColor: AppColors.primary,
+                                isCompleted: isCompleted,
+                                iconColor: theme.colorScheme.primary,
                               ),
                               SizedBox(height: 10.h),
-                              if (isCompleted) ...[
-                                SizedBox(height: 12.h),
-                                OutlinedButton.icon(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (_) => BlocProvider(
-                                        create: (context) =>
-                                            getIt<ReviewDriverCubit>(),
-                                        child: ReviewBottomSheet(
-                                          driverId: data.driver!.id,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.star_rate_rounded,
-                                    color: AppColors.warning,
-                                    size: 22.sp,
-                                  ),
-                                  label: Text(
-                                    'تقييم السائق',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: AppColors.warning,
-                                    backgroundColor:
-                                        AppColors.warning.withOpacity(0.05),
-                                    side: BorderSide(
-                                      color: AppColors.warning,
-                                      width: 1.5,
-                                    ),
-                                    minimumSize: Size(double.infinity, 50.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(16.r),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              SizedBox(height: 10.h),
+                              // if (isCompleted) ...[
+                              //   SizedBox(height: 12.h),
+                              //   OutlinedButton.icon(
+                              //     onPressed: () {
+                              //       showModalBottomSheet(
+                              //         context: context,
+                              //         isScrollControlled: true,
+                              //         backgroundColor: Colors.transparent,
+                              //         builder: (_) => BlocProvider(
+                              //           create: (context) =>
+                              //               getIt<ReviewDriverCubit>(),
+                              //           child: ReviewBottomSheet(
+                              //             driverId: data.driver!.id,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     },
+                              //     icon: Icon(
+                              //       Icons.star_rate_rounded,
+                              //       color: AppColors.warning,
+                              //       size: 22.sp,
+                              //     ),
+                              //     label: Text(
+                              //       'تقييم السائق',
+                              //       style: TextStyle(
+                              //         fontSize: 14.sp,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //     style: OutlinedButton.styleFrom(
+                              //       foregroundColor: AppColors.warning,
+                              //       backgroundColor:
+                              //           AppColors.warning.withOpacity(0.05),
+                              //       side: BorderSide(
+                              //         color: AppColors.warning,
+                              //         width: 1.5,
+                              //       ),
+                              //       minimumSize: Size(double.infinity, 50.h),
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius:
+                              //             BorderRadius.circular(16.r),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ],
+                              // SizedBox(height: 10.h),
                             ],
                             if (data.hasClient)
                               ShipmentPartyCard(
@@ -294,7 +299,8 @@ class _TabletBody extends StatelessWidget {
                                 role: 'العميل',
                                 isDark: isDark,
                                 icon: Icons.person_outline_rounded,
-                                iconColor: AppColors.secondary,
+                                iconColor: theme.colorScheme.secondary,
+                                isCompleted: isCompleted,
                               ),
                           ],
                         ],
@@ -311,7 +317,7 @@ class _TabletBody extends StatelessWidget {
                           SectionHeader(
                             label: 'خريطة الرحلة',
                             icon: Icons.map_rounded,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                           SizedBox(height: 8.h),
                           ShipmentMapCard(
@@ -324,7 +330,7 @@ class _TabletBody extends StatelessWidget {
                           SectionHeader(
                             label: 'حالة الشحنة',
                             icon: Icons.info_outline_rounded,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                           SizedBox(height: 8.h),
                           ShipmentStatusCard(shipment: shipment, isDark: isDark),

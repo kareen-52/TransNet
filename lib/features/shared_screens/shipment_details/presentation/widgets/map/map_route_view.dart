@@ -60,7 +60,7 @@ class MapRouteView extends StatelessWidget {
           polylines: [
             Polyline(
               points: _routePoints,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               strokeWidth: 4.5,
               borderColor: Colors.white,
               borderStrokeWidth: 1.5,

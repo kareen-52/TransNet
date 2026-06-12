@@ -90,7 +90,7 @@ class _BackButton extends StatelessWidget {
       icon: const Icon(Icons.arrow_back_rounded),
       label: const Text('العودة'),
       style: FilledButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         padding:
             EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
         shape: RoundedRectangleBorder(

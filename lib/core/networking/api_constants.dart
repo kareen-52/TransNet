@@ -76,4 +76,6 @@ class ApiConstants {
   static const String appliedPostsDriver = 'posts/applied/driver';
   static const String cancelPostDriver = 'post/cancel';
 
+  static const String reportUser = 'report';
+
 }

@@ -45,13 +45,13 @@ class _ShareImageButton extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-          color: loading ? AppColors.primary.withValues(alpha: 0.55) : null,
+          color: loading ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.55) : null,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: loading
               ? null
               : [
                   BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.35),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),

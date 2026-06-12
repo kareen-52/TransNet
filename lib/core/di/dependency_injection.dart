@@ -32,6 +32,8 @@ import 'package:graduation_progect/features/shared_screens/notifications/data/re
 import 'package:graduation_progect/features/shared_screens/notifications/logic/notification_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/data/repo/post_details_repo.dart';
 import 'package:graduation_progect/features/shared_screens/post_details/logic/post_details_cubit.dart';
+import 'package:graduation_progect/features/shared_screens/report_user/data/repos/report_repo.dart';
+import 'package:graduation_progect/features/shared_screens/report_user/logic/report_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/repositories/shipment_details_repository_impl.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/repositories/shipment_details_repository.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/usecases/get_shipment_details_usecase.dart';
@@ -259,4 +261,7 @@ void setupGetIt() {
 
   getIt.registerLazySingleton<DriverAppliedPostsRepo>(() => DriverAppliedPostsRepo(getIt()));
   getIt.registerLazySingleton<DriverAppliedPostsCubit>(() => DriverAppliedPostsCubit(getIt()));
+
+  getIt.registerLazySingleton<ReportRepo>(() => ReportRepo(getIt()));
+  getIt.registerFactory<ReportCubit>(() => ReportCubit(getIt()));
 }

@@ -56,12 +56,12 @@ class _BrandingStrip extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.local_shipping_rounded,
-            color: AppColors.primary, size: 18.sp),
+            color: Theme.of(context).colorScheme.primary, size: 18.sp),
         SizedBox(width: 6.w),
         Text(
           'شحنتي',
           style: TextStyle(
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             fontSize: 14.sp,
             fontWeight: FontWeight.w800,
           ),
@@ -105,19 +105,19 @@ class _ScanHint extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.07),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.qr_code_scanner_rounded,
-              color: AppColors.primary, size: 14.sp),
+              color: Theme.of(context).colorScheme.primary, size: 14.sp),
           SizedBox(width: 5.w),
           Text(
             'امسح بالكاميرا',
             style: TextStyle(
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 11.sp,
               fontWeight: FontWeight.w600,
             ),

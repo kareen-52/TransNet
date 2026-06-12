@@ -68,14 +68,14 @@ class _CopyChipState extends State<CopyChip>
                 ? AppColors.success.withValues(alpha: 0.12)
                 : (widget.isDark
                     ? Colors.white.withValues(alpha: 0.07)
-                    : AppColors.primary.withValues(alpha: 0.07)),
+                    : Theme.of(context).colorScheme.primary.withValues(alpha: 0.07)),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
               color: _copied
                   ? AppColors.success.withValues(alpha: 0.4)
                   : (widget.isDark
                       ? Colors.white.withValues(alpha: 0.10)
-                      : AppColors.primary.withValues(alpha: 0.20)),
+                      : Theme.of(context).colorScheme.primary.withValues(alpha: 0.20)),
             ),
           ),
           child: Row(
@@ -84,7 +84,7 @@ class _CopyChipState extends State<CopyChip>
               Icon(
                 _copied ? Icons.check_rounded : Icons.copy_rounded,
                 size: 12.sp,
-                color: _copied ? AppColors.success : AppColors.primary,
+                color: _copied ? AppColors.success : Theme.of(context).colorScheme.primary,
               ),
               SizedBox(width: 4.w),
               Text(
@@ -92,7 +92,7 @@ class _CopyChipState extends State<CopyChip>
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w700,
-                  color: _copied ? AppColors.success : AppColors.primary,
+                  color: _copied ? AppColors.success : Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],

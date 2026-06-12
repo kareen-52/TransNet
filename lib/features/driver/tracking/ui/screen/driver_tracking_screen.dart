@@ -83,7 +83,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
                     Polyline(
                       points: widget.shipment.pathCoordinates,
                       strokeWidth: 5.0,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),

@@ -41,7 +41,7 @@ class DriverEarningsScreen extends StatelessWidget {
                     value: '${stats.total} طلب',
                     description: 'جميع الشحنات المنجزة',
                     icon: Icons.local_shipping_rounded,
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.primary
                   ),
                 ),
                 horizontalSpace(12),

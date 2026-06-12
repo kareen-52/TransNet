@@ -122,10 +122,10 @@ class _DimChip extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
       decoration: BoxDecoration(
         color: isDark
-            ? AppColors.primary.withValues(alpha: 0.12)
-            : AppColors.primary.withValues(alpha: 0.07),
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
+            : Theme.of(context).colorScheme.primary.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.20)),
+        border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.20)),
       ),
       child: RichText(
         text: TextSpan(
@@ -144,7 +144,7 @@ class _DimChip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary
               ),
             ),
           ],

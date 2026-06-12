@@ -25,10 +25,10 @@ class QrButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: surface,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
+          border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.35)),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.12),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
               blurRadius: 14,
               offset: const Offset(0, 4),
             ),
@@ -42,7 +42,7 @@ class QrButton extends StatelessWidget {
             Text(
               'رمز QR',
               style: TextStyle(
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w800,
               ),
@@ -94,7 +94,7 @@ class _QrIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.30),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.30),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -111,13 +111,13 @@ class _TapHint extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(6.r),
       ),
       child: Text(
         'اضغط للفتح',
         style: TextStyle(
-          color: AppColors.primary.withValues(alpha: 0.70),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.70),
           fontSize: 9.sp,
           fontWeight: FontWeight.w600,
         ),

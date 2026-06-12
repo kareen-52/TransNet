@@ -82,10 +82,10 @@ class _PinHeader extends StatelessWidget {
           width: 30.w,
           height: 30.w,
           decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.10),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(Icons.pin_outlined, size: 16.sp, color: AppColors.primary),
+          child: Icon(Icons.pin_outlined, size: 16.sp, color: Theme.of(context).colorScheme.primary),
         ),
         SizedBox(width: 8.w),
         Text(
@@ -121,7 +121,7 @@ class _PinDisplay extends StatelessWidget {
         fontSize: 24.sp,
         fontWeight: FontWeight.w900,
         letterSpacing: 4,
-        color: AppColors.primary,
+        color: Theme.of(context).colorScheme.primary,
       ),
     );
   }

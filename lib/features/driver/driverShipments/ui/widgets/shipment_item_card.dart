@@ -114,7 +114,7 @@ class ShipmentItemCard extends StatelessWidget {
                       Icon(
                         Icons.location_on,
                         size: 18.sp,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       SizedBox(width: 8.w),
                       Expanded(
@@ -186,7 +186,7 @@ class ShipmentItemCard extends StatelessWidget {
                         label: "السعر",
                         value: "${shipment.price ?? 0} ل.س",
                         valueStyle: textTheme.titleSmall?.copyWith(
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -17,7 +17,7 @@ class CopyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = copied ? AppColors.success : AppColors.primary;
+    final color = copied ? AppColors.success : Theme.of(context).colorScheme.primary;
 
     return GestureDetector(
       onTap: onTap,

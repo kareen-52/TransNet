@@ -132,11 +132,11 @@ class _MapPreviewCard extends StatelessWidget {
               width: 32.w,
               height: 32.w,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(10.r),
                 boxShadow: [
                   BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.40),
+                      color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.40),
                       blurRadius: 8),
                 ],
               ),

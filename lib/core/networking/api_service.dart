@@ -202,4 +202,7 @@ abstract class ApiService {
   @DELETE('${ApiConstants.cancelPostDriver}/{id}')
   Future<dynamic> cancelPostDriver(@Path('id') int id);
 
+  @POST(ApiConstants.reportUser)
+  Future<dynamic> reportUser(@Body() Map<String, dynamic> body);
+
 }

@@ -93,13 +93,13 @@ class _ReadOnlyBadge extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.10),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
         'معاينة فقط',
         style: TextStyle(
-          color: AppColors.primary,
+          color: Theme.of(context).colorScheme.primary,
           fontSize: 11.sp,
           fontWeight: FontWeight.w600,
         ),
