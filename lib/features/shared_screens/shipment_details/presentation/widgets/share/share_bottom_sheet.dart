@@ -267,7 +267,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
-        backgroundColor: isError ? AppColors.error : AppColors.success,
+        backgroundColor: isError
+            ? Theme.of(context).colorScheme.error
+            : AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -357,7 +359,9 @@ class _SheetHeader extends StatelessWidget {
           width: 40.w,
           height: 40.w,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: 0.10),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Icon(

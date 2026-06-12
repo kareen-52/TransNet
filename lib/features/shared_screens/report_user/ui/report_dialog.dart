@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
-import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/shared_screens/report_user/logic/report_cubit.dart';
@@ -53,6 +52,7 @@ class _ReportDialogState extends State<ReportDialog> {
             SnackBarHelper.showSuccess(context, msg);
           },
           error: (err) {
+            Navigator.pop(context);
             SnackBarHelper.showError(context, err);
           },
         );
@@ -74,9 +74,9 @@ class _ReportDialogState extends State<ReportDialog> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.report_problem_rounded, color: AppColors.error, size: 28.sp),
+                        Icon(Icons.report_problem_rounded, color: Theme.of(context).colorScheme.error, size: 28.sp),
                         horizontalSpace(8),
-                        Text('الإبلاغ عن ${widget.role}', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: AppColors.error)),
+                        Text('الإبلاغ عن ${widget.role}', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.error)),
                       ],
                     ),
                     GestureDetector(
@@ -87,7 +87,7 @@ class _ReportDialogState extends State<ReportDialog> {
                 ),
                 verticalSpace(12),
                 Text(
-                  'نأخذ جميع البلاغات على محمل الجد وسيتم مراجعتها من قبل الإدارة لحماية حقوقك.',
+                  'نأخذ جميع البلاغات على محمل الجد وسيتم مراجعتها لحماية حقوقك.',
                   style: theme.textTheme.bodySmall?.copyWith(height: 1.5, color: Colors.grey.shade600),
                 ),
                 verticalSpace(24),
@@ -114,9 +114,9 @@ class _ReportDialogState extends State<ReportDialog> {
                   controller: _descController,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: 'اكتب هنا ما حدث معك بالتفصيل...',
+                    hintText: 'اكتب هنا الشرح بالتفصيل...',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide(color: AppColors.error)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide(color: Theme.of(context).colorScheme.error)),
                   ),
                 ),
                 verticalSpace(32),
@@ -126,7 +126,7 @@ class _ReportDialogState extends State<ReportDialog> {
                     final isLoading = state == const ReportState.loading();
                     return AppTextButton(
                       text: 'إرسال البلاغ',
-                      backgroundColor: AppColors.error,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                       isLoading: isLoading,
                       onPressed: () {
                         context.read<ReportCubit>().submitReport(

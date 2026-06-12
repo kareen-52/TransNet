@@ -44,17 +44,16 @@ class ShipmentDetailsErrorView extends StatelessWidget {
             SizedBox(height: 20.h),
             Text(
               'حدث خطأ',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 8.h),
             Text(
               message ?? 'تعذّر تحميل تفاصيل الشحنة',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.lightTextSecondary,
-                  ),
+                color: AppColors.lightTextSecondary,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 28.h),
@@ -73,11 +72,14 @@ class _ErrorIcon extends StatelessWidget {
       width: 80.w,
       height: 80.w,
       decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.08),
+        color: Theme.of(context).colorScheme.error.withValues(alpha: 0.08),
         shape: BoxShape.circle,
       ),
-      child: Icon(Icons.error_outline_rounded,
-          color: AppColors.error, size: 38.sp),
+      child: Icon(
+        Icons.error_outline_rounded,
+        color: Theme.of(context).colorScheme.error,
+        size: 38.sp,
+      ),
     );
   }
 }
@@ -91,10 +93,10 @@ class _BackButton extends StatelessWidget {
       label: const Text('العودة'),
       style: FilledButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        padding:
-            EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14.r)),
+          borderRadius: BorderRadius.circular(14.r),
+        ),
       ),
     );
   }

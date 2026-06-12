@@ -52,7 +52,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-
   void _increaseMin() {
     if (currentMin + step < currentMax) setState(() => currentMin += step);
   }
@@ -206,7 +205,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                                 Navigator.pop(context, true);
 
                                 try {
-
                                   getIt<ClientPostsCubit>().fetchMyPosts();
                                 } catch (_) {}
                               },
@@ -252,7 +250,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-
   Widget _buildCounterCard({
     required ThemeData theme,
     required String title,
@@ -291,7 +288,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
               _buildRoundButton(
                 icon: Icons.remove_rounded,
                 onAction: onDecrease,
-                color: AppColors.error,
+                color: Theme.of(context).colorScheme.error,
               ),
               Text(
                 '${_formatNumber(currentValue)} ل.س',
@@ -320,7 +317,6 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     );
   }
 
-
   Widget _buildRoundButton({
     required IconData icon,
     required VoidCallback? onAction,
@@ -329,9 +325,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
     final bool isDisabled = onAction == null;
     return GestureDetector(
       onTap: onAction,
-      onLongPress: isDisabled
-          ? null
-          : () => _startContinuousAction(onAction),
+      onLongPress: isDisabled ? null : () => _startContinuousAction(onAction),
       onLongPressEnd: (_) => _stopContinuousAction(),
       child: Container(
         padding: EdgeInsets.all(10.w),

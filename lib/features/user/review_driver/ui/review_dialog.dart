@@ -38,6 +38,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
             SnackBarHelper.showSuccess(context, msg);
           },
           error: (err) {
+            Navigator.pop(context);
             SnackBarHelper.showError(context, err);
           },
         );
@@ -101,11 +102,11 @@ class _ReviewDialogState extends State<ReviewDialog> {
                   controller: _reviewController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'اكتب رأيك هنا (اختياري)...',
+                    hintText: 'اكتب رأيك هنا...',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide(color: theme.colorScheme.primary),
+                      borderSide: BorderSide(color: AppColors.warning),
                     ),
                   ),
                 ),

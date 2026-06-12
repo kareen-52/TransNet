@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-
 class MapLegendBar extends StatelessWidget {
   final bool isDark;
 
@@ -29,9 +28,17 @@ class MapLegendBar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _LegendDot(color: AppColors.success, label: 'نقطة الانطلاق', isDark: isDark),
+            _LegendDot(
+              color: AppColors.success,
+              label: 'نقطة الانطلاق',
+              isDark: isDark,
+            ),
             SizedBox(width: 20.w),
-            _LegendDot(color: AppColors.error, label: 'الوجهة', isDark: isDark),
+            _LegendDot(
+              color: Theme.of(context).colorScheme.error,
+              label: 'الوجهة',
+              isDark: isDark,
+            ),
             const Spacer(),
             _ReadOnlyBadge(),
           ],
@@ -65,9 +72,10 @@ class _LegendDot extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                  color: color.withValues(alpha: 0.40),
-                  blurRadius: 5,
-                  spreadRadius: 1),
+                color: color.withValues(alpha: 0.40),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
             ],
           ),
         ),

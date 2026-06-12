@@ -4,7 +4,6 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/common/card_decoration.dart';
 
-
 class ShipmentRouteCard extends StatelessWidget {
   final ShipmentEntity shipment;
   final bool isDark;
@@ -17,16 +16,19 @@ class ShipmentRouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final surface =
-        isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final secondary =
-        isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    final secondary = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
 
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: buildCardDecoration(
-          surface: surface, border: border, isDark: isDark),
+        surface: surface,
+        border: border,
+        isDark: isDark,
+      ),
       child: Row(
         children: [
           Expanded(
@@ -45,8 +47,11 @@ class ShipmentRouteCard extends StatelessWidget {
               children: [
                 _DashedConnector(isDark: isDark),
                 SizedBox(height: 4.h),
-                Icon(Icons.arrow_forward_rounded,
-                    size: 18.sp, color: secondary),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 18.sp,
+                  color: secondary,
+                ),
               ],
             ),
           ),
@@ -54,7 +59,7 @@ class ShipmentRouteCard extends StatelessWidget {
             child: _RouteEndpoint(
               label: 'الوجهة',
               city: shipment.endGovernorate,
-              dotColor: AppColors.error,
+              dotColor: Theme.of(context).colorScheme.error,
               align: CrossAxisAlignment.end,
               context: context,
               secondary: secondary,
@@ -65,8 +70,6 @@ class ShipmentRouteCard extends StatelessWidget {
     );
   }
 }
-
-
 
 class _RouteEndpoint extends StatelessWidget {
   final String label;
@@ -93,37 +96,39 @@ class _RouteEndpoint extends StatelessWidget {
       crossAxisAlignment: align,
       children: [
         Row(
-          mainAxisAlignment:
-              isLeft ? MainAxisAlignment.start : MainAxisAlignment.end,
+          mainAxisAlignment: isLeft
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
           children: [
             if (!isLeft) ...[
-              Text(label,
-                  style: TextStyle(fontSize: 10.sp, color: secondary)),
+              Text(
+                label,
+                style: TextStyle(fontSize: 10.sp, color: secondary),
+              ),
               SizedBox(width: 6.w),
             ],
             _LocationDot(color: dotColor),
             if (isLeft) ...[
               SizedBox(width: 6.w),
-              Text(label,
-                  style: TextStyle(fontSize: 10.sp, color: secondary)),
+              Text(
+                label,
+                style: TextStyle(fontSize: 10.sp, color: secondary),
+              ),
             ],
           ],
         ),
         SizedBox(height: 5.h),
         Text(
           city,
-          style: Theme.of(ctx)
-              .textTheme
-              .titleSmall
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            ctx,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
           textAlign: isLeft ? TextAlign.start : TextAlign.end,
         ),
       ],
     );
   }
 }
-
-
 
 class _LocationDot extends StatelessWidget {
   final Color color;
@@ -139,16 +144,15 @@ class _LocationDot extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-              color: color.withValues(alpha: 0.4),
-              blurRadius: 6,
-              spreadRadius: 1),
+            color: color.withValues(alpha: 0.4),
+            blurRadius: 6,
+            spreadRadius: 1,
+          ),
         ],
       ),
     );
   }
 }
-
-
 
 class _DashedConnector extends StatelessWidget {
   final bool isDark;
@@ -171,8 +175,7 @@ class _DashedPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color =
-          isDark ? AppColors.darkBorder : AppColors.lightBorder
+      ..color = isDark ? AppColors.darkBorder : AppColors.lightBorder
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 

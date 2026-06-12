@@ -66,7 +66,7 @@ class DriverReviewsScreen extends StatelessWidget {
                     Icon(
                       Icons.error_outline,
                       size: 48.sp,
-                      color: AppColors.error,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                     SizedBox(height: 16.h),
                     Text(

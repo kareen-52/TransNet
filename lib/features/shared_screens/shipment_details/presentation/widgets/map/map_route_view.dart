@@ -5,7 +5,6 @@ import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/utils/lat_lng_parser.dart';
 import 'package:latlong2/latlong.dart';
 
-
 class MapRouteView extends StatelessWidget {
   final List<LatLng> points;
   final LatLng start;
@@ -30,9 +29,7 @@ class MapRouteView extends StatelessWidget {
 
   List<LatLng> get _routePoints {
     if (points.isNotEmpty) return points;
-    return [start, end]
-        .where((p) => p != LatLngParser.zero)
-        .toList();
+    return [start, end].where((p) => p != LatLngParser.zero).toList();
   }
 
   @override
@@ -81,7 +78,7 @@ class MapRouteView extends StatelessWidget {
                 point: end,
                 width: 36.w,
                 height: 36.w,
-                child: _RouteMarker(color: AppColors.error),
+                child: _RouteMarker(color: Theme.of(context).colorScheme.error),
               ),
           ],
         ),
@@ -89,8 +86,6 @@ class MapRouteView extends StatelessWidget {
     );
   }
 }
-
-
 
 class _RouteMarker extends StatelessWidget {
   final Color color;

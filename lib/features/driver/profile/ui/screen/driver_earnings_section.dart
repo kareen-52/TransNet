@@ -101,7 +101,7 @@ class DriverEarningsScreen extends StatelessWidget {
                     title: 'عمولة التطبيق (15%)',
                     value: '${_formatNumber(stats.amountToPay)} ل.س',
                     icon: Icons.pie_chart_rounded,
-                    valueColor: AppColors.error,
+                    valueColor: Theme.of(context).colorScheme.error,
                   ),
                 ],
               ),
@@ -128,7 +128,7 @@ class DriverEarningsScreen extends StatelessWidget {
                     value: '-${_formatNumber(stats.unreceivedTaxesSum)}',
                     description: 'تضاف لديونك للتطبيق',
                     icon: Icons.warning_amber_rounded,
-                    color: AppColors.error,
+                    color: Theme.of(context).colorScheme.error,
                   ),
                 ),
               ],
@@ -152,7 +152,7 @@ class DriverEarningsScreen extends StatelessWidget {
             TransactionHistoryTile(
               title: 'سجل الضرائب والخصومات',
               icon: Icons.money_off_rounded,
-              color: AppColors.error,
+              color: Theme.of(context).colorScheme.error,
               transactions: stats.allTaxes,
             ),
 
