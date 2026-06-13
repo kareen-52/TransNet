@@ -30,7 +30,7 @@ class CreateShipmentRepo {
 
 
 
-  Future<ApiResult<dynamic>> updateShipment(CreateShipmentRequestBody body) async {
+  Future<ApiResult<dynamic>> updateShipment(Map<String, dynamic> body) async {
     try {
       final response = await _apiService.updateShipment(body);
       return ApiResult.success(response['message'] ?? 'تم التعديل بنجاح');
