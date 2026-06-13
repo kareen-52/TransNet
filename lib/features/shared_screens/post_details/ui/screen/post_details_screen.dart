@@ -77,10 +77,52 @@ class PostDetailsScreen extends StatelessWidget {
             return state.maybeWhen(
               initial: () => const PostDetailsShimmer(),
               loading: () => const PostDetailsShimmer(),
-              error: (err) => ErrorStateWidget(
-                message: err.message ?? 'حدث خطأ أثناء جلب التفاصيل',
+
+              error: (errorModel) {
+              if (errorModel.code == 404 || errorModel.message!.contains('not found')) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.content_paste_off_rounded,
+                        size: 80.sp,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                      SizedBox(height: 24.h),
+                      Text(
+                        errorModel.message ?? 'الطلب غير متاح',
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'يبدو أن العميل قام بإلغاء هذا الإعلان.',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      SizedBox(height: 24.h),
+                      FilledButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back_rounded),
+                        label: const Text('العودة'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }
+
+              return ErrorStateWidget(
+                message: errorModel.getAllErrorMessages(),
                 onRetry: () => cubit.getPostDetails(postId),
-              ),
+              );
+            },
               orElse: () => const SizedBox.shrink(),
             );
           },

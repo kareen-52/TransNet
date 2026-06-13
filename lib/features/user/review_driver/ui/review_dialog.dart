@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
+import 'package:graduation_progect/core/widgets/app_text_form_field.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/user/review_driver/logic/review_driver_cubit.dart';
 import 'package:graduation_progect/features/user/review_driver/logic/review_driver_state.dart';
@@ -98,17 +99,10 @@ class _ReviewDialogState extends State<ReviewDialog> {
                 verticalSpace(24),
 
 
-                TextField(
+                AppTextFormField(
                   controller: _reviewController,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText: 'اكتب رأيك هنا...',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide(color: AppColors.warning),
-                    ),
-                  ),
+                  hintText: 'اكتب رأيك هنا...',
                 ),
                 verticalSpace(32),
 

@@ -99,6 +99,11 @@ class NotificationService {
       }
 
       if (notification != null) {
+
+        final payloadData = Map<String, dynamic>.from(message.data);
+        payloadData['title'] = notification.title ?? '';
+        payloadData['body'] = notification.body ?? '';
+
         _localNotifications.show(
           id: notification.hashCode,
           title: notification.title,
@@ -120,7 +125,7 @@ class NotificationService {
               presentSound: true,
             ),
           ),
-          payload: jsonEncode(message.data),
+          payload: jsonEncode(payloadData),
         );
 
     
@@ -163,6 +168,9 @@ class NotificationService {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      final payloadData = Map<String, dynamic>.from(message.data);
+      payloadData['title'] = message.notification?.title ?? '';
+      payloadData['body'] = message.notification?.body ?? '';
       _handleNotificationClick(jsonEncode(message.data));
     });
 
@@ -170,6 +178,9 @@ class NotificationService {
       final RemoteMessage? initialMessage = await _firebaseMessaging
           .getInitialMessage();
       if (initialMessage != null) {
+        final payloadData = Map<String, dynamic>.from(initialMessage.data);
+        payloadData['title'] = initialMessage.notification?.title ?? '';
+        payloadData['body'] = initialMessage.notification?.body ?? '';
         _handleNotificationClick(jsonEncode(initialMessage.data));
       }
 
@@ -243,12 +254,32 @@ class NotificationService {
         final Map<String, dynamic> data = jsonDecode(payload);
 
         final String title = data['title'] ?? '';
-        final int shipmentId =
-            int.tryParse(data['shipment_id']?.toString() ?? '0') ?? 0;
+        final String body = data['body'] ?? '';
+        
+        int shipmentId = 0;
+        int postId = 0;
+
+        if (data.containsKey('notification')) {
+          try {
+             final notifData = jsonDecode(data['notification']);
+             
+             shipmentId = int.tryParse(notifData['shipment_number']?.toString() ?? '0') ?? 0;
+             if (shipmentId == 0) {
+               shipmentId = int.tryParse(notifData['id']?.toString() ?? '0') ?? 0;
+             }
+             
+             postId = int.tryParse(notifData['post_id']?.toString() ?? '0') ?? 0;
+             
+             if (kDebugMode) print("🎯 Extracted IDs -> Shipment: $shipmentId, Post: $postId");
+
+          } catch (_) {}
+        }
 
         NotificationRouteHelper.handleNotificationAction(
           title: title,
+          body: body,
           shipmentId: shipmentId,
+          postId: postId,
           fullData: data,
         );
       } catch (e) {

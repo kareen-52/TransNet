@@ -6,8 +6,13 @@ class NotificationModel {
   final int id;
   @JsonKey(name: 'user_id')
   final int userId;
+
   @JsonKey(name: 'shipment_id')
   final int shipmentId;
+
+  @JsonKey(name: 'post_id', defaultValue: 0)
+  final int? postId;
+
   final String title;
   final String message;
   final int status;
@@ -18,6 +23,7 @@ class NotificationModel {
     required this.id,
     required this.userId,
     required this.shipmentId,
+    this.postId,
     required this.title,
     required this.message,
     required this.status,

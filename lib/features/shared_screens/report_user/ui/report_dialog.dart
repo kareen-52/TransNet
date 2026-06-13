@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
+import 'package:graduation_progect/core/widgets/app_text_form_field.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/shared_screens/report_user/logic/report_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/report_user/logic/report_state.dart';
@@ -19,19 +20,12 @@ class ReportDialog extends StatefulWidget {
 
 class _ReportDialogState extends State<ReportDialog> {
   final TextEditingController _descController = TextEditingController();
-  final List<String> _reportTypes = [
-    'سلوك غير لائق',
-    'تأخير متعمد',
-    'احتيال أو طلب مبالغ إضافية',
-    'مركبة / بضاعة غير مطابقة',
-    'أخرى'
-  ];
+  
   late String _selectedType;
 
   @override
   void initState() {
     super.initState();
-    _selectedType = _reportTypes.first;
   }
 
   @override
@@ -95,29 +89,15 @@ class _ReportDialogState extends State<ReportDialog> {
 
                 Text('سبب البلاغ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp)),
                 verticalSpace(8),
-                DropdownButtonFormField<String>(
-                  value: _selectedType,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  ),
-                  items: _reportTypes.map((t) => DropdownMenuItem(value: t, child: Text(t, style: TextStyle(fontSize: 13.sp)))).toList(),
-                  onChanged: (val) {
-                    if (val != null) setState(() => _selectedType = val);
-                  },
-                ),
+                AppTextFormField(hintText: "تأخير التوصيل, تضرر الأغراض...", ),
                 verticalSpace(16),
 
                 Text('التفاصيل (الرجاء الشرح بوضوح)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp)),
                 verticalSpace(8),
-                TextField(
+                AppTextFormField(
                   controller: _descController,
                   maxLines: 4,
-                  decoration: InputDecoration(
-                    hintText: 'اكتب هنا الشرح بالتفصيل...',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r), borderSide: BorderSide(color: Theme.of(context).colorScheme.error)),
-                  ),
+                  hintText: 'اكتب هنا الشرح بالتفصيل...',
                 ),
                 verticalSpace(32),
 

@@ -39,10 +39,18 @@ class NotificationCard extends StatelessWidget {
       child: InkWell( 
         borderRadius: BorderRadius.circular(24.r),
         onTap: () {
+          int extractedPostId = 0;
+          if (notification.title.contains('إعلانات')) {
+              extractedPostId = notification.postId ?? 0; 
+          }
+
           NotificationRouteHelper.handleNotificationAction(
             context: context,
             title: notification.title,
-            shipmentId: notification.shipmentId, fullData: {},
+            body: notification.message,
+            shipmentId: notification.shipmentId ?? 0, 
+            postId: extractedPostId,
+            fullData: {},
           );
         },
         child: CustomShadowCard(

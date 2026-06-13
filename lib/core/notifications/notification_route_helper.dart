@@ -11,7 +11,9 @@ import 'package:graduation_progect/main.dart';
 class NotificationRouteHelper {
   static void handleNotificationAction({
     required String title,
+    required String body,
     required int shipmentId,
+    required int postId,
     required Map<String, dynamic> fullData,
     BuildContext? context,
   }) {
@@ -66,6 +68,9 @@ class NotificationRouteHelper {
       refreshHome();
       refreshClientActiveOrders();
       refreshDriverActiveShipments();
+      if (shipmentId != 0) {
+        navContext.pushNamed(Routes.shipmentDetailsScreen, arguments: shipmentId);
+      }
     }
 
     
@@ -81,5 +86,28 @@ class NotificationRouteHelper {
     }
 
    
+   
+   else if (title.contains('إعلانات غير فورية') || title.contains('غير فورية')) {
+
+      if (body.contains('تم رفض عرضك')) {
+        if (kDebugMode) print("تم رفض العرض — لا يوجد توجيه");
+        return;
+      } 
+      
+      else if (body.contains('تم قبول عرضك')) {
+        if (kDebugMode) print("تم قبول العرض — توجيه لتفاصيل الإعلان: $postId");
+        if (postId != 0) {
+          navContext.pushNamed(Routes.postDetailsScreen, arguments: postId);
+        }
+      }
+
+
+      else if (body.contains('تم إرسال طلب نقل شحنة')){
+        if (kDebugMode) print("تم إرسال طلب نقل شحنة — توجيه لتفاصيل الإعلان: $postId");
+        if (postId != 0) {
+          navContext.pushNamed(Routes.postDetailsScreen, arguments: postId);
+        }
+      }
+    }
   }
 }
