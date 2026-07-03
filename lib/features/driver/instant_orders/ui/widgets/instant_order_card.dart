@@ -399,37 +399,37 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
             ),
           ),
         ),
-        horizontalSpace(12),
-        Expanded(
-          flex: 1,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-            decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.check_circle, color: AppColors.success, size: 18.sp),
-                horizontalSpace(6),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('تأمين', style: theme.textTheme.bodySmall),
-                    Text(
-                      widget.orderData.insurance ? 'نعم' : 'لا',
-                      style: TextStyle(
-                        color: const Color(0xFF065F46),
-                        fontSize: 13.sp,
-                        fontWeight: FontWeightHelper.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+        // horizontalSpace(12),
+        // Expanded(
+        //   flex: 1,
+        //   child: Container(
+        //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        //     decoration: BoxDecoration(
+        //       color: const Color(0xFFECFDF5),
+        //       borderRadius: BorderRadius.circular(8.r),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         Icon(Icons.check_circle, color: AppColors.success, size: 18.sp),
+        //         horizontalSpace(6),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Text('تأمين', style: theme.textTheme.bodySmall),
+                //     Text(
+                //       widget.orderData.insurance ? 'نعم' : 'لا',
+                //       style: TextStyle(
+                //         color: const Color(0xFF065F46),
+                //         fontSize: 13.sp,
+                //         fontWeight: FontWeightHelper.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

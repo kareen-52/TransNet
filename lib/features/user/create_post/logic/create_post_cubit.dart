@@ -30,7 +30,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
   final TextEditingController lengthCtrl = TextEditingController();
   
   DateTime? lastDate;
-  bool insurance = false;
+  // bool insurance = false;
 
   void _updateUI() => emit(CreatePostState.uiUpdated(DateTime.now().millisecondsSinceEpoch));
 
@@ -57,7 +57,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
     if (isStart) { startLat = lat; startLng = lng; } else { endLat = lat; endLng = lng; }
     _updateUI();
   }
-  void updateInsurance(bool value) { insurance = value; _updateUI(); }
+  // void updateInsurance(bool value) { insurance = value; _updateUI(); }
   void updateDate(DateTime date) { lastDate = date; _updateUI(); }
 
   void nextStep() {
@@ -91,7 +91,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
       'width': double.parse(widthCtrl.text),
       'length': double.parse(lengthCtrl.text),
       'object': objectCtrl.text,
-      'insurance': insurance ? 1 : 0,
+      // 'insurance': insurance ? 1 : 0,
       'start_position_lat': startLat,
       'start_position_lng': startLng,
       'end_position_lat': endLat,

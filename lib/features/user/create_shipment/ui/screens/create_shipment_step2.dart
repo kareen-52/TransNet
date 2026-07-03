@@ -31,12 +31,12 @@ class Step2Details extends StatelessWidget {
             heightController: cubit.heightController,
           ),
 
-          verticalSpace(16),
+          // verticalSpace(16),
 
-          ShipmentInsuranceSection(
-            isInsuranceActive: cubit.insurance,
-            onChanged: (val) => cubit.updateInsurance(val ?? false),
-          ),
+          // ShipmentInsuranceSection(
+          //   isInsuranceActive: cubit.insurance,
+          //   onChanged: (val) => cubit.updateInsurance(val ?? false),
+          // ),
 
           verticalSpace(40),
 

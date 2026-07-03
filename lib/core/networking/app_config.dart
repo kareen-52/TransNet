@@ -1,5 +1,5 @@
 // dev:
-//   flutter run --dart-define=BASE_URL=http://10.220.186.190:8000/
+//   flutter run --dart-define=BASE_URL=http://10.140.20.190:8000/
 // production:
 //   flutter build apk \
 //     --dart-define=BASE_URL=https://api.transnet.app/ \
@@ -10,7 +10,7 @@ class AppConfig {
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://192.168.1.101:8000/',
+    defaultValue: 'http://10.140.20.190:8000/',
   );
 
   static const String _orsApiKey = String.fromEnvironment(

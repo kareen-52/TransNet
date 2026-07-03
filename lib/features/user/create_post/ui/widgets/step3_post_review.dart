@@ -52,28 +52,28 @@ class Step3PostReview extends StatelessWidget {
                 ],
               ),
               verticalSpace(16),
-              if (cubit.insurance)
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.security, color: theme.colorScheme.primary),
-                      horizontalSpace(8),
-                      Text(
-                        'خدمة التأمين على الشحنة مفعلة',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeightHelper.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              verticalSpace(8),
+              // if (cubit.insurance)
+              //   Container(
+              //     padding: EdgeInsets.all(16.w),
+              //     decoration: BoxDecoration(
+              //       color: theme.colorScheme.primary.withOpacity(0.2),
+              //       borderRadius: BorderRadius.circular(16.r),
+              //     ),
+              //     child: Row(
+              //       children: [
+              //         Icon(Icons.security, color: theme.colorScheme.primary),
+              //         horizontalSpace(8),
+              //         Text(
+              //           'خدمة التأمين على الشحنة مفعلة',
+              //           style: theme.textTheme.labelMedium?.copyWith(
+              //             color: theme.colorScheme.primary,
+              //             fontWeight: FontWeightHelper.bold,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // verticalSpace(8),
               Text(
                 'أقصى موعد للتوصيل: ${cubit.lastDate?.year}/${cubit.lastDate?.month}/${cubit.lastDate?.day}',
                 style: theme.textTheme.bodyMedium?.copyWith(

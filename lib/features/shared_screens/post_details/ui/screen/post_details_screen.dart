@@ -21,6 +21,7 @@ import '../../logic/post_details_state.dart';
 import '../widgets/post_cargo_card.dart';
 import '../widgets/post_driver_offer_card.dart';
 
+
 class PostDetailsScreen extends StatelessWidget {
   final int postId;
   const PostDetailsScreen({super.key, required this.postId});
@@ -33,13 +34,10 @@ class PostDetailsScreen extends StatelessWidget {
       create: (context) => getIt<PostDetailsCubit>()..getPostDetails(postId),
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
-        appBar: AppBar(title: const Text('تفاصيل الإعلان')),
-        
-
+        appBar: AppBar(title: const Text('تفاصيل الإعلان'), centerTitle: true),
         body: BlocConsumer<PostDetailsCubit, PostDetailsState>(
           listener: (context, state) {
             state.whenOrNull(
-
               acceptSuccess: (msg) {
                 SnackBarHelper.showSuccess(context, msg);
                 Navigator.pop(context);
@@ -48,81 +46,45 @@ class PostDetailsScreen extends StatelessWidget {
                   getIt<ActiveOrdersCubit>().silentRefresh();
                 } catch (_) {}
               },
-
               acceptError: (err) {
                 SnackBarHelper.showError(context, err.getAllErrorMessages());
               },
             );
           },
-          
-
           buildWhen: (previous, current) {
             return current.maybeWhen(
               acceptSuccess: (_) => false,
-              acceptError: (_) => true,
+              acceptError: (_) => false,
               orElse: () => true,
             );
           },
-
           builder: (context, state) {
             final cubit = context.read<PostDetailsCubit>();
             final data = cubit.currentPostDetails;
-
 
             if (data != null) {
               return _buildSuccessContent(context, data, state);
             }
 
-
             return state.maybeWhen(
               initial: () => const PostDetailsShimmer(),
               loading: () => const PostDetailsShimmer(),
-
               error: (errorModel) {
-              if (errorModel.code == 404 || errorModel.message!.contains('not found')) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.content_paste_off_rounded,
-                        size: 80.sp,
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                      ),
-                      SizedBox(height: 24.h),
-                      Text(
-                        errorModel.message ?? 'الطلب غير متاح',
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        'يبدو أن العميل قام بإلغاء هذا الإعلان.',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      SizedBox(height: 24.h),
-                      FilledButton.icon(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back_rounded),
-                        label: const Text('العودة'),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 14.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.r),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
+                final String errorMsg = errorModel.getAllErrorMessages().toLowerCase();
+                
+                final bool isDeletedPost = errorModel.code == 404 || 
+                                           errorMsg.contains('no query results') || 
+                                           errorMsg.contains('not found');
 
-              return ErrorStateWidget(
-                message: errorModel.getAllErrorMessages(),
-                onRetry: () => cubit.getPostDetails(postId),
-              );
-            },
+                if (isDeletedPost) {
+                  return _buildDeletedPostView(context);
+                }
+
+                return ErrorStateWidget(
+                  message: errorModel.getAllErrorMessages(),
+                  onRetry: () => cubit.getPostDetails(postId),
+                );
+              },
               orElse: () => const SizedBox.shrink(),
             );
           },
@@ -131,10 +93,57 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildDeletedPostView(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(24.w),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurface.withOpacity(0.05),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.content_paste_off_rounded,
+                size: 64.sp,
+                color: theme.colorScheme.onSurface.withOpacity(0.4),
+              ),
+            ),
+            verticalSpace(24),
+            Text(
+              'الإعلان غير متاح',
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            verticalSpace(12),
+            Text(
+              'عذراً، يبدو أن هذا الإعلان قد تم حذفه ولم يعد متاحاً.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            verticalSpace(40),
+            SizedBox(
+              width: 200.w,
+              child: AppTextButton(
+                text: 'العودة للخلف',
+                backgroundColor: theme.colorScheme.primary,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildSuccessContent(BuildContext context, PostDetailsModel data, PostDetailsState state) {
-    
-
     final loadingDriverId = state.maybeWhen(
       acceptLoading: (id) => id,
       orElse: () => null,
@@ -173,7 +182,6 @@ class PostDetailsScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   if (data.drivers != null && data.drivers!.isNotEmpty) ...[
                     _buildDriversSectionHeader(context, data),
                     verticalSpace(12),
@@ -194,7 +202,6 @@ class PostDetailsScreen extends StatelessWidget {
                   ] else if (data.drivers != null && data.drivers!.isEmpty && !data.isFinished) ...[
                     _buildEmptyDriversState(context),
                   ],
-
 
                   if (!data.isFinished && isDriver && data.drivers == null) ...[
                     AppTextButton(
@@ -225,8 +232,6 @@ class PostDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
-
 
   Widget _buildStatusBanner(BuildContext context, PostDetailsModel data) {
     final theme = Theme.of(context);

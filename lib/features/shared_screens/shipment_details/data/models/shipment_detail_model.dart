@@ -34,7 +34,7 @@ class ShipmentDetailModel {
   final String? width;
   final String? length;
   final String? object;
-  final int? insurance;
+  // final int? insurance;
 
   @JsonKey(name: 'start_position_lat')
   final String startPositionLat;
@@ -76,7 +76,7 @@ class ShipmentDetailModel {
     this.width,
     this.length,
     this.object,
-    this.insurance,
+    // this.insurance,
     required this.startPositionLat,
     required this.startPositionLng,
     required this.endPositionLat,
@@ -110,7 +110,7 @@ class ShipmentDetailModel {
         width: width,
         length: length,
         object: object,
-        insurance: insurance,
+        // insurance: insurance,
         startPositionLat: startPositionLat,
         startPositionLng: startPositionLng,
         endPositionLat: endPositionLat,

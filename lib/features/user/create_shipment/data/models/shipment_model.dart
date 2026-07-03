@@ -13,7 +13,7 @@ class ShipmentModel {
   final double weight, height, width, length;
   final String object;
   @JsonKey(fromJson: _parseBool)
-  final bool insurance;
+  // final bool insurance;
   @JsonKey(name: 'start_position_lat')
   final dynamic startPositionLat;
   @JsonKey(name: 'start_position_lng')
@@ -38,7 +38,7 @@ class ShipmentModel {
     required this.width,
     required this.length,
     required this.object,
-    required this.insurance,
+    // required this.insurance,
     required this.startPositionLat,
     required this.startPositionLng,
     required this.endPositionLat,

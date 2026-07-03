@@ -12,7 +12,7 @@ part of 'api_service.dart';
 
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://192.168.1.101:8000/api/';
+    baseUrl ??= 'http://10.140.20.190:8000/api/';
   }
 
   final Dio _dio;
@@ -350,12 +350,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<dynamic> updateShipment(Map<String, dynamic> body) async {
+  Future<dynamic> updateShipment(CreateShipmentRequestBody body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(body.toJson());
     final _options = _setStreamType<dynamic>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(

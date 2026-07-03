@@ -26,7 +26,7 @@ class PostModel {
   final String? length;
 
   final String? object;
-  final int? insurance;
+  // final int? insurance;
 
 
   @JsonKey(name: 'start_position_lat', fromJson: _stringFromJson)
@@ -80,7 +80,7 @@ class PostModel {
     this.width,
     this.length,
     this.object,
-    this.insurance,
+    // this.insurance,
     this.startPositionLat,
     this.startPositionLng,
     this.endPositionLat,

@@ -29,7 +29,7 @@ class NotificationsScreen extends StatelessWidget {
               Icon(
                 Icons.wifi_off_rounded,
                 size: 64.sp,
-                color: Theme.of(context).colorScheme.outline,
+                color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.9),
               ),
               SizedBox(height: 16.h),
               Text(
@@ -42,7 +42,7 @@ class NotificationsScreen extends StatelessWidget {
               Text(
                 'تحقق من الاتصال وحاول مرة أخرى',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.9),
                     ),
               ),
             ],

@@ -12,7 +12,7 @@ class ShipmentEntity {
   final String? width;
   final String? length;
   final String? object;
-  final int? insurance;
+  // final int? insurance;
   final String startPositionLat;
   final String startPositionLng;
   final String endPositionLat;
@@ -38,7 +38,7 @@ class ShipmentEntity {
     this.width,
     this.length,
     this.object,
-    this.insurance,
+    // this.insurance,
     required this.startPositionLat,
     required this.startPositionLng,
     required this.endPositionLat,
@@ -59,7 +59,7 @@ class ShipmentEntity {
   bool get hasQrPin => qrPin != null && qrPin!.isNotEmpty;
   bool get hasDimensions => width != null || height != null || length != null;
 
-  bool get hasInsurance => insurance == 1;
+  // bool get hasInsurance => insurance == 1;
 
   String get displayStatus =>
       status ?? (isCompleted ? 'مكتملة' : 'قيد التنفيذ');

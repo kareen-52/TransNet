@@ -190,14 +190,14 @@ class ShipmentItemCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      if (shipment.insurance != null)
-                        _buildInfoRow(
-                          icon: Icons.security,
-                          label: "التأمين",
-                          value: shipment.insurance == 1
-                              ? "مؤمَّن"
-                              : "غير مؤمَّن",
-                        ),
+                      // if (shipment.insurance != null)
+                      //   _buildInfoRow(
+                      //     icon: Icons.security,
+                      //     label: "التأمين",
+                      //     value: shipment.insurance == 1
+                      //         ? "مؤمَّن"
+                      //         : "غير مؤمَّن",
+                      //   ),
                     ],
                   ),
                   if (shipment.userId != null || shipment.driverId != null)

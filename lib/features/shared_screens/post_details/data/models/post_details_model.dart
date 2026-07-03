@@ -18,7 +18,7 @@ class PostDetailsModel {
   @JsonKey(fromJson: _stringFromJson)
   final String? length;
   final String? object;
-  final int? insurance;
+  // final int? insurance;
   @JsonKey(name: 'start_position_lat', fromJson: _stringFromJson)
   final String? startPositionLat;
   @JsonKey(name: 'start_position_lng', fromJson: _stringFromJson)
@@ -57,7 +57,7 @@ class PostDetailsModel {
     this.width,
     this.length,
     this.object,
-    this.insurance,
+    // this.insurance,
     this.startPositionLat,
     this.startPositionLng,
     this.endPositionLat,
