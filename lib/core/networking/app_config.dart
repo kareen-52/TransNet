@@ -5,13 +5,12 @@
 //     --dart-define=BASE_URL=https://api.transnet.app/ \
 //     --dart-define=ORS_API_KEY=your_key_here
 
-
 class AppConfig {
   AppConfig._();
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://10.220.186.190:8000/', 
+    defaultValue: 'http://192.168.1.101:8000/',
   );
 
   static const String _orsApiKey = String.fromEnvironment(

@@ -15,11 +15,11 @@ import 'package:graduation_progect/features/shared_screens/login/logic/login_sta
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
 
-  void  _showErrorDialog(
+  void _showErrorDialog(
     BuildContext context,
     String message, {
     VoidCallback? onAction,
-    String actionText = 'حاول مجدداً', 
+    String actionText = 'حاول مجدداً',
   }) {
     showDialog(
       context: context,
@@ -37,7 +37,10 @@ class LoginForm extends StatelessWidget {
                 Navigator.pop(context);
                 onAction();
               },
-              child: Text(actionText, style: Theme.of(context).textTheme.labelLarge),
+              child: Text(
+                actionText,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
             ),
         ],
       ),
@@ -55,7 +58,10 @@ class LoginForm extends StatelessWidget {
           ),
           successDriverFirstTime: (email) => context.pushNamed(
             Routes.verificationCode,
-            arguments: {'email': email, 'type': VerificationType.driverFirstLogin},
+            arguments: {
+              'email': email,
+              'type': VerificationType.driverFirstLogin,
+            },
           ),
           successDriverOld: () => context.pushNamedAndRemoveUntil(
             Routes.driverHomeScreen,
@@ -66,13 +72,12 @@ class LoginForm extends StatelessWidget {
             final code = apiErrorModel.code;
             final type = apiErrorModel.type;
 
-       
             if (code == 202 || (code == 403 && type == 'unverified')) {
               final email = context.read<LoginCubit>().emailController.text;
               _showErrorDialog(
                 context,
                 message,
-                
+
                 onAction: () {
                   context.pushNamed(
                     Routes.verificationCode,
@@ -82,19 +87,13 @@ class LoginForm extends StatelessWidget {
                     },
                   );
                 },
-                  actionText :'متابعة',
+                actionText: 'متابعة',
               );
-            }
-        
-            else if (code == 403 && type == 'frozen') {
+            } else if (code == 403 && type == 'frozen') {
               _showErrorDialog(context, message);
-            }
-     
-            else if (code == 403 && type == 'banned') {
+            } else if (code == 403 && type == 'banned') {
               _showErrorDialog(context, message);
-            }
-    
-            else {
+            } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(message, style: TextStyles.error(context)),
@@ -115,13 +114,18 @@ class LoginForm extends StatelessWidget {
               const InputFieldLabel(label: 'البريد الإلكتروني'),
               verticalSpace(10),
               AppTextFormField(
-                prefixIcon: const Icon(Icons.email_outlined, color: Colors.blueGrey),
+                prefixIcon: const Icon(
+                  Icons.email_outlined,
+                  color: Colors.blueGrey,
+                ),
                 controller: cubit.emailController,
                 hintText: 'example@gmail.com',
                 enabled: !isLoading,
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) return 'الرجاء إدخال البريد الإلكتروني';
-                  if (!AppRegex.isEmailValid(value)) return 'صيغة البريد الإلكتروني غير صحيحة';
+                  if (value == null || value.trim().isEmpty)
+                    return 'الرجاء إدخال البريد الإلكتروني';
+                  if (!AppRegex.isEmailValid(value))
+                    return 'صيغة البريد الإلكتروني غير صحيحة';
                   return null;
                 },
               ),
@@ -129,14 +133,18 @@ class LoginForm extends StatelessWidget {
               const InputFieldLabel(label: 'كلمة المرور'),
               verticalSpace(10),
               AppTextFormField(
-                prefixIcon: const Icon(Icons.lock_outline, color: Colors.blueGrey),
+                prefixIcon: const Icon(
+                  Icons.lock_outline,
+                  color: Colors.blueGrey,
+                ),
                 controller: cubit.passwordController,
                 hintText: '********',
                 fieldType: FieldType.password,
                 enabled: !isLoading,
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'الرجاء إدخال كلمة المرور';
-               
+                  if (value == null || value.isEmpty)
+                    return 'الرجاء إدخال كلمة المرور';
+
                   return null;
                 },
               ),
@@ -144,8 +152,13 @@ class LoginForm extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(
-                  onPressed: isLoading ? null : () => context.pushNamed(Routes.enterEmailScreen),
-                  child: Text('نسيت كلمة المرور؟', style: Theme.of(context).textTheme.labelMedium),
+                  onPressed: isLoading
+                      ? null
+                      : () => context.pushNamed(Routes.enterEmailScreen),
+                  child: Text(
+                    'نسيت كلمة المرور؟',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
                 ),
               ),
               verticalSpace(28),

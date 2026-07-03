@@ -8,6 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:graduation_progect/app_bloc_observer.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
+import 'package:graduation_progect/core/helpers/map_tile_cache_service.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
 import 'package:graduation_progect/core/routing/app_router.dart';
@@ -31,6 +32,7 @@ void main() async {
   await Future.wait([
     Firebase.initializeApp(),
     SharedPrefHelper.init(),
+    HiveCacheService.init().then((_) => MapTileCacheService.init()),
     HiveCacheService.init(),
     ConnectivityHelper.init(),  
     ThemeCacheHelper.getTheme().then((t) => _savedTheme = t),

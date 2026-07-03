@@ -1,14 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HelpSupportScreen extends StatelessWidget {
+class HelpSupportScreen extends StatefulWidget {
   const HelpSupportScreen({super.key});
 
   @override
+  State<HelpSupportScreen> createState() => _HelpSupportScreenState();
+}
+
+class _HelpSupportScreenState extends State<HelpSupportScreen> {
+  String _role = '';
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRole();
+  }
+
+  Future<void> _loadRole() async {
+    final role = await SharedPrefHelper.getString(SharedPrefKeys.userRole);
+    if (mounted) {
+      setState(() {
+        _role = role;
+        _isLoading = false;
+      });
+    }
+  }
+
+  List<Map<String, String>> get _clientFaqs => [
+    {
+      'q': 'كيف أنشئ إعلاناً جديداً؟',
+      'a':
+          'انتقل إلى صفحة الإعلانات من الشريط السفلي، ثم اضغط على زر "إعلان جديد"، حدد محافظة ونقطة البداية من الخريطة، ثم محافظة ونقطة الوصول، اضغط "التالي"، أدخل ماهية الغرض ووزنه وأبعاده وآخر موعد للشحن، اضغط "التالي"، ثم انشر الإعلان بالسعر المقترح أو عدّله وانشره بالسعر المعدّل.',
+    },
+    {
+      'q': 'كيف أنشئ طلباً فورياً؟',
+      'a':
+          'انتقل إلى الشاشة الرئيسية واضغط على زر "إنشاء طلب"، حدد نقطة البداية من خلال اختيار المحافظة والموقع، ثم نقطة النهاية، أدخل وصف الغرض والوزن والأبعاد (الطول والعرض والارتفاع)، راجع الطلب، ثم اختر السائق المناسب وانتظر الرد.',
+    },
+    {
+      'q': 'كيف أقيّم السائق بعد الشحنة؟',
+      'a':
+          'اذهب إلى تبويبة "السجلات" من الشريط السفلي، اختر الشحنة التي تريد تقييمها، اضغط عليها للدخول إلى تفاصيلها، ثم انزل للأسفل وقيّم السائق.',
+    },
+    {
+      'q': 'كيف أعدّل اسمي أو رقم هاتفي؟',
+      'a':
+          'انتقل إلى البروفايل من خلال تبويب "الحساب" في الشريط السفلي. لتعديل الاسم: اضغط على أيقونة التعديل بجانب الاسم وعدّله واحفظه. لتعديل الرقم: اضغط على أيقونة التعديل بجانب الرقم وعدّله واحفظه.',
+    },
+    {
+      'q': 'كيف أبلّغ عن سائق؟',
+      'a':
+          'اذهب إلى صفحة "السجلات" من الشريط السفلي، اختر الشحنة المرتبطة بالسائق، اضغط عليها، ومن قسم الأطراف اضغط على زر "الإبلاغ عن السائق"، اكتب سبب الإبلاغ ثم اضغط تأكيد وإرسال.',
+    },
+    {
+      'q': 'كيف أغيّر كلمة المرور؟',
+      'a':
+          'انتقل إلى البروفايل واضغط على "تسجيل الخروج"، ستنتقل إلى شاشة تسجيل الدخول، اضغط "نسيان كلمة المرور"، أدخل بريدك الإلكتروني، أدخل الرمز المكوّن من 6 أرقام الذي سيصلك على بريدك، أدخل كلمة المرور الجديدة، ثم عد لتسجيل الدخول.',
+    },
+    {
+      'q': 'كيف أتواصل مع فريق الدعم؟',
+      'a':
+          'يمكنك التواصل معنا عبر الواتساب أو الاتصال المباشر أو البريد الإلكتروني من خلال قسم "تواصل معنا" في هذه الصفحة.',
+    },
+  ];
+
+  List<Map<String, String>> get _driverFaqs => [
+    {
+      'q': 'كيف أغيّر حالتي إلى متاح أو غير متاح؟',
+      'a':
+          'انتقل إلى الصفحة الرئيسية واضغط على كبسة "متاح / غير متاح" لتبديل حالتك.',
+    },
+    {
+      'q': 'كيف أتعامل مع طلب فوري؟',
+      'a':
+          'اذهب إلى الصفحة الرئيسية وتأكد من أن حالتك "متاح"، تصفّح الطلبات الفورية إن وُجدت، ثم اقبل أو ارفض الطلب.',
+    },
+    {
+      'q': 'كيف أقدّم عرضاً على إعلان؟',
+      'a':
+          'يجب أن تكون حالتك "غير متاح" أولاً، انتقل إلى قسم الإعلانات من الشاشة الرئيسية، اختر الإعلان المناسب، اضغط "عرض التفاصيل"، اختر التاريخ والسعر المناسبَين ضمن المدة والسعر المطلوبَين، ثم اضغط "تقديم عرض على الإعلان".',
+    },
+    {
+      'q': 'كيف أطّلع على أرباحي؟',
+      'a':
+          'انتقل إلى البروفايل من خلال تبويب "الحساب" في الشريط السفلي، ثم اضغط على "أرباحي".',
+    },
+    {
+      'q': 'كيف أضيف أو أحذف خط نقل؟',
+      'a':
+          'انتقل إلى البروفايل من تبويب "الحساب"، اضغط على "خطوط النقل". لإضافة خط: اضغط "إضافة" واختر المحافظة. لحذف خط: اضغط على أيقونة سلة المهملات بجانب المحافظة المراد حذفها.',
+    },
+    {
+      'q': 'كيف أعدّل رقم هاتفي؟',
+      'a':
+          'انتقل إلى البروفايل من تبويب "الحساب"، اضغط على أيقونة التعديل بجانب الرقم، عدّله واحفظه.',
+    },
+    {
+      'q': 'كيف أبلّغ عن مشكلة في شحنة؟',
+      'a':
+          'اذهب إلى صفحة "السجلات" من الشريط السفلي، اختر الشحنة، اضغط عليها، ومن قسم الأطراف اضغط على زر "الإبلاغ"، اكتب سبب الإبلاغ ثم اضغط تأكيد وإرسال.',
+    },
+    {
+      'q': 'كيف أغيّر كلمة المرور؟',
+      'a':
+          'انتقل إلى البروفايل واضغط على "تسجيل الخروج"، ستنتقل إلى شاشة تسجيل الدخول، اضغط "نسيان كلمة المرور"، أدخل بريدك الإلكتروني، أدخل الرمز المكوّن من 6 أرقام الذي سيصلك على بريدك، أدخل كلمة المرور الجديدة، ثم عد لتسجيل الدخول.',
+    },
+    {
+      'q': 'كيف أتواصل مع فريق الدعم؟',
+      'a':
+          'يمكنك التواصل معنا عبر الواتساب أو الاتصال المباشر أو البريد الإلكتروني من خلال قسم "تواصل معنا" في هذه الصفحة.',
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    final isDriver = _role == 'driver';
+    final faqs = isDriver ? _driverFaqs : _clientFaqs;
 
     return Scaffold(
       appBar: AppBar(title: const Text('المساعدة والدعم'), centerTitle: true),
@@ -16,33 +133,14 @@ class HelpSupportScreen extends StatelessWidget {
         padding: EdgeInsets.all(24.w),
         child: Column(
           children: [
-            _buildSection(context, 'الأسئلة الشائعة', Icons.help_outline, [
-              _buildFaqItem(
-                context,
-                'كيف يمكنني تعديل ملفي الشخصي؟',
-                'يمكنك تعديل ملفك الشخصي من خلال الضغط على أيقونة التعديل بجانب رقم الهاتف في بطاقة المعلومات الشخصية، ثم قم بتعديل البيانات المطلوبة.',
-              ),
-              _buildFaqItem(
-                context,
-                'كيف يمكنني تغيير رقم هاتفي؟',
-                'يمكنك تغيير رقم هاتفك من خلال الضغط على أيقونة التعديل بجانب رقم الهاتف في بطاقة المعلومات الشخصية، ثم قم بإدخال الرقم الجديد.',
-              ),
-              _buildFaqItem(
-                context,
-                'متى تصل أرباحي؟',
-                'تصل أرباحك في نهاية كل شهر إلى حسابك البنكي المسجل في التطبيق.',
-              ),
-              _buildFaqItem(
-                context,
-                'كيف يمكنني إضافة خط نقل جديد؟',
-                'يمكنك إضافة خط نقل جديد من خلال قسم "خطوط النقل" ثم الضغط على زر الإضافة.',
-              ),
-              _buildFaqItem(
-                context,
-                'ماذا أفعل إذا واجهت مشكلة في التطبيق؟',
-                'يمكنك التواصل مع فريق الدعم عبر الواتساب أو الاتصال على الرقم الموضح في قسم "تواصل معنا".',
-              ),
-            ]),
+            _buildSection(
+              context,
+              'الأسئلة الشائعة',
+              Icons.help_outline,
+              faqs
+                  .map((item) => _buildFaqItem(context, item['q']!, item['a']!))
+                  .toList(),
+            ),
             verticalSpace(24),
             _buildContactSection(context),
             verticalSpace(48),
@@ -59,7 +157,6 @@ class HelpSupportScreen extends StatelessWidget {
     List<Widget> children,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
@@ -84,7 +181,7 @@ class HelpSupportScreen extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           ...children,
         ],
       ),
@@ -93,7 +190,6 @@ class HelpSupportScreen extends StatelessWidget {
 
   Widget _buildFaqItem(BuildContext context, String question, String answer) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -120,7 +216,6 @@ class HelpSupportScreen extends StatelessWidget {
 
   Widget _buildContactSection(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
@@ -144,7 +239,7 @@ class HelpSupportScreen extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           _buildContactItem(
             context,
             'واتساب',
@@ -166,7 +261,7 @@ class HelpSupportScreen extends StatelessWidget {
           _buildContactItem(
             context,
             'البريد الإلكتروني',
-            'support@shipments.com',
+            'application.shipments@gmail.com',
             Icons.email,
             Colors.red,
             () => _launchURL('mailto:application.shipments@gmail.com', context),
@@ -185,7 +280,6 @@ class HelpSupportScreen extends StatelessWidget {
     VoidCallback onTap,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -244,15 +338,8 @@ class HelpSupportScreen extends StatelessWidget {
 
   Future<void> _launchURL(String url, BuildContext context) async {
     final Uri uri = Uri.parse(url);
-
     try {
-      final canLaunch = await canLaunchUrl(uri);
-
-      if (canLaunch) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        throw 'لا يمكن فتح الرابط';
-      }
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -267,38 +354,21 @@ class HelpSupportScreen extends StatelessWidget {
   }
 
   Future<void> _openWhatsApp(String phoneNumber, BuildContext context) async {
-
     String cleanNumber = phoneNumber
         .replaceAll('+', '')
         .replaceAll(' ', '')
         .replaceAll('-', '');
 
-    String whatsappAppUrl = 'whatsapp://send?phone=$cleanNumber';
+    final Uri whatsappUri = Uri.parse('https://wa.me/$cleanNumber');
 
     try {
-      if (await canLaunchUrl(Uri.parse(whatsappAppUrl))) {
-        await launchUrl(
-          Uri.parse(whatsappAppUrl),
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        String whatsappWebUrl = 'https://wa.me/$cleanNumber';
-        if (await canLaunchUrl(Uri.parse(whatsappWebUrl))) {
-          await launchUrl(
-            Uri.parse(whatsappWebUrl),
-            mode: LaunchMode.platformDefault,
-          );
-        } else {
-          throw 'الواتساب غير مثبت';
-        }
-      }
+      await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('يرجى تثبيت تطبيق واتساب أولاً'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
           ),
         );
       }
