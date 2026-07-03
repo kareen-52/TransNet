@@ -33,17 +33,25 @@ class ShipmentPartyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final surface = isDark ? AppColors.darkSurface : AppColors.lightSurface;
     final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-    final secondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
-    
-    final bool showRating = isCompleted && role == 'السائق';
+    final secondary = isDark
+        ? AppColors.darkTextSecondary
+        : AppColors.lightTextSecondary;
+
+    final bool showRating = role == 'السائق';
 
     return Container(
       padding: EdgeInsets.all(14.w),
-      decoration: buildCardDecoration(surface: surface, border: border, isDark: isDark),
+      decoration: buildCardDecoration(
+        surface: surface,
+        border: border,
+        isDark: isDark,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: [
               _PartyAvatar(icon: icon, iconColor: iconColor),
               SizedBox(width: 12.w),
@@ -51,9 +59,11 @@ class ShipmentPartyCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 3.h,
+                      ),
                       decoration: BoxDecoration(
                         color: iconColor.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(6.r),
@@ -71,9 +81,9 @@ class ShipmentPartyCard extends StatelessWidget {
                     Text(
                       party.fullName,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13.sp,
-                          ),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13.sp,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -89,35 +99,29 @@ class ShipmentPartyCard extends StatelessWidget {
                   ],
                 ),
               ),
+
+              _ActionButton(
+                onPressed: () => callUser(context, party.phoneNumber),
+                icon: Icons.call_rounded,
+                label: 'اتصال',
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.primary.withOpacity(0.08),
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
             ],
           ),
-          
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(color: border, height: 1, thickness: 0.8),
           ),
 
-
           Row(
             children: [
-
-              Expanded(
-                flex: showRating ? 2 : 4,
-                child: _ActionButton(
-                  onPressed: () => callUser(context, party.phoneNumber),
-                  icon: Icons.call_rounded,
-                  label: showRating ? null : 'اتصال',
-                  backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.08),
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              SizedBox(width: 8.w),
-
-
               if (showRating) ...[
                 Expanded(
-                  flex: 5,
+                  flex: 1,
                   child: _ActionButton(
                     onPressed: () {
                       showDialog(
@@ -137,9 +141,8 @@ class ShipmentPartyCard extends StatelessWidget {
                 SizedBox(width: 8.w),
               ],
 
-
               Expanded(
-                flex: showRating ? 2 : 1,
+                flex: 1,
                 child: _ActionButton(
                   onPressed: () {
                     showDialog(
@@ -151,8 +154,11 @@ class ShipmentPartyCard extends StatelessWidget {
                     );
                   },
                   icon: Icons.flag_rounded,
-                  label: showRating ? null : null,
-                  backgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.08),
+                  label: showRating ? "الإبلاغ عن السائق" : "الإبلاغ عن العميل",
+
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.error.withOpacity(0.08),
                   foregroundColor: Theme.of(context).colorScheme.error,
                 ),
               ),
@@ -185,7 +191,6 @@ class _PartyAvatar extends StatelessWidget {
   }
 }
 
-
 class _ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;
@@ -208,7 +213,7 @@ class _ActionButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.r),
       child: Container(
         height: 38.h,
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10.r),

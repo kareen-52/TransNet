@@ -11,7 +11,7 @@ import 'package:graduation_progect/features/shared_screens/report_user/logic/rep
 class ReportDialog extends StatefulWidget {
   final int reportedId;
   final String role;
-  
+
   const ReportDialog({super.key, required this.reportedId, required this.role});
 
   @override
@@ -19,17 +19,12 @@ class ReportDialog extends StatefulWidget {
 }
 
 class _ReportDialogState extends State<ReportDialog> {
+  final TextEditingController _typeController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
-  
-  late String _selectedType;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
+    _typeController.dispose();
     _descController.dispose();
     super.dispose();
   }
@@ -52,7 +47,9 @@ class _ReportDialogState extends State<ReportDialog> {
         );
       },
       child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.r),
+        ),
         backgroundColor: theme.colorScheme.surface,
         insetPadding: EdgeInsets.all(20.w),
         child: SingleChildScrollView(
@@ -62,37 +59,67 @@ class _ReportDialogState extends State<ReportDialog> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.report_problem_rounded, color: Theme.of(context).colorScheme.error, size: 28.sp),
+                        Icon(
+                          Icons.report_problem_rounded,
+                          color: Theme.of(context).colorScheme.error,
+                          size: 28.sp,
+                        ),
                         horizontalSpace(8),
-                        Text('الإبلاغ عن ${widget.role}', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.error)),
+                        Text(
+                          'الإبلاغ عن ${widget.role}',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
                       ],
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.close_rounded, color: Colors.grey, size: 24.sp),
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: Colors.grey,
+                        size: 24.sp,
+                      ),
                     ),
                   ],
                 ),
                 verticalSpace(12),
                 Text(
                   'نأخذ جميع البلاغات على محمل الجد وسيتم مراجعتها لحماية حقوقك.',
-                  style: theme.textTheme.bodySmall?.copyWith(height: 1.5, color: Colors.grey.shade600),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    height: 1.5,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
                 verticalSpace(24),
 
-
-                Text('سبب البلاغ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp)),
+                Text(
+                  'سبب البلاغ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.sp,
+                  ),
+                ),
                 verticalSpace(8),
-                AppTextFormField(hintText: "تأخير التوصيل, تضرر الأغراض...", ),
+                AppTextFormField(
+                  controller: _typeController,
+                  hintText: "مثال: تأخير التوصيل, تضرر الأغراض...",
+                ),
                 verticalSpace(16),
 
-                Text('التفاصيل (الرجاء الشرح بوضوح)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp)),
+                Text(
+                  'التفاصيل (الرجاء الشرح بوضوح)',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.sp,
+                  ),
+                ),
                 verticalSpace(8),
                 AppTextFormField(
                   controller: _descController,
@@ -105,15 +132,15 @@ class _ReportDialogState extends State<ReportDialog> {
                   builder: (context, state) {
                     final isLoading = state == const ReportState.loading();
                     return AppTextButton(
-                      text: 'إرسال البلاغ',
+                      text: 'إرسال الإبلاغ',
                       backgroundColor: Theme.of(context).colorScheme.error,
                       isLoading: isLoading,
                       onPressed: () {
                         context.read<ReportCubit>().submitReport(
-                              reportedId: widget.reportedId,
-                              type: _selectedType,
-                              description: _descController.text,
-                            );
+                          reportedId: widget.reportedId,
+                          type: _typeController.text,
+                          description: _descController.text,
+                        );
                       },
                     );
                   },
