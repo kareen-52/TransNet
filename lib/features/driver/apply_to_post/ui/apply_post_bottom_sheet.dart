@@ -117,141 +117,143 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40.w,
-                    height: 4.h,
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[500],
+                          borderRadius: BorderRadius.circular(2)),
+                    ),
+                  ),
+                  verticalSpace(24),
+                  Text('تقديم عرض توصيل',
+                      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                  verticalSpace(8),
+                  Text(
+                    'أدخل السعر الذي تطلبه لتوصيل هذه الشحنة، وحدد تاريخ التسليم المقترح (يجب ألا يتجاوز أقصى موعد للإعلان).',
+                    style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
+                  ),
+                  verticalSpace(20),
+              
+              
+                  Container(
+                    padding: EdgeInsets.all(12.w),
                     decoration: BoxDecoration(
-                        color: Colors.grey[500],
-                        borderRadius: BorderRadius.circular(2)),
+                        color: theme.colorScheme.secondary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12.r)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.info_outline_rounded,
+                            color: theme.colorScheme.secondary, size: 18.sp),
+                        horizontalSpace(8),
+                        Text(
+                          'النطاق: ${_format(widget.minPrice)} - ${_format(widget.maxPrice)} ل.س',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.secondary),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                verticalSpace(24),
-                Text('تقديم عرض توصيل',
-                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-                verticalSpace(8),
-                Text(
-                  'أدخل السعر الذي تطلبه لتوصيل هذه الشحنة، وحدد تاريخ التسليم المقترح (يجب ألا يتجاوز أقصى موعد للإعلان).',
-                  style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
-                ),
-                verticalSpace(20),
-
-
-                Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12.r)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.info_outline_rounded,
-                          color: theme.colorScheme.secondary, size: 18.sp),
-                      horizontalSpace(8),
-                      Text(
-                        'النطاق: ${_format(widget.minPrice)} - ${_format(widget.maxPrice)} ل.س',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.secondary),
+                  verticalSpace(24),
+              
+              
+                  GestureDetector(
+                    onTap: _pickDate,
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        labelText: 'تاريخ التوصيل الفعلي',
+                        errorText: _dateError,
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(color: theme.colorScheme.primary),
+                        ),
                       ),
-                    ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _selectedDate == null
+                                ? 'اضغط لاختيار التاريخ'
+                                : _selectedDate!.toString().split(' ')[0],
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: _selectedDate == null ? Colors.grey : theme.colorScheme.onSurface,
+                              fontWeight: _selectedDate == null ? FontWeight.normal : FontWeight.bold,
+                            ),
+                          ),
+                          Icon(Icons.calendar_month_rounded, color: theme.colorScheme.primary, size: 20.sp),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                verticalSpace(24),
-
-
-                GestureDetector(
-                  onTap: _pickDate,
-                  child: InputDecorator(
+                  verticalSpace(16),
+              
+              
+                  TextFormField(
+                    controller: _priceController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: 'تاريخ التوصيل الفعلي',
-                      errorText: _dateError,
+                      labelText: 'سعرك المطلوب',
+                      suffixText: 'ل.س',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide(color: theme.colorScheme.primary),
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _selectedDate == null
-                              ? 'اضغط لاختيار التاريخ'
-                              : _selectedDate!.toString().split(' ')[0],
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: _selectedDate == null ? Colors.grey : theme.colorScheme.onSurface,
-                            fontWeight: _selectedDate == null ? FontWeight.normal : FontWeight.bold,
-                          ),
-                        ),
-                        Icon(Icons.calendar_month_rounded, color: theme.colorScheme.primary, size: 20.sp),
-                      ],
-                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'يرجى إدخال السعر';
+                      final price = double.tryParse(value);
+                      if (price == null || price <= 0) return 'سعر غير صالح';
+                      if (price < widget.minPrice) return 'لا يمكن أن يكون أقل من ${_format(widget.minPrice)}';
+                      if (price > widget.maxPrice) return 'لا يمكن أن يتجاوز ${_format(widget.maxPrice)}';
+                      return null;
+                    },
                   ),
-                ),
-                verticalSpace(16),
-
-
-                TextFormField(
-                  controller: _priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'سعرك المطلوب',
-                    suffixText: 'ل.س',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide(color: theme.colorScheme.primary),
-                    ),
+                  verticalSpace(32),
+              
+              
+                  BlocBuilder<ApplyToPostCubit, ApplyToPostState>(
+                    builder: (context, state) {
+                      final isLoading = state == const ApplyToPostState.loading();
+                      return AppTextButton(
+                        backgroundColor: theme.colorScheme.secondary,
+                        text: 'إرسال العرض',
+                        isLoading: isLoading,
+                        onPressed: () {
+              
+                          if (_selectedDate == null) {
+                            setState(() => _dateError = 'يرجى اختيار تاريخ التوصيل');
+                            return;
+                          }
+              
+              
+                          if (_formKey.currentState!.validate()) {
+                            final price = double.parse(_priceController.text);
+                            final dateString = _selectedDate!.toString().split(' ')[0];
+                            
+                            context.read<ApplyToPostCubit>().submitApplication(
+                                  widget.postId,
+                                  price,
+                                  dateString,
+                                );
+                          }
+                        },
+                      );
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'يرجى إدخال السعر';
-                    final price = double.tryParse(value);
-                    if (price == null || price <= 0) return 'سعر غير صالح';
-                    if (price < widget.minPrice) return 'لا يمكن أن يكون أقل من ${_format(widget.minPrice)}';
-                    if (price > widget.maxPrice) return 'لا يمكن أن يتجاوز ${_format(widget.maxPrice)}';
-                    return null;
-                  },
-                ),
-                verticalSpace(32),
-
-
-                BlocBuilder<ApplyToPostCubit, ApplyToPostState>(
-                  builder: (context, state) {
-                    final isLoading = state == const ApplyToPostState.loading();
-                    return AppTextButton(
-                      backgroundColor: theme.colorScheme.secondary,
-                      text: 'إرسال العرض',
-                      isLoading: isLoading,
-                      onPressed: () {
-
-                        if (_selectedDate == null) {
-                          setState(() => _dateError = 'يرجى اختيار تاريخ التوصيل');
-                          return;
-                        }
-
-
-                        if (_formKey.currentState!.validate()) {
-                          final price = double.parse(_priceController.text);
-                          final dateString = _selectedDate!.toString().split(' ')[0];
-                          
-                          context.read<ApplyToPostCubit>().submitApplication(
-                                widget.postId,
-                                price,
-                                dateString,
-                              );
-                        }
-                      },
-                    );
-                  },
-                ),
-                verticalSpace(32),
-              ],
+                  // verticalSpace(32),
+                ],
+              ),
             ),
           ),
         ),

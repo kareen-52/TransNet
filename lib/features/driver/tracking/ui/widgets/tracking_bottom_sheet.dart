@@ -87,126 +87,93 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
           ],
         ),
         padding: EdgeInsets.all(20.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-
-            Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2.r),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+          
+              Container(
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
               ),
-            ),
-            verticalSpace(16),
-
-
-            _buildInfoRow(
-              theme,
-              "الحالة",
-              currentStatus == 'جارية'
-                  ? "جارية (بانتظار الاستلام)"
-                  : "قيد التوصيل",
-              color: ShipmentStatusHelper.getColor(currentStatus),
-            ),
-            _buildInfoRow(theme, "رقم الشحنة", "#${s.shipmentNumber}"),
-            _buildInfoRow(theme, "العميل", s.client?.fullName ?? "غير معروف"),
-            _buildInfoRow(theme, "السعر", "${s.price.toStringAsFixed(0)} ل.س"),
-
-            verticalSpace(24),
-
-
-            BlocBuilder<DriverTrackingCubit, DriverTrackingState>(
-              builder: (context, state) {
-                final loading = state.maybeWhen(
-                  loadingQr: () => true,
-                  loadingPin: () => true,
-                  orElse: () => false,
-                );
-
-
-                if (currentStatus == 'جارية') {
-                  return Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: AppTextButton(
-                          text: 'تأكيد الاستلام (QR)',
-                          textStyle: TextStyle(
-                            fontSize: 13.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.qr_code_scanner,
-                            color: Colors.white,
-                            size: 18.sp,
-                          ),
-                          isLoading: loading,
-                          onPressed: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const QRScannerScreen(),
-                              ),
-                            );
-                            if (result != null && context.mounted) {
-                              context.read<DriverTrackingCubit>().confirmPickup(
-                                s.id,
-                                result,
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                      horizontalSpace(10),
-
-                      Expanded(
-                        flex: 2,
-                        child: OutlinedButton(
-                          onPressed: loading
-                              ? null
-                              : () {
-                                  setState(() {
-                                    currentStatus = 'قيد التوصيل';
-                                  });
-                                },
-                          style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            side: BorderSide(color: theme.colorScheme.primary),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.r),
-                            ),
-                          ),
-                          child: Text(
-                            'تخطي',
-                            style: TextStyle(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13.sp,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+              verticalSpace(16),
+          
+          
+              _buildInfoRow(
+                theme,
+                "الحالة",
+                currentStatus == 'جارية'
+                    ? "جارية (بانتظار الاستلام)"
+                    : "قيد التوصيل",
+                color: ShipmentStatusHelper.getColor(currentStatus),
+              ),
+              _buildInfoRow(theme, "رقم الشحنة", "#${s.shipmentNumber}"),
+              _buildInfoRow(theme, "العميل", s.client?.fullName ?? "غير معروف"),
+              _buildInfoRow(theme, "السعر", "${s.price.toStringAsFixed(0)} ل.س"),
+          
+              verticalSpace(24),
+          
+          
+              BlocBuilder<DriverTrackingCubit, DriverTrackingState>(
+                builder: (context, state) {
+                  final loading = state.maybeWhen(
+                    loadingQr: () => true,
+                    loadingPin: () => true,
+                    orElse: () => false,
                   );
-                } else {
-                  return AppTextButton(
-                    text: 'تأكيد التسليم (PIN)',
-                    prefixIcon: Icon(
-                      Icons.pin,
-                      color: Colors.white,
-                      size: 20.sp,
-                    ),
-                    isLoading: loading,
-                    onPressed: () => _showPinDialog(context),
-                  );
-                }
-              },
-            ),
-            verticalSpace(60),
-          ],
+          
+          
+                  if (currentStatus == 'جارية') {
+                    return AppTextButton(
+                      // height: 48.h,
+                      text: 'تأكيد الاستلام (QR)',
+                      textStyle: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.qr_code_scanner,
+                        color: Colors.white,
+                        size: 18.sp,
+                      ),
+                      isLoading: loading,
+                      onPressed: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const QRScannerScreen(),
+                          ),
+                        );
+                        if (result != null && context.mounted) {
+                          context.read<DriverTrackingCubit>().confirmPickup(
+                            s.id,
+                            result,
+                          );
+                        }
+                      },
+                    );
+                  } else {
+                    return AppTextButton(
+                      text: 'تأكيد التسليم (PIN)',
+                      prefixIcon: Icon(
+                        Icons.pin,
+                        color: Colors.white,
+                        size: 20.sp,
+                      ),
+                      isLoading: loading,
+                      onPressed: () => _showPinDialog(context),
+                    );
+                  }
+                },
+              ),
+              // verticalSpace(60),
+            ],
+          ),
         ),
       ),
     );

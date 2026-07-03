@@ -38,47 +38,49 @@ class DriverDetailsBottomSheet extends StatelessWidget {
           color: theme.scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
         ),
-        child: Column(
-          children: [
-            Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline,
-                borderRadius: BorderRadius.circular(10),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.outline,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-            ),
-            verticalSpace(16),
-            Text(
-              'تفاصيل السائق',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeightHelper.bold,
+              verticalSpace(16),
+              Text(
+                'تفاصيل السائق',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeightHelper.bold,
+                ),
               ),
-            ),
-            verticalSpace(16),
-
-            Expanded(
-              child: BlocBuilder<DriverDetailsCubit, DriverDetailsState>(
-                builder: (context, state) {
-                  return state.when(
-                    loading: () => const Center(
-                      child: SingleChildScrollView(child: LoadingStateWidget()),
-                    ),
-                    error: (errorModel) => SingleChildScrollView(
-                      child: ErrorStateWidget(
-                        message: errorModel.getAllErrorMessages(),
-                        onRetry: () => context
-                            .read<DriverDetailsCubit>()
-                            .fetchDriverDetails(driverId),
+              verticalSpace(16),
+          
+              Expanded(
+                child: BlocBuilder<DriverDetailsCubit, DriverDetailsState>(
+                  builder: (context, state) {
+                    return state.when(
+                      loading: () => const Center(
+                        child: SingleChildScrollView(child: LoadingStateWidget()),
                       ),
-                    ),
-                    success: (details) =>
-                        _buildDetailsContent(context, details),
-                  );
-                },
+                      error: (errorModel) => SingleChildScrollView(
+                        child: ErrorStateWidget(
+                          message: errorModel.getAllErrorMessages(),
+                          onRetry: () => context
+                              .read<DriverDetailsCubit>()
+                              .fetchDriverDetails(driverId),
+                        ),
+                      ),
+                      success: (details) =>
+                          _buildDetailsContent(context, details),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -247,7 +249,7 @@ class DriverDetailsBottomSheet extends StatelessWidget {
               return Chip(label: Text(gov.name));
             }).toList(),
           ),
-          verticalSpace(32),
+          // verticalSpace(8),
         ],
       ),
     );
