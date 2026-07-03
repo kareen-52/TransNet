@@ -21,7 +21,7 @@ class HomeContent extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       onRefresh: () async {
         await getIt<HomeCubit>().refreshQuietly();
-        getIt<ActiveOrdersCubit>().silentRefresh();
+        getIt<ActiveOrdersCubit>().fetchActiveOrders();
         getIt<VehicleTypesCubit>().fetchVehicleTypes();
         getIt<ProfileCubit>().getProfileData();
       },

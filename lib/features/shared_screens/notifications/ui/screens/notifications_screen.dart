@@ -111,6 +111,14 @@ class NotificationsScreen extends StatelessWidget {
                         child: AppTextButton(
                           onPressed: () => cubit.fetchAllNotifications(),
                           text: 'عرض جميع الإشعارات',
+                          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w900
+                              ),
+                          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                   ],
