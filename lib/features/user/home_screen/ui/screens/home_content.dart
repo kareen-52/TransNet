@@ -20,18 +20,21 @@ class HomeContent extends StatelessWidget {
       color: Theme.of(context).colorScheme.primary,
       backgroundColor: Theme.of(context).colorScheme.surface,
       onRefresh: () async {
-        await getIt<HomeCubit>().refreshQuietly();
-        getIt<ActiveOrdersCubit>().fetchActiveOrders();
+        // await getIt<HomeCubit>().refreshQuietly();
+        // getIt<ActiveOrdersCubit>().fetchActiveOrders();
+        await Future.wait([
+          getIt<HomeCubit>().refreshQuietly(),
+          getIt<ActiveOrdersCubit>().fetchActiveOrders(),
+        ]);
         getIt<VehicleTypesCubit>().fetchVehicleTypes();
         getIt<ProfileCubit>().getProfileData();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-      
+
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-            
               maxWidth: isTablet ? 850 : double.infinity,
             ),
             child: Padding(
@@ -42,7 +45,6 @@ class HomeContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-            
                   const ShippingCard(),
 
                   verticalSpace(isTablet ? 48 : 32),
@@ -52,7 +54,7 @@ class HomeContent extends StatelessWidget {
                   verticalSpace(isTablet ? 48 : 32),
 
                   const TransportMethodsSection(),
-                  
+
                   verticalSpace(isTablet ? 40 : 24),
                 ],
               ),

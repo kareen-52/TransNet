@@ -113,7 +113,9 @@ void setupGetIt() {
 
   // ── Home (Client) ──────────────────────────────────────────────────────────
 
-  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
+  // getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
+  getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
+
 
   // ── Available Drivers ──────────────────────────────────────────────────────
   getIt.registerLazySingleton<AvailableDriversRepo>(
@@ -159,7 +161,9 @@ void setupGetIt() {
   getIt.registerLazySingleton<InstantOrdersRepo>(
     () => InstantOrdersRepo(getIt()),
   );
-  getIt.registerFactory<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
+  // getIt.registerFactory<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
+  getIt.registerLazySingleton<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
+
 
   // ── Driver Location ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(
@@ -210,13 +214,19 @@ void setupGetIt() {
   getIt.registerLazySingleton<ActiveOrdersRepo>(
     () => ActiveOrdersRepo(getIt()),
   );
-  getIt.registerFactory<ActiveOrdersCubit>(() => ActiveOrdersCubit(getIt()));
+  // getIt.registerFactory<ActiveOrdersCubit>(() => ActiveOrdersCubit(getIt()));
+  getIt.registerLazySingleton<ActiveOrdersCubit>(
+    () => ActiveOrdersCubit(getIt()),
+  );
 
   // ── Active Shipments (Driver) ──────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
     () => ActiveDriverShipmentsRepo(getIt()),
   );
-  getIt.registerFactory<ActiveDriverShipmentsCubit>(
+  // getIt.registerFactory<ActiveDriverShipmentsCubit>(
+  //   () => ActiveDriverShipmentsCubit(getIt()),
+  // );
+  getIt.registerLazySingleton<ActiveDriverShipmentsCubit>(
     () => ActiveDriverShipmentsCubit(getIt()),
   );
 

@@ -89,9 +89,19 @@ class NotificationRouteHelper {
    
    else if (title.contains('إعلانات غير فورية') || title.contains('غير فورية')) {
 
-      if (body.contains('تم رفض عرضك')) {
+      if (body.contains('رفض عرضك')) {
         if (kDebugMode) print("تم رفض العرض — لا يوجد توجيه");
         return;
+      } 
+      
+      else if (body.contains('قبول عرضك')) {
+        if (kDebugMode) print(" الطلب قُبل — refresh الطلبات النشطة");
+        refreshHome();
+        refreshClientActiveOrders();
+        refreshDriverActiveShipments();
+        if (postId != 0) {
+          navContext.pushNamed(Routes.postDetailsScreen, arguments: postId);
+        }
       } 
       
       else if (body.contains('تم قبول عرضك')) {
@@ -104,6 +114,10 @@ class NotificationRouteHelper {
 
       else if (body.contains('تم إرسال طلب نقل شحنة')){
         if (kDebugMode) print("تم إرسال طلب نقل شحنة — توجيه لتفاصيل الإعلان: $postId");
+        // refreshHome();
+        refreshClientActiveOrders();
+        refreshDriverActiveShipments();
+
         if (postId != 0) {
           navContext.pushNamed(Routes.postDetailsScreen, arguments: postId);
         }

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/offline_onlineMode/connectivity_helper.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/logout_dialog.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
+import 'package:graduation_progect/features/user/active_orders/logic/active_orders_cubit.dart';
+import 'package:graduation_progect/features/user/home_screen/logic/home_cubit.dart';
 import 'package:graduation_progect/hive_cache_service.dart';
 import 'package:graduation_progect/main.dart';
 import 'package:graduation_progect/core/notifications/notification_service.dart';
@@ -88,6 +93,22 @@ class LogoutService {
     } catch (_) {}
 
     ShipmentDetailsCubit.clearCurrentUserCache();
+    
+    try {
+      if (getIt.isRegistered<HomeCubit>()) {
+        getIt.resetLazySingleton<HomeCubit>();
+      }
+      if (getIt.isRegistered<ActiveOrdersCubit>()) {
+        getIt.resetLazySingleton<ActiveOrdersCubit>();
+      }
+      if (getIt.isRegistered<ActiveDriverShipmentsCubit>()) {
+        getIt.resetLazySingleton<ActiveDriverShipmentsCubit>();
+      }
+      if (getIt.isRegistered<InstantOrdersCubit>()) {
+        getIt.resetLazySingleton<InstantOrdersCubit>();
+      }
+    } catch (_) {}
+
     await _clearLocalData();
 
     navigatorKey.currentState?.pushNamedAndRemoveUntil(
