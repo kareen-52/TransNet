@@ -10,7 +10,7 @@ class AppConfig {
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://10.140.20.190:8000/',
+    defaultValue: 'http://192.168.20.79:8000/',
   );
 
   static const String _orsApiKey = String.fromEnvironment(

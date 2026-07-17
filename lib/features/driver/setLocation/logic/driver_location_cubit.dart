@@ -37,8 +37,8 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
         Geolocator.getPositionStream(
           locationSettings: AndroidSettings(
             accuracy: LocationAccuracy.high,
-            distanceFilter: 20,
-            intervalDuration: const Duration(seconds: 5),
+            distanceFilter: 4,
+            intervalDuration: const Duration(seconds: 1),
           ),
         ).listen((Position position) {
           _sendLocationWithThrottle(position.latitude, position.longitude);

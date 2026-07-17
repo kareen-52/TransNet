@@ -292,6 +292,10 @@ class CreateShipmentCubit extends Cubit<CreateShipmentState> {
   }
 
   void changeStartGovernorate(GovernorateModel? gov) {
+
+    if (startGovernorate != null && gov != null && startGovernorate!.id == gov.id) {
+      return; 
+    }
     startGovernorate = gov;
     startLat = null;
     startLng = null;
@@ -299,6 +303,9 @@ class CreateShipmentCubit extends Cubit<CreateShipmentState> {
   }
 
   void changeEndGovernorate(GovernorateModel? gov) {
+    if (endGovernorate != null && gov != null && endGovernorate!.id == gov.id) {
+      return;
+    }
     endGovernorate = gov;
     endLat = null;
     endLng = null;
@@ -385,6 +392,7 @@ class CreateShipmentCubit extends Cubit<CreateShipmentState> {
 
 
   void _editData(ShipmentModel shipment) {
+    
     weightController.text = shipment.weight.toString();
     heightController.text = shipment.height.toString();
     widthController.text = shipment.width.toString();

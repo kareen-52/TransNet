@@ -58,7 +58,7 @@ class DriverEarningsScreen extends StatelessWidget {
             ),
             verticalSpace(24),
 
-            _buildSectionTitle(theme, 'الدورة المالية الحالية (غير المسواة)'),
+            _buildSectionTitle(theme, 'الدورة المالية الحالية'),
             verticalSpace(12),
             Container(
               padding: EdgeInsets.all(16.w),

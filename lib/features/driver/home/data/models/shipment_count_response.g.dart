@@ -11,6 +11,7 @@ ShipmentCountResponse _$ShipmentCountResponseFromJson(
 ) => ShipmentCountResponse(
   count: (json['count'] as num).toInt(),
   availability: (json['availability'] as num).toInt(),
+  reward: json['reward'] as String,
 );
 
 Map<String, dynamic> _$ShipmentCountResponseToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$ShipmentCountResponseToJson(
 ) => <String, dynamic>{
   'count': instance.count,
   'availability': instance.availability,
+  'reward': instance.reward,
 };

@@ -134,13 +134,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String message,  bool isAvailable)?  availabilityChanged,TResult Function( int count)?  shipmentCountLoaded,TResult Function( Uint8List imageBytes)?  driverImageLoaded,TResult Function( ApiErrorModel apiErrorModel)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String message,  bool isAvailable)?  availabilityChanged,TResult Function( int count,  double financialPrize)?  shipmentCountLoaded,TResult Function( Uint8List imageBytes)?  driverImageLoaded,TResult Function( ApiErrorModel apiErrorModel)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case AvailabilityChanged() when availabilityChanged != null:
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded() when shipmentCountLoaded != null:
-return shipmentCountLoaded(_that.count);case DriverImageLoaded() when driverImageLoaded != null:
+return shipmentCountLoaded(_that.count,_that.financialPrize);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that.imageBytes);case Error() when error != null:
 return error(_that.apiErrorModel);case _:
   return orElse();
@@ -160,13 +160,13 @@ return error(_that.apiErrorModel);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String message,  bool isAvailable)  availabilityChanged,required TResult Function( int count)  shipmentCountLoaded,required TResult Function( Uint8List imageBytes)  driverImageLoaded,required TResult Function( ApiErrorModel apiErrorModel)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String message,  bool isAvailable)  availabilityChanged,required TResult Function( int count,  double financialPrize)  shipmentCountLoaded,required TResult Function( Uint8List imageBytes)  driverImageLoaded,required TResult Function( ApiErrorModel apiErrorModel)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case Loading():
 return loading();case AvailabilityChanged():
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded():
-return shipmentCountLoaded(_that.count);case DriverImageLoaded():
+return shipmentCountLoaded(_that.count,_that.financialPrize);case DriverImageLoaded():
 return driverImageLoaded(_that.imageBytes);case Error():
 return error(_that.apiErrorModel);case _:
   throw StateError('Unexpected subclass');
@@ -185,13 +185,13 @@ return error(_that.apiErrorModel);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String message,  bool isAvailable)?  availabilityChanged,TResult? Function( int count)?  shipmentCountLoaded,TResult? Function( Uint8List imageBytes)?  driverImageLoaded,TResult? Function( ApiErrorModel apiErrorModel)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String message,  bool isAvailable)?  availabilityChanged,TResult? Function( int count,  double financialPrize)?  shipmentCountLoaded,TResult? Function( Uint8List imageBytes)?  driverImageLoaded,TResult? Function( ApiErrorModel apiErrorModel)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case AvailabilityChanged() when availabilityChanged != null:
 return availabilityChanged(_that.message,_that.isAvailable);case ShipmentCountLoaded() when shipmentCountLoaded != null:
-return shipmentCountLoaded(_that.count);case DriverImageLoaded() when driverImageLoaded != null:
+return shipmentCountLoaded(_that.count,_that.financialPrize);case DriverImageLoaded() when driverImageLoaded != null:
 return driverImageLoaded(_that.imageBytes);case Error() when error != null:
 return error(_that.apiErrorModel);case _:
   return null;
@@ -337,10 +337,11 @@ as bool,
 
 
 class ShipmentCountLoaded implements DriverHomeState {
-  const ShipmentCountLoaded(this.count);
+  const ShipmentCountLoaded(this.count, this.financialPrize);
   
 
  final  int count;
+ final  double financialPrize;
 
 /// Create a copy of DriverHomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -352,16 +353,16 @@ $ShipmentCountLoadedCopyWith<ShipmentCountLoaded> get copyWith => _$ShipmentCoun
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShipmentCountLoaded&&(identical(other.count, count) || other.count == count));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShipmentCountLoaded&&(identical(other.count, count) || other.count == count)&&(identical(other.financialPrize, financialPrize) || other.financialPrize == financialPrize));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,count);
+int get hashCode => Object.hash(runtimeType,count,financialPrize);
 
 @override
 String toString() {
-  return 'DriverHomeState.shipmentCountLoaded(count: $count)';
+  return 'DriverHomeState.shipmentCountLoaded(count: $count, financialPrize: $financialPrize)';
 }
 
 
@@ -372,7 +373,7 @@ abstract mixin class $ShipmentCountLoadedCopyWith<$Res> implements $DriverHomeSt
   factory $ShipmentCountLoadedCopyWith(ShipmentCountLoaded value, $Res Function(ShipmentCountLoaded) _then) = _$ShipmentCountLoadedCopyWithImpl;
 @useResult
 $Res call({
- int count
+ int count, double financialPrize
 });
 
 
@@ -389,10 +390,11 @@ class _$ShipmentCountLoadedCopyWithImpl<$Res>
 
 /// Create a copy of DriverHomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? count = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? count = null,Object? financialPrize = null,}) {
   return _then(ShipmentCountLoaded(
 null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
-as int,
+as int,null == financialPrize ? _self.financialPrize : financialPrize // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
 

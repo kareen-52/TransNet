@@ -6,11 +6,13 @@ class ChallengeCard extends StatelessWidget {
   final bool isAvailable;
   final int completedShipments;
   final int targetShipments = 15;
+  final double financialPrize;
 
   const ChallengeCard({
     super.key,
     required this.isAvailable,
     required this.completedShipments,
+    required this.financialPrize,
   });
 
   @override
@@ -84,7 +86,7 @@ class ChallengeCard extends StatelessWidget {
               const Text('🏆'),
               horizontalSpace(4),
               Text(
-                'باقي ${targetShipments - progress} طلبات لتحصل على مكافأة 30,000 ل.س',
+                'باقي ${targetShipments - progress} طلبات لتحصل على مكافأة ${financialPrize.toInt()} ل.س',
                 style: textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.secondary,
                 ),
@@ -138,7 +140,6 @@ class ChallengeCard extends StatelessWidget {
                   height: 6.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
-
                     color: Colors.grey.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(10.r),
                   ),

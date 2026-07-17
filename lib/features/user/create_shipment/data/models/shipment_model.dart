@@ -12,7 +12,7 @@ bool _parseBool(dynamic value) {
 class ShipmentModel {
   final double weight, height, width, length;
   final String object;
-  @JsonKey(fromJson: _parseBool)
+  // @JsonKey(fromJson: _parseBool)
   // final bool insurance;
   @JsonKey(name: 'start_position_lat')
   final dynamic startPositionLat;
@@ -28,7 +28,6 @@ class ShipmentModel {
   final dynamic endGovernorateId;
   @JsonKey(name: 'expires_at')
   final String expiresAt;
-
 
   final PendingDriverModel? driver;
 
@@ -52,7 +51,6 @@ class ShipmentModel {
   factory ShipmentModel.fromJson(Map<String, dynamic> json) =>
       _$ShipmentModelFromJson(json);
 }
-
 
 @JsonSerializable()
 class PendingDriverModel {

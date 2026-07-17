@@ -24,11 +24,12 @@ class HomeContent extends StatelessWidget {
     final theme = Theme.of(context);
 
     return BlocBuilder<DriverHomeCubit, DriverHomeState>(
-      buildWhen: (previous, current) {
+   buildWhen: (previous, current) {
         return current.maybeWhen(
           initial: () => false,
           availabilityChanged: (_, __) => true,
-          shipmentCountLoaded: (_) => true,
+
+          shipmentCountLoaded: (_, __) => true, 
           orElse: () => false,
         );
       },
@@ -36,6 +37,7 @@ class HomeContent extends StatelessWidget {
         final cubit = context.read<DriverHomeCubit>();
         final isAvailable = cubit.isAvailable;
         final shipmentCount = cubit.shipmentCount;
+        final financialPrize = cubit.financialPrize;
 
         return RefreshIndicator(
           color: theme.colorScheme.primary,
@@ -69,6 +71,7 @@ class HomeContent extends StatelessWidget {
                 ChallengeCard(
                   isAvailable: isAvailable,
                   completedShipments: shipmentCount,
+                  financialPrize: financialPrize,
                 ),
 
                 verticalSpace(32),

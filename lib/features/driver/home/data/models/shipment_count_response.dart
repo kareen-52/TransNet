@@ -7,8 +7,8 @@ part 'shipment_count_response.g.dart';
 class ShipmentCountResponse {
   final int count;
   final int availability;
-
-  ShipmentCountResponse({required this.count, required this.availability});
+  final String reward;
+  ShipmentCountResponse({required this.count, required this.availability, required this.reward});
 
   factory ShipmentCountResponse.fromJson(Map<String, dynamic> json) =>
       _$ShipmentCountResponseFromJson(json);

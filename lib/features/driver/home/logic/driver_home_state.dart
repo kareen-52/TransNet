@@ -12,7 +12,8 @@ class DriverHomeState with _$DriverHomeState {
     required String message,
     required bool isAvailable,
   }) = AvailabilityChanged;
-  const factory DriverHomeState.shipmentCountLoaded(int count) = ShipmentCountLoaded;
+  
+ const factory DriverHomeState.shipmentCountLoaded(int count, double financialPrize) = ShipmentCountLoaded;
   const factory DriverHomeState.driverImageLoaded(Uint8List imageBytes) = DriverImageLoaded;
   const factory DriverHomeState.error(ApiErrorModel apiErrorModel) = Error;
 }
