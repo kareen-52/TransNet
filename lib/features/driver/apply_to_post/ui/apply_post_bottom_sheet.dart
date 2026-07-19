@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/helpers/extensions.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
@@ -9,6 +10,7 @@ import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_state.dart';
 import 'package:graduation_progect/features/driver/driver_applied_posts/logic/driver_applied_posts_cubit.dart';
 import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
+import 'package:graduation_progect/features/driver/home/ui/screens/driver_home_screen.dart';
 
 class ApplyPostBottomSheet extends StatefulWidget {
   final int postId;
@@ -21,7 +23,7 @@ class ApplyPostBottomSheet extends StatefulWidget {
     required this.postId,
     required this.minPrice,
     required this.maxPrice,
-    required this.lastDate, 
+    required this.lastDate,
   });
 
   @override
@@ -31,9 +33,9 @@ class ApplyPostBottomSheet extends StatefulWidget {
 class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
   final TextEditingController _priceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  
+
   DateTime? _selectedDate;
-  String? _dateError; 
+  String? _dateError;
 
   @override
   void dispose() {
@@ -41,14 +43,16 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
     super.dispose();
   }
 
-  String _format(num n) => n.toStringAsFixed(0).replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-
+  String _format(num n) => n
+      .toStringAsFixed(0)
+      .replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+        (Match m) => '${m[1]},',
+      );
 
   Future<void> _pickDate() async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    
 
     DateTime maxAllowedDate;
     try {
@@ -69,7 +73,7 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Theme.of(context).colorScheme.secondary, 
+              primary: Theme.of(context).colorScheme.secondary,
             ),
           ),
           child: child!,
@@ -127,54 +131,66 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
                       width: 40.w,
                       height: 4.h,
                       decoration: BoxDecoration(
-                          color: Colors.grey[500],
-                          borderRadius: BorderRadius.circular(2)),
+                        color: Colors.grey[500],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
                   verticalSpace(24),
-                  Text('تقديم عرض توصيل',
-                      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                  Text(
+                    'تقديم عرض توصيل',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   verticalSpace(8),
                   Text(
                     'أدخل السعر الذي تطلبه لتوصيل هذه الشحنة، وحدد تاريخ التسليم المقترح (يجب ألا يتجاوز أقصى موعد للإعلان).',
                     style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
                   ),
                   verticalSpace(20),
-              
-              
+
                   Container(
                     padding: EdgeInsets.all(12.w),
                     decoration: BoxDecoration(
-                        color: theme.colorScheme.secondary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12.r)),
+                      color: theme.colorScheme.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.info_outline_rounded,
-                            color: theme.colorScheme.secondary, size: 18.sp),
+                        Icon(
+                          Icons.info_outline_rounded,
+                          color: theme.colorScheme.secondary,
+                          size: 18.sp,
+                        ),
                         horizontalSpace(8),
                         Text(
                           'النطاق: ${_format(widget.minPrice)} - ${_format(widget.maxPrice)} ل.س',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.secondary),
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.secondary,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   verticalSpace(24),
-              
-              
+
                   GestureDetector(
                     onTap: _pickDate,
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'تاريخ التوصيل الفعلي',
                         errorText: _dateError,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: theme.colorScheme.primary),
+                          borderSide: BorderSide(
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                       child: Row(
@@ -186,67 +202,89 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
                                 : _selectedDate!.toString().split(' ')[0],
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: _selectedDate == null ? Colors.grey : theme.colorScheme.onSurface,
-                              fontWeight: _selectedDate == null ? FontWeight.normal : FontWeight.bold,
+                              color: _selectedDate == null
+                                  ? Colors.grey
+                                  : theme.colorScheme.onSurface,
+                              fontWeight: _selectedDate == null
+                                  ? FontWeight.normal
+                                  : FontWeight.bold,
                             ),
                           ),
-                          Icon(Icons.calendar_month_rounded, color: theme.colorScheme.primary, size: 20.sp),
+                          Icon(
+                            Icons.calendar_month_rounded,
+                            color: theme.colorScheme.primary,
+                            size: 20.sp,
+                          ),
                         ],
                       ),
                     ),
                   ),
                   verticalSpace(16),
-              
-              
+
                   TextFormField(
                     controller: _priceController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'سعرك المطلوب',
                       suffixText: 'ل.س',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide(color: theme.colorScheme.primary),
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'يرجى إدخال السعر';
+                      if (value == null || value.isEmpty)
+                        return 'يرجى إدخال السعر';
                       final price = double.tryParse(value);
                       if (price == null || price <= 0) return 'سعر غير صالح';
-                      if (price < widget.minPrice) return 'لا يمكن أن يكون أقل من ${_format(widget.minPrice)}';
-                      if (price > widget.maxPrice) return 'لا يمكن أن يتجاوز ${_format(widget.maxPrice)}';
+                      if (price < widget.minPrice)
+                        return 'لا يمكن أن يكون أقل من ${_format(widget.minPrice)}';
+                      if (price > widget.maxPrice)
+                        return 'لا يمكن أن يتجاوز ${_format(widget.maxPrice)}';
                       return null;
                     },
                   ),
                   verticalSpace(32),
-              
-              
+
                   BlocBuilder<ApplyToPostCubit, ApplyToPostState>(
                     builder: (context, state) {
-                      final isLoading = state == const ApplyToPostState.loading();
+                      final isLoading =
+                          state == const ApplyToPostState.loading();
                       return AppTextButton(
                         backgroundColor: theme.colorScheme.secondary,
                         text: 'إرسال العرض',
                         isLoading: isLoading,
                         onPressed: () {
-              
                           if (_selectedDate == null) {
-                            setState(() => _dateError = 'يرجى اختيار تاريخ التوصيل');
+                            setState(
+                              () => _dateError = 'يرجى اختيار تاريخ التوصيل',
+                            );
                             return;
                           }
-              
-              
+
                           if (_formKey.currentState!.validate()) {
                             final price = double.parse(_priceController.text);
-                            final dateString = _selectedDate!.toString().split(' ')[0];
-                            
+                            final dateString = _selectedDate!.toString().split(
+                              ' ',
+                            )[0];
+
                             context.read<ApplyToPostCubit>().submitApplication(
-                                  widget.postId,
-                                  price,
-                                  dateString,
-                                );
+                              widget.postId,
+                              price,
+                              dateString,
+                            );
                           }
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const DriverHomeScreen(),
+                            ),
+                          );
                         },
                       );
                     },

@@ -9,13 +9,13 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 class ShipmentDetailsCubit extends Cubit<ShipmentDetailsState> {
   final GetShipmentDetailsUseCase _getShipmentDetailsUseCase;
 
-
   static final Map<String, ShipmentDetailsEntity> _cache = {};
 
   ShipmentDetailsCubit(this._getShipmentDetailsUseCase)
-      : super(const ShipmentDetailsState.initial());
+    : super(const ShipmentDetailsState.initial());
 
-  static String _cacheKey(int userId, int shipmentId) => '${userId}_$shipmentId';
+  static String _cacheKey(int userId, int shipmentId) =>
+      '${userId}_$shipmentId';
 
   static int? _getCurrentUserId() {
     return SharedPrefHelper.getInt(SharedPrefKeys.userId);
@@ -26,7 +26,6 @@ class ShipmentDetailsCubit extends Cubit<ShipmentDetailsState> {
 
     final userId = _getCurrentUserId();
     if (userId == null) {
-    
       emit(const ShipmentDetailsState.loading());
       await _fetch(shipmentId);
       return;
@@ -49,7 +48,6 @@ class ShipmentDetailsCubit extends Cubit<ShipmentDetailsState> {
     if (userId != null) {
       _cache.remove(_cacheKey(userId, shipmentId));
     } else {
-  
       _cache.removeWhere((key, _) => key.endsWith('_$shipmentId'));
     }
     emit(const ShipmentDetailsState.loading());
@@ -74,18 +72,15 @@ class ShipmentDetailsCubit extends Cubit<ShipmentDetailsState> {
 
   static void clearCurrentUserCache() {
     final userId = SharedPrefHelper.getInt(SharedPrefKeys.userId);
- 
+
     _cache.removeWhere((key, _) => key.startsWith('${userId}_'));
   }
 
-
   static void clearAllCache() => _cache.clear();
-
 
   static void invalidate(int shipmentId) {
     final userId = SharedPrefHelper.getInt(SharedPrefKeys.userId);
-  
-      _cache.remove(_cacheKey(userId, shipmentId));
-    
+
+    _cache.remove(_cacheKey(userId, shipmentId));
   }
 }

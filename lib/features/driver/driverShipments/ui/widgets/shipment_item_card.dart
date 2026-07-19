@@ -46,7 +46,6 @@ class ShipmentItemCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
@@ -202,20 +201,6 @@ class ShipmentItemCard extends StatelessWidget {
                   ),
                   if (shipment.userId != null || shipment.driverId != null)
                     Divider(height: 16.h, thickness: 0.5),
-                  if (shipment.userId != null)
-                    _buildInfoRow(
-                      icon: Icons.person_outline,
-                      label: "رقم المرسل",
-                      value: "${shipment.userId}",
-                      fontSize: 12,
-                    ),
-                  if (shipment.driverId != null)
-                    _buildInfoRow(
-                      icon: Icons.drive_eta,
-                      label: "رقم السائق",
-                      value: "${shipment.driverId}",
-                      fontSize: 12,
-                    ),
                 ],
               ),
             ),

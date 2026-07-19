@@ -8,7 +8,7 @@ import 'package:graduation_progect/core/helpers/map_tile_cache_service.dart';
 import 'package:graduation_progect/core/networking/app_config.dart';
 import 'package:graduation_progect/features/shared_screens/map/data/map_constants.dart';
 
-/// تقدّم تحميل منطقة، يُستخدم لتحديث UI شريط التقدم.
+
 class RegionDownloadProgress {
   final int downloaded;
   final int total;
@@ -23,11 +23,6 @@ class RegionDownloadProgress {
   double get percentage => total == 0 ? 0 : downloaded / total;
 }
 
-/// يحمّل Tiles محافظة كاملة (حسب [MapConstants.governorateData]) مسبقاً
-/// إلى كاش Hive، لتُستخدم لاحقاً بدون اتصال بالإنترنت.
-///
-/// يُستخدم عادة من شاشة "تحميل الخريطة أوفلاين" في إعدادات المستخدم،
-/// أو من شاشة تفاصيل الشحنة لتحميل منطقتها مسبقاً.
 class MapRegionDownloader {
   MapRegionDownloader._();
 
@@ -44,11 +39,10 @@ class MapRegionDownloader {
 
   static bool _cancelRequested = false;
 
-  /// إلغاء أي تحميل جارٍ.
+
   static void cancel() => _cancelRequested = true;
 
-  /// يحمّل Tiles ضمن حدود [bounds] للمستويات [minZoom] إلى [maxZoom].
-  /// [onProgress] يُستدعى بعد كل دفعة لتحديث شريط التقدم في الواجهة.
+
   static Future<void> downloadRegion({
     required LatLngBounds bounds,
     int minZoom = 11,
@@ -65,7 +59,6 @@ class MapRegionDownloader {
       final total = tileCoords.length;
       var downloaded = 0;
 
-      // تحميل بدفعات صغيرة متوازية، بدل تسلسلي بطيء أو متوازي بالكامل يُثقل الجهاز والخادم
       for (var i = 0; i < tileCoords.length; i += concurrency) {
         if (_cancelRequested) break;
 
@@ -99,7 +92,7 @@ class MapRegionDownloader {
               );
             }
           } catch (_) {
-            // تجاهل فشل تايل منفردة وتابع الباقي، لا نوقف التحميل كله لأجل تايل واحدة
+    
           }
           downloaded++;
         }));
@@ -117,7 +110,7 @@ class MapRegionDownloader {
     }
   }
 
-  /// اختصار: يحمّل منطقة محافظة بالـ id كما هي معرّفة في [MapConstants.governorateData].
+
   static Future<void> downloadGovernorate(
     int governorateId, {
     int minZoom = 11,
@@ -135,8 +128,6 @@ class MapRegionDownloader {
     );
   }
 
-  /// يحوّل حدود جغرافية إلى قائمة إحداثيات Tiles (z, x, y) لكل مستوى تكبير،
-  /// عبر معادلة Web Mercator القياسية المستخدمة في كل خرائط الـ Slippy Map.
   static List<(int, int, int)> _tilesInBounds(
     LatLngBounds bounds,
     int minZoom,

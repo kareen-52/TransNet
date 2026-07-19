@@ -9,7 +9,6 @@ import 'package:graduation_progect/features/shared_screens/shipment_details/pres
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_error_view.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_loading_view.dart';
 
-
 class ShipmentDetailsScreen extends StatelessWidget {
   final int shipmentId;
 
@@ -27,14 +26,23 @@ class ShipmentDetailsScreen extends StatelessWidget {
           backgroundColor: isDark
               ? AppColors.darkBackground
               : AppColors.lightBackground,
-          body: BlocBuilder<ShipmentDetailsCubit, ShipmentDetailsState>(
-            builder: (context, state) => state.maybeWhen(
-              loading: () => const ShipmentDetailsLoadingView(),
-              success: (data) => ShipmentDetailsBody(data: data),
-              error: (error) =>
-                  ShipmentDetailsErrorView(message: error.message),
-              orElse: () => const SizedBox.shrink(),
-            ),
+  
+          body: Builder(
+            builder: (context) {
+              return RefreshIndicator(
+                onRefresh: () =>
+                    context.read<ShipmentDetailsCubit>().refresh(shipmentId),
+                child: BlocBuilder<ShipmentDetailsCubit, ShipmentDetailsState>(
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () => const ShipmentDetailsLoadingView(),
+                    success: (data) => ShipmentDetailsBody(data: data),
+                    error: (error) =>
+                        ShipmentDetailsErrorView(message: error.message),
+                    orElse: () => const SizedBox.shrink(),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

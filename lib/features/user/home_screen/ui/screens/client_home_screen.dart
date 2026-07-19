@@ -27,10 +27,18 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: getIt<HomeCubit>()..checkActiveShipment()),
-        BlocProvider.value(value: getIt<ActiveOrdersCubit>()..fetchActiveOrders()),
-        BlocProvider(create: (context) => getIt<VehicleTypesCubit>()..fetchVehicleTypes()),
-        BlocProvider.value(value: getIt<NotificationCubit>()..fetchUnreadCount()),
-        BlocProvider(create: (context) => getIt<ProfileCubit>()..getProfileData()),
+        BlocProvider.value(
+          value: getIt<ActiveOrdersCubit>()..fetchActiveOrders(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<VehicleTypesCubit>()..fetchVehicleTypes(),
+        ),
+        BlocProvider.value(
+          value: getIt<NotificationCubit>()..fetchUnreadCount(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<ProfileCubit>()..getProfileData(),
+        ),
       ],
 
       child: BlocListener<HomeCubit, HomeState>(
@@ -53,7 +61,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   }
                 });
               },
-              
+
               orElse: () {},
             );
           }

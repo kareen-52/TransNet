@@ -6,6 +6,7 @@ import 'package:graduation_progect/core/widgets/state_handlers/error_state_widge
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_state.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/ui/screens/search_shipments_screen.dart';
 
 class DriverShipmentsScreen extends StatefulWidget {
@@ -66,8 +67,9 @@ class _DriverShipmentsScreenState extends State<DriverShipmentsScreen> {
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.primary,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        onRefresh: () async =>
-            context.read<DriverShipmentsCubit>().getShipments(isReload: true),
+        onRefresh: () async {
+            context.read<DriverShipmentsCubit>().getShipments(isReload: true);
+        },
         child: BlocBuilder<DriverShipmentsCubit, DriverShipmentsState>(
           builder: (context, state) {
             return state.maybeWhen(

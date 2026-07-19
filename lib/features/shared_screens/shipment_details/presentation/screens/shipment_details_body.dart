@@ -105,44 +105,7 @@ class _MobileBody extends StatelessWidget {
                     isCompleted: isCompleted,
                   ),
                   SizedBox(height: 10.h),
-                //   if (isCompleted) ...[
-                //     SizedBox(height: 12.h),
-                //     OutlinedButton.icon(
-                //       onPressed: () {
-                //         showModalBottomSheet(
-                //           context: context,
-                //           isScrollControlled: true,
-                //           backgroundColor: Colors.transparent,
-                //           builder: (_) => BlocProvider(
-                //             create: (context) => getIt<ReviewDriverCubit>(),
-                //             child: ReviewBottomSheet(driverId: data.driver!.id),
-                //           ),
-                //         );
-                //       },
-                //       icon: Icon(
-                //         Icons.star_rate_rounded,
-                //         color: AppColors.warning,
-                //         size: 22.sp,
-                //       ),
-                //       label: Text(
-                //         'تقييم السائق',
-                //         style: TextStyle(
-                //           fontSize: 14.sp,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //       ),
-                //       style: OutlinedButton.styleFrom(
-                //         foregroundColor: AppColors.warning,
-                //         backgroundColor: AppColors.warning.withOpacity(0.05),
-                //         side: BorderSide(color: AppColors.warning, width: 1.5),
-                //         minimumSize: Size(double.infinity, 50.h),
-                //         shape: RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(16.r),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                //   SizedBox(height: 10.h),
+         
                 ],
                 if (data.hasClient)
                   ShipmentPartyCard(
@@ -241,52 +204,7 @@ class _TabletBody extends StatelessWidget {
                                 iconColor: theme.colorScheme.primary,
                               ),
                               SizedBox(height: 10.h),
-                              // if (isCompleted) ...[
-                              //   SizedBox(height: 12.h),
-                              //   OutlinedButton.icon(
-                              //     onPressed: () {
-                              //       showModalBottomSheet(
-                              //         context: context,
-                              //         isScrollControlled: true,
-                              //         backgroundColor: Colors.transparent,
-                              //         builder: (_) => BlocProvider(
-                              //           create: (context) =>
-                              //               getIt<ReviewDriverCubit>(),
-                              //           child: ReviewBottomSheet(
-                              //             driverId: data.driver!.id,
-                              //           ),
-                              //         ),
-                              //       );
-                              //     },
-                              //     icon: Icon(
-                              //       Icons.star_rate_rounded,
-                              //       color: AppColors.warning,
-                              //       size: 22.sp,
-                              //     ),
-                              //     label: Text(
-                              //       'تقييم السائق',
-                              //       style: TextStyle(
-                              //         fontSize: 14.sp,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //     style: OutlinedButton.styleFrom(
-                              //       foregroundColor: AppColors.warning,
-                              //       backgroundColor:
-                              //           AppColors.warning.withOpacity(0.05),
-                              //       side: BorderSide(
-                              //         color: AppColors.warning,
-                              //         width: 1.5,
-                              //       ),
-                              //       minimumSize: Size(double.infinity, 50.h),
-                              //       shape: RoundedRectangleBorder(
-                              //         borderRadius:
-                              //             BorderRadius.circular(16.r),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ],
-                              // SizedBox(height: 10.h),
+                            
                             ],
                             if (data.hasClient)
                               ShipmentPartyCard(

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/empty_state_widget.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/error_state_widget.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/widgets/shipment_item_card.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_search/ui/screens/search_shipments_screen.dart';
 import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_cubit.dart';
 import 'package:graduation_progect/features/user/client_shipments/logic/client_shipments_state.dart';
@@ -67,8 +68,10 @@ class _ClientShipmentsScreenState extends State<ClientShipmentsScreen> {
       ),
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.primary,
-        onRefresh: () =>
-            context.read<ClientShipmentsCubit>().getShipments(isReload: true),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        onRefresh: () async {
+          context.read<ClientShipmentsCubit>().getShipments(isReload: true);
+        },
         child: BlocBuilder<ClientShipmentsCubit, ClientShipmentsState>(
           builder: (context, state) {
             return state.maybeWhen(
