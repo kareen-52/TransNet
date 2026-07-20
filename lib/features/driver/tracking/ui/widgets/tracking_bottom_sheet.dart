@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_state.dart';
 import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_cubit.dart';
 import 'package:graduation_progect/features/driver/tracking/logic/driver_tracking_state.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/pin_input_dialog.dart';
@@ -24,11 +28,57 @@ class TrackingBottomSheet extends StatefulWidget {
 
 class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
   late String currentStatus;
+  late ActiveDriverShipmentModel _shipment;
+  StreamSubscription<ActiveDriverShipmentsState>? _shipmentsSub;
+
+  bool get _isShipmentInfoReady =>
+      _shipment.shipmentNumber != 0 &&
+      _shipment.client != null &&
+      _shipment.client!.fullName.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-    currentStatus = widget.initialShipment.status;
+    _shipment = widget.initialShipment;
+    currentStatus = _shipment.status;
+
+  
+    _syncFromCubit(getIt<ActiveDriverShipmentsCubit>().currentShipments);
+
+
+    _shipmentsSub = getIt<ActiveDriverShipmentsCubit>().stream.listen((
+      state,
+    ) {
+      state.whenOrNull(loaded: _syncFromCubit);
+    });
+  }
+
+  void _syncFromCubit(List<ActiveDriverShipmentModel> shipments) {
+    if (_isShipmentInfoReady) return;
+    try {
+      final updated = shipments.firstWhere((s) => s.id == _shipment.id);
+      if (!mounted) return;
+      setState(() => _shipment = updated);
+    } catch (_) {
+    
+    }
+  }
+
+  @override
+  void dispose() {
+    _shipmentsSub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant TrackingBottomSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  
+    if (oldWidget.initialShipment.status != widget.initialShipment.status) {
+      setState(() {
+        currentStatus = widget.initialShipment.status;
+      });
+    }
   }
 
   void _onSuccessFinish() {
@@ -45,7 +95,8 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final s = widget.initialShipment;
+ 
+    final s = _shipment;
 
     return BlocListener<DriverTrackingCubit, DriverTrackingState>(
       listener: (context, state) {
@@ -91,7 +142,6 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-          
               Container(
                 width: 40.w,
                 height: 4.h,
@@ -101,8 +151,7 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                 ),
               ),
               verticalSpace(16),
-          
-          
+
               _buildInfoRow(
                 theme,
                 "الحالة",
@@ -111,13 +160,16 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                     : "قيد التوصيل",
                 color: ShipmentStatusHelper.getColor(currentStatus),
               ),
-              _buildInfoRow(theme, "رقم الشحنة", "#${s.shipmentNumber}"),
-              _buildInfoRow(theme, "العميل", s.client?.fullName ?? "غير معروف"),
+              s.shipmentNumber == 0
+                  ? _buildShimmerInfoRow(theme, "رقم الشحنة")
+                  : _buildInfoRow(theme, "رقم الشحنة", "#${s.shipmentNumber}"),
+              (s.client?.fullName != null && s.client!.fullName.trim().isNotEmpty)
+                  ? _buildInfoRow(theme, "العميل", s.client!.fullName)
+                  : _buildShimmerInfoRow(theme, "العميل"),
               _buildInfoRow(theme, "السعر", "${s.price.toStringAsFixed(0)} ل.س"),
-          
+
               verticalSpace(24),
-          
-          
+
               BlocBuilder<DriverTrackingCubit, DriverTrackingState>(
                 builder: (context, state) {
                   final loading = state.maybeWhen(
@@ -125,11 +177,9 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                     loadingPin: () => true,
                     orElse: () => false,
                   );
-          
-          
+
                   if (currentStatus == 'جارية') {
                     return AppTextButton(
-                      // height: 48.h,
                       text: 'تأكيد الاستلام (QR)',
                       textStyle: TextStyle(
                         fontSize: 13.sp,
@@ -171,14 +221,12 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
                   }
                 },
               ),
-              // verticalSpace(60),
             ],
           ),
         ),
       ),
     );
   }
-
 
   Widget _buildInfoRow(
     ThemeData theme,
@@ -202,6 +250,37 @@ class _TrackingBottomSheetState extends State<TrackingBottomSheet> {
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: color ?? theme.colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShimmerInfoRow(ThemeData theme, String label) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+          ),
+          Shimmer.fromColors(
+            baseColor: theme.colorScheme.onSurface.withOpacity(0.1),
+            highlightColor: theme.colorScheme.onSurfaceVariant.withOpacity(
+              0.2,
+            ),
+            child: Container(
+              width: 90.w,
+              height: 14.h,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onSurfaceVariant.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(4.r),
+              ),
             ),
           ),
         ],

@@ -63,7 +63,7 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('تتبع الشحنة #${widget.shipment.shipmentNumber}'),
+        title: Text('تتبع الشحنة '),
         centerTitle: true,
       ),
       body: Stack(

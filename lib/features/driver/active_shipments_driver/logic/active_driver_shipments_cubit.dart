@@ -10,6 +10,9 @@ class ActiveDriverShipmentsCubit extends Cubit<ActiveDriverShipmentsState> {
 
   List<ActiveDriverShipmentModel> _currentShipments = [];
 
+  List<ActiveDriverShipmentModel> get currentShipments =>
+      List.unmodifiable(_currentShipments);
+
   ActiveDriverShipmentsCubit(this._repo)
       : super(const ActiveDriverShipmentsState.initial());
 

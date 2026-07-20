@@ -12,6 +12,7 @@ import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.d
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/instant_orders/data/models/instant_order_model.dart';
+import 'package:graduation_progect/features/driver/instant_orders/data/models/respond_response_model.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 
 class InstantOrderCard extends StatefulWidget {
@@ -138,37 +139,65 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     result.when(
       success: (response) {
         SnackBarHelper.showSuccess(context, response.message);
+        // نأخذ نسخة الـ Navigator قبل الحذف من القائمة، لأن حذف الطلب
+        // (onOrderProcessed) بيفكك هاد الكرت فورًا، وبعدها context ما يعود
+        // صالح للتنقل.
+        final navigator = Navigator.of(context);
         widget.onOrderProcessed();
-
- 
-      final activeShipment = ActiveDriverShipmentModel(
-        id: response.shipmentData!.id,
-        userId: widget.orderData.userId,
-        driverId: widget.orderData.driverId,
-        shipmentNumber: 0, 
-        price: widget.orderData.price,
-        status: 'جارية',
-        startLat: response.shipmentData!.startLat,
-        startLng: response.shipmentData!.startLng,
-        endLat: response.shipmentData!.endLat,
-        endLng: response.shipmentData!.endLng,
-        startGovernorate: widget.orderData.fromLocation,
-        endGovernorate: widget.orderData.toLocation,
-        pathCoordinates: response.shipmentData!.pathCoordinates,
-        client: null, 
-      );
-
-      Navigator.pushNamed(
-          context,
-          Routes.driverTrackingScreen,
-          arguments: activeShipment,
-        );
+        _goToTracking(response, navigator);
       },
       failure: (error) {
         setState(() => _isLoadingAccept = false);
         SnackBarHelper.showError(context, error.getAllErrorMessages());
       },
     );
+  }
+
+  void _goToTracking(
+    RespondResponseModel response,
+    NavigatorState navigator,
+  ) {
+    final shipmentsCubit = getIt<ActiveDriverShipmentsCubit>();
+
+    // إذا كانت البيانات الكاملة (رقم الشحنة + العميل) موجودة عندنا مسبقًا
+    // بالكاش، منستخدمها فورًا. غير هيك، منروح بشحنة مبدئية فيها بس الموقع
+    // (المتوفر برد "قبول الطلب") وننتقل فورًا بدون أي انتظار لتجنب تأخير
+    // الوصول لشاشة التتبع.
+    ActiveDriverShipmentModel? cachedShipment;
+    try {
+      cachedShipment = shipmentsCubit.currentShipments.firstWhere(
+        (s) => s.id == response.shipmentData!.id,
+      );
+    } catch (_) {
+      cachedShipment = null;
+    }
+
+    final placeholderShipment =
+        cachedShipment ??
+        ActiveDriverShipmentModel(
+          id: response.shipmentData!.id,
+          userId: widget.orderData.userId,
+          driverId: widget.orderData.driverId,
+          shipmentNumber: 0,
+          price: widget.orderData.price,
+          status: 'جارية',
+          startLat: response.shipmentData!.startLat,
+          startLng: response.shipmentData!.startLng,
+          endLat: response.shipmentData!.endLat,
+          endLng: response.shipmentData!.endLng,
+          startGovernorate: widget.orderData.fromLocation,
+          endGovernorate: widget.orderData.toLocation,
+          pathCoordinates: response.shipmentData!.pathCoordinates,
+          client: null,
+        );
+
+    navigator.pushNamed(
+      Routes.driverTrackingScreen,
+      arguments: placeholderShipment,
+    );
+
+ 
+    shipmentsCubit.silentRefresh();
   }
 
   Future<void> _executeReject({bool autoExpired = false}) async {
