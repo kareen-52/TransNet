@@ -55,7 +55,7 @@ class AppliedPostsScreen extends StatelessWidget {
                           crossAxisSpacing: 16.w,
                           mainAxisSpacing: 16.h,
 
-                          mainAxisExtent: 310.h,
+                          mainAxisExtent: 345.h,
                         ),
                         itemBuilder: (context, index) => DriverAppliedPostCard(
                           key: ValueKey(posts[index].id),
