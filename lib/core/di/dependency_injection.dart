@@ -5,6 +5,7 @@ import 'package:graduation_progect/features/driver/active_shipments_driver/data/
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/data/repo/apply_to_post_repo.dart';
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_cubit.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/driver/driverReviews/data/repo/driver_reviews_repo.dart';
 import 'package:graduation_progect/features/driver/driverReviews/logic/driver_reviews_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/repo/driver_shipments_repo.dart';
@@ -156,6 +157,8 @@ void setupGetIt() {
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
 
   getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
+
+  getIt.registerLazySingleton<DriverNavCubit>(() => DriverNavCubit());
 
   // ── Instant Orders ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<InstantOrdersRepo>(

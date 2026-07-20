@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/driver/driverShipments/logic/driver_shipments_cubit.dart';
 import 'package:graduation_progect/features/driver/driverShipments/ui/screens/driver_shipments_screen.dart';
 import 'package:graduation_progect/features/driver/driver_applied_posts/ui/screen/applied_posts_screen.dart';
@@ -25,8 +26,6 @@ class MobileBody extends StatefulWidget {
 }
 
 class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
-  int _currentIndex = 0;
-
   final List<Widget> _screens = const [
     HomeContent(isTablet: false),
     AppliedPostsScreen(),
@@ -112,30 +111,35 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
             orElse: () {},
           );
         },
-        child: Scaffold(
-          extendBody: true,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(68.h),
-            child: SafeArea(
-              child: BlocBuilder<ProfileCubit, ProfileState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    loading: () => const DriverHeaderShimmer(),
-                    success: (data) => DriverHeader(
-                      driverName: data.user?.firstName ?? "سائق",
-                      driverId: data.user?.id ?? 0,
-                    ),
-                    orElse: () => const DriverHeaderShimmer(),
-                  );
-                },
+        child: BlocBuilder<DriverNavCubit, int>(
+          bloc: getIt<DriverNavCubit>(),
+          builder: (context, currentIndex) {
+            return Scaffold(
+              extendBody: true,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(68.h),
+                child: SafeArea(
+                  child: BlocBuilder<ProfileCubit, ProfileState>(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        loading: () => const DriverHeaderShimmer(),
+                        success: (data) => DriverHeader(
+                          driverName: data.user?.firstName ?? "سائق",
+                          driverId: data.user?.id ?? 0,
+                        ),
+                        orElse: () => const DriverHeaderShimmer(),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-          ),
-          body: IndexedStack(index: _currentIndex, children: _screens),
-          bottomNavigationBar: DriverBottomNavBar(
-            currentIndex: _currentIndex,
-            onTap: (index) => setState(() => _currentIndex = index),
-          ),
+              body: IndexedStack(index: currentIndex, children: _screens),
+              bottomNavigationBar: DriverBottomNavBar(
+                currentIndex: currentIndex,
+                onTap: (index) => getIt<DriverNavCubit>().changeTab(index),
+              ),
+            );
+          },
         ),
       ),
     );

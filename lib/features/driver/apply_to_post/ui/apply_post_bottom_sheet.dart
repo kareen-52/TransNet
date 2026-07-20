@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/di/dependency_injection.dart';
+import 'package:graduation_progect/core/helpers/extensions.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/state_handlers/snackbar_helper.dart';
@@ -9,7 +10,6 @@ import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_
 import 'package:graduation_progect/features/driver/apply_to_post/logic/apply_to_post_state.dart';
 import 'package:graduation_progect/features/driver/driver_applied_posts/logic/driver_applied_posts_cubit.dart';
 import 'package:graduation_progect/features/driver/driver_posts/logic/driver_posts_cubit.dart';
-import 'package:graduation_progect/features/driver/home/ui/screens/driver_home_screen.dart';
 
 class ApplyPostBottomSheet extends StatefulWidget {
   final int postId;
@@ -97,15 +97,23 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
       listener: (context, state) {
         state.whenOrNull(
           success: (msg) {
-            Navigator.pop(context);
+        
+            final navigator = Navigator.of(context);
+
             SnackBarHelper.showSuccess(context, msg);
+            navigator.pop();
+
             try {
               getIt<DriverPostsCubit>().fetchSuitablePosts();
               getIt<DriverAppliedPostsCubit>().fetchAppliedPosts();
             } catch (_) {}
+
+        
+            getIt<DriverNavCubit>().changeTab(1);
+            navigator.popUntil((route) => route.isFirst);
           },
           error: (err) {
-            Navigator.pop(context);
+            context.pop();
             SnackBarHelper.showError(context, err.getAllErrorMessages());
           },
         );
@@ -278,12 +286,6 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
                               dateString,
                             );
                           }
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const DriverHomeScreen(),
-                            ),
-                          );
                         },
                       );
                     },
@@ -297,4 +299,10 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
       ),
     );
   }
+}
+
+class DriverNavCubit extends Cubit<int> {
+  DriverNavCubit() : super(0);
+
+  void changeTab(int index) => emit(index);
 }
