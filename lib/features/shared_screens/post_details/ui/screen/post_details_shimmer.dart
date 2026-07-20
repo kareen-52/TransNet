@@ -385,10 +385,13 @@ class PostDetailsShimmer extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          width: 120.w,
-                          height: 16.h,
-                          color: Colors.white,
+                        Flexible(
+                          child: Container(
+                            width: double.infinity,
+                            constraints: BoxConstraints(maxWidth: 120.w),
+                            height: 16.h,
+                            color: Colors.white,
+                          ),
                         ),
                         horizontalSpace(8),
                         Container(
@@ -419,10 +422,13 @@ class PostDetailsShimmer extends StatelessWidget {
                           ),
                         ),
                         horizontalSpace(8),
-                        Container(
-                          width: 60.w,
-                          height: 14.h,
-                          color: Colors.white,
+                        Flexible(
+                          child: Container(
+                            width: double.infinity,
+                            constraints: BoxConstraints(maxWidth: 60.w),
+                            height: 14.h,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
