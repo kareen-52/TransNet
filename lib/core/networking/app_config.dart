@@ -10,7 +10,7 @@ class AppConfig {
 
   static const String _baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://192.168.1.100:8000/',
+    defaultValue: 'https://transnet.up.railway.app/',
   );
 
   static const String _orsApiKey = String.fromEnvironment(
