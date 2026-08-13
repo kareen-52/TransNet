@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
-import 'package:graduation_progect/features/driver/profile/logic/profile_cubit.dart';
-import 'package:graduation_progect/features/driver/profile/logic/profile_state.dart';
+import 'package:graduation_progect/features/user/profile/logic/client_profile_cubit.dart';
+import 'package:graduation_progect/features/user/profile/logic/client_profile_state.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 class AppbarUserSection extends StatefulWidget {
@@ -28,7 +29,7 @@ class _AppbarUserSectionState extends State<AppbarUserSection> {
         ),
         horizontalSpace(8),
 
-        BlocBuilder<ProfileCubit, ProfileState>(
+        BlocBuilder<ClientProfileCubit, ClientProfileState>(
           builder: (context, state) {
             return state.maybeWhen(
               loading: () => _buildShimmerLoading(theme),

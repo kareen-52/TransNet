@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 enum FieldType { text, email, password, number, multiline }
 
 class AppTextFormField extends StatefulWidget {
+  final int? errorMaxLines;
   final String hintText;
   final FieldType fieldType;
   final TextEditingController? controller;
@@ -39,6 +40,7 @@ class AppTextFormField extends StatefulWidget {
     this.onFieldSubmitted,
     this.textInputAction,
     this.enabled = true,
+    this.errorMaxLines,
   });
 
   @override
@@ -51,7 +53,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   @override
   void initState() {
     super.initState();
-    isObscured = widget.fieldType == FieldType.password || (widget.obscureText ?? false);
+    isObscured =
+        widget.fieldType == FieldType.password || (widget.obscureText ?? false);
   }
 
   @override
@@ -84,20 +87,31 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       onFieldSubmitted: widget.onFieldSubmitted,
       keyboardType: keyboardType,
       obscureText: isObscured,
-      maxLines: widget.maxLines ?? (widget.fieldType == FieldType.multiline ? 3 : 1),
+      maxLines:
+          widget.maxLines ?? (widget.fieldType == FieldType.multiline ? 3 : 1),
       style: widget.textStyle,
-      textInputAction: widget.textInputAction ??
-          (widget.fieldType == FieldType.multiline ? TextInputAction.newline : TextInputAction.next),
+      textInputAction:
+          widget.textInputAction ??
+          (widget.fieldType == FieldType.multiline
+              ? TextInputAction.newline
+              : TextInputAction.next),
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: widget.contentPadding ??
+
+        errorMaxLines: widget.errorMaxLines,
+        contentPadding:
+            widget.contentPadding ??
             EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         hintText: widget.hintText,
         hintStyle: widget.hintStyle ?? Theme.of(context).textTheme.bodyMedium,
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.fieldType == FieldType.password
             ? IconButton(
-                icon: Icon(isObscured ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                icon: Icon(
+                  isObscured
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
                 onPressed: () => setState(() => isObscured = !isObscured),
               )
             : widget.suffixIcon,

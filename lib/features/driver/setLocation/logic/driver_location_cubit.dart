@@ -15,6 +15,26 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
 
   DriverLocationCubit(this._repo) : super(const DriverLocationState.initial());
 
+  Future<bool> ensureLocationPermissionGranted() async {
+  
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return false;
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+    
+      return false;
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    return permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always;
+  }
+
   void toggleLocationTracking(bool isAvailable) async {
     if (isAvailable) {
       await _startTracking();
@@ -24,14 +44,16 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
   }
 
   Future<void> _startTracking() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        return;
-      }
-    }
+   
+    final currentPosition = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
+    );
+    _sendLocationWithThrottle(
+      currentPosition.latitude,
+      currentPosition.longitude,
+    );
 
     _positionStream =
         Geolocator.getPositionStream(
@@ -43,12 +65,6 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
         ).listen((Position position) {
           _sendLocationWithThrottle(position.latitude, position.longitude);
         });
-
-    final currentPosition = await Geolocator.getCurrentPosition();
-    _sendLocationWithThrottle(
-      currentPosition.latitude,
-      currentPosition.longitude,
-    );
 
     _hourlyTimer?.cancel();
     _hourlyTimer = Timer.periodic(Duration(hours: 1), (timer) async {

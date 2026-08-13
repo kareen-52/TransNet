@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
+import 'package:graduation_progect/features/driver/setLocation/logic/driver_location_cubit.dart';
 
 class AvailabilityToggle extends StatefulWidget {
   final bool isAvailable;
@@ -33,17 +34,42 @@ class _AvailabilityToggleState extends State<AvailabilityToggle> {
 
   Future<void> _onToggle() async {
     if (_isLoading) return;
-    final cubit = context.read<DriverHomeCubit>();
+    final homeCubit = context.read<DriverHomeCubit>();
+
+    final aboutToTurnOn = !_localAvailable;
+
+    if (aboutToTurnOn) {
+      setState(() => _isLoading = true);
+
+      final locationCubit = context.read<DriverLocationCubit>();
+      final permissionGranted =
+          await locationCubit.ensureLocationPermissionGranted();
+
+      if (!permissionGranted) {
+        if (mounted) {
+          setState(() => _isLoading = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'لازم تفعّل صلاحية الموقع حتى تصير متاح لاستقبال الطلبات',
+              ),
+            ),
+          );
+        }
+
+        return;
+      }
+    }
 
     setState(() => _isLoading = true);
 
-    final success = await cubit.toggleAvailabilityWithOptimisticUpdate();
+    final success = await homeCubit.toggleAvailabilityWithOptimisticUpdate();
 
     if (mounted) {
       setState(() {
         _isLoading = false;
         if (success) {
-          _localAvailable = cubit.isAvailable;
+          _localAvailable = homeCubit.isAvailable;
           print(
             "✅ تم تغيير الحالة بنجاح: ${_localAvailable ? 'متاح' : 'غير متاح'}",
           );

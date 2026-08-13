@@ -6,6 +6,7 @@ import 'package:graduation_progect/core/networking/api_constants.dart';
 import 'package:graduation_progect/core/networking/dio_factory.dart';
 import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/logic/active_driver_shipments_cubit.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/driver/instant_orders/logic/instant_orders_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/logout_dialog.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/cubit/shipment_details_cubit.dart';
@@ -85,15 +86,13 @@ class LogoutService {
     await _performLogout();
   }
 
-
-
   static Future<void> _performLogout() async {
     try {
       await NotificationService.handleLogout();
     } catch (_) {}
 
     ShipmentDetailsCubit.clearCurrentUserCache();
-    
+
     try {
       if (getIt.isRegistered<HomeCubit>()) {
         getIt.resetLazySingleton<HomeCubit>();
@@ -106,6 +105,9 @@ class LogoutService {
       }
       if (getIt.isRegistered<InstantOrdersCubit>()) {
         getIt.resetLazySingleton<InstantOrdersCubit>();
+      }
+      if (getIt.isRegistered<DriverNavCubit>()) {
+        getIt.resetLazySingleton<DriverNavCubit>();
       }
     } catch (_) {}
 

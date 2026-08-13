@@ -36,6 +36,10 @@ class ProfileDriverScreen extends StatelessWidget {
           );
         },
         child: BlocBuilder<ProfileCubit, ProfileState>(
+          buildWhen: (previous, current) => current.maybeWhen(
+            editSuccess: (_) => false,
+            orElse: () => true,
+          ),
           builder: (context, state) {
             return state.maybeWhen(
               loading: () => const LoadingStateWidget(),

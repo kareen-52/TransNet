@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/responsive/responsive_layout.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
+import 'package:graduation_progect/core/widgets/state_handlers/loading_state_widget.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/features/driver/profile/ui/widgets/driver_profile_header.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/logout_dialog.dart';
@@ -18,6 +19,10 @@ class ProfileDriverBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
+    if (profileData.user == null) {
+      return const LoadingStateWidget();
+    }
     return context.isTablet
         ? _TabletDriverProfile(profileData: profileData)
         : _MobileDriverProfile(profileData: profileData);

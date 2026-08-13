@@ -120,6 +120,10 @@ class _MobileBodyState extends State<MobileBody> with WidgetsBindingObserver {
                 preferredSize: Size.fromHeight(68.h),
                 child: SafeArea(
                   child: BlocBuilder<ProfileCubit, ProfileState>(
+                    buildWhen: (previous, current) => current.maybeWhen(
+                      editSuccess: (_) => false,
+                      orElse: () => true,
+                    ),
                     builder: (context, state) {
                       return state.maybeWhen(
                         loading: () => const DriverHeaderShimmer(),

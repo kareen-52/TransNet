@@ -136,23 +136,33 @@ class _OtpScreenState extends State<OtpScreen> {
     final isVerifyLoading = isLoading && !isResending;
     final bool isTablet = context.isTablet;
 
-  
     if (!isTablet) {
       return SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             children: [
-              verticalSpace(20),
-              OtpHeader(email: widget.email),
-              verticalSpace(40),
-              OtpPinInput(controller: pinController, enabled: !isLoading),
-              verticalSpace(20),
-              OtpTimer(
-                onResend: () => _resendCode(context),
-                isResending: isResending,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      verticalSpace(20),
+                      OtpHeader(email: widget.email),
+                      verticalSpace(40),
+                      OtpPinInput(
+                        controller: pinController,
+                        enabled: !isLoading,
+                      ),
+                      verticalSpace(20),
+                      OtpTimer(
+                        onResend: () => _resendCode(context),
+                        isResending: isResending,
+                      ),
+                      verticalSpace(20),
+                    ],
+                  ),
+                ),
               ),
-              const Spacer(),
               AppTextButton(
                 text: 'تحقق والمتابعة',
                 onPressed: isVerifyLoading ? null : () => _verify(context),

@@ -4,6 +4,7 @@ import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/core/helpers/constants.dart';
 import 'package:graduation_progect/core/helpers/sharedpreference.dart';
 import 'package:graduation_progect/core/responsive/responsive_layout.dart';
+import 'package:graduation_progect/features/driver/apply_to_post/ui/apply_post_bottom_sheet.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/mobile_body.dart';
 import 'package:graduation_progect/features/driver/home/ui/screens/tablet_body.dart';
@@ -27,6 +28,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   void initState() {
     super.initState();
     _driverIdFuture = _getDriverId();
+    //  getIt<DriverNavCubit>().changeTab(0);
   }
 
   Future<int> _getDriverId() async {

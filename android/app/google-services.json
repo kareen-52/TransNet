@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:565595319377:android:216ca8c59e03bae1135c70",
+        "mobilesdk_app_id": "1:565595319377:android:d70d2f3317b189d2135c70",
         "android_client_info": {
-          "package_name": "com.example.graduation_progect"
+          "package_name": "com.transnet.app"
         }
       },
       "oauth_client": [],

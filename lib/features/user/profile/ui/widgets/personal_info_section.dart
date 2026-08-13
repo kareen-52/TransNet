@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/features/driver/profile/data/models/profile_response.dart';
 import 'package:graduation_progect/features/shared_screens/profile_widgets/shared_profile_dialogs.dart';
+import 'package:graduation_progect/features/user/profile/logic/client_profile_cubit.dart';
 import 'profile_client_info_card.dart';
 
 class PersonalInfoSection extends StatelessWidget {
@@ -19,8 +21,20 @@ class PersonalInfoSection extends StatelessWidget {
         verticalSpace(12),
         ProfileClientInfoCard(
           user: user,
-          onEditPhone: () => SharedProfileDialogs.showEditPhoneDialog(context, user),
-          onEditName: () => SharedProfileDialogs.showEditNameDialog(context, user),
+          onEditPhone: () => SharedProfileDialogs.showEditPhoneDialog(
+            context,
+            user,
+            onSave: ({required phone, fName, lName}) => context
+                .read<ClientProfileCubit>()
+                .updateProfile(phone: phone, fName: fName, lName: lName),
+          ),
+          onEditName: () => SharedProfileDialogs.showEditNameDialog(
+            context,
+            user,
+            onSave: ({required phone, fName, lName}) => context
+                .read<ClientProfileCubit>()
+                .updateProfile(phone: phone, fName: fName, lName: lName),
+          ),
         ),
       ],
     );

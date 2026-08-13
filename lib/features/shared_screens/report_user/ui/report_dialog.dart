@@ -109,7 +109,7 @@ class _ReportDialogState extends State<ReportDialog> {
                 verticalSpace(8),
                 AppTextFormField(
                   controller: _typeController,
-                  hintText: "مثال: تأخير التوصيل, تضرر الأغراض...",
+                  hintText: "مثال: تأخير التوصيل, سوء معاملة...",
                 ),
                 verticalSpace(16),
 
