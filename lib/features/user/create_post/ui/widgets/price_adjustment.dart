@@ -182,7 +182,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                     Expanded(
                       flex: 1,
                       child: AppTextButton(
-                        text: 'نشر بالسعر المقترح',
+                        text: 'نشر بالنطاق المقترح',
                         textStyle: Theme.of(context).textTheme.bodyLarge
                             ?.copyWith(
                               fontSize: 14.sp,
@@ -214,7 +214,7 @@ class _PriceAdjustmentScreenState extends State<PriceAdjustmentScreen> {
                     Expanded(
                       flex: 1,
                       child: AppTextButton(
-                        text: 'نشر بالسعر المعدّل',
+                        text: 'نشر بالنطاق المعدّل',
                         textStyle: Theme.of(context).textTheme.bodyLarge
                             ?.copyWith(
                               fontSize: 14.sp,

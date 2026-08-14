@@ -149,9 +149,11 @@ class PostDetailsScreen extends StatelessWidget {
       orElse: () => null,
     );
 
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 40.h),
+      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h + bottomSafeArea),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

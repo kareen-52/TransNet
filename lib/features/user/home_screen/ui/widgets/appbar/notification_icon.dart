@@ -25,7 +25,9 @@ class NotificationIcon extends StatelessWidget {
 
         Navigator.pushNamed(context, Routes.getAllNotifications).then((_) {
           if (context.mounted) {
-            context.read<NotificationCubit>().fetchUnreadCount();
+            context.read<NotificationCubit>().fetchUnreadCount(
+                  forceRefresh: true,
+                );
           }
         });
       },

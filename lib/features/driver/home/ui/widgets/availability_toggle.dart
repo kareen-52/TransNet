@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:graduation_progect/features/driver/home/logic/home_driver_cubit.dart';
 import 'package:graduation_progect/features/driver/setLocation/logic/driver_location_cubit.dart';
 
@@ -42,21 +43,13 @@ class _AvailabilityToggleState extends State<AvailabilityToggle> {
       setState(() => _isLoading = true);
 
       final locationCubit = context.read<DriverLocationCubit>();
-      final permissionGranted =
-          await locationCubit.ensureLocationPermissionGranted();
+      final result = await locationCubit.ensureLocationPermissionGranted();
 
-      if (!permissionGranted) {
+      if (result != LocationPermissionCheckResult.granted) {
         if (mounted) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'لازم تفعّل صلاحية الموقع حتى تصير متاح لاستقبال الطلبات',
-              ),
-            ),
-          );
+          await _handlePermissionFailure(result);
         }
-
         return;
       }
     }
@@ -70,11 +63,79 @@ class _AvailabilityToggleState extends State<AvailabilityToggle> {
         _isLoading = false;
         if (success) {
           _localAvailable = homeCubit.isAvailable;
-          print(
-            "✅ تم تغيير الحالة بنجاح: ${_localAvailable ? 'متاح' : 'غير متاح'}",
-          );
         }
       });
+    }
+  }
+
+  Future<void> _handlePermissionFailure(
+    LocationPermissionCheckResult result,
+  ) async {
+    switch (result) {
+      case LocationPermissionCheckResult.serviceDisabled:
+        await showDialog(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: const Text('خدمة الموقع مطفية'),
+            content: const Text(
+              'لازم تفعّل خدمة الموقع (GPS) بجهازك حتى تقدر تصير متاح '
+              'لاستقبال الطلبات.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('إلغاء'),
+              ),
+              FilledButton(
+                onPressed: () async {
+                  Navigator.pop(dialogContext);
+                  await Geolocator.openLocationSettings();
+                },
+                child: const Text('فتح إعدادات الموقع'),
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case LocationPermissionCheckResult.deniedForever:
+        await showDialog(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: const Text('صلاحية الموقع مرفوضة'),
+            content: const Text(
+              'رفضت صلاحية الموقع بشكل نهائي. لازم تفعّلها يدوياً من '
+              'إعدادات التطبيق حتى تقدر تصير متاح لاستقبال الطلبات.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('إلغاء'),
+              ),
+              FilledButton(
+                onPressed: () async {
+                  Navigator.pop(dialogContext);
+                  await Geolocator.openAppSettings();
+                },
+                child: const Text('فتح إعدادات التطبيق'),
+              ),
+            ],
+          ),
+        );
+        break;
+
+      case LocationPermissionCheckResult.denied:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'لازم توافق على صلاحية الموقع حتى تصير متاح لاستقبال الطلبات',
+            ),
+          ),
+        );
+        break;
+
+      case LocationPermissionCheckResult.granted:
+        break;
     }
   }
 

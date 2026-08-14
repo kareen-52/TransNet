@@ -33,7 +33,11 @@ class NotificationsSection extends StatelessWidget {
               onTap: () {
 
                 Navigator.pushNamed(context, Routes.getAllNotifications).then((_) {
-                  if (context.mounted) context.read<NotificationCubit>().fetchUnreadCount();
+                  if (context.mounted) {
+                    context.read<NotificationCubit>().fetchUnreadCount(
+                          forceRefresh: true,
+                        );
+                  }
                 });
               },
             ),

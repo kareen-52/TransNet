@@ -6,6 +6,13 @@ import 'package:graduation_progect/features/driver/setLocation/data/models/drive
 import 'package:graduation_progect/features/driver/setLocation/data/repo/driver_location_repo.dart';
 import 'driver_location_state.dart';
 
+enum LocationPermissionCheckResult {
+  granted,
+  serviceDisabled,
+  deniedForever,
+  denied,
+}
+
 class DriverLocationCubit extends Cubit<DriverLocationState> {
   final DriverLocationRepo _repo;
   StreamSubscription<Position>? _positionStream;
@@ -15,24 +22,36 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
 
   DriverLocationCubit(this._repo) : super(const DriverLocationState.initial());
 
-  Future<bool> ensureLocationPermissionGranted() async {
-  
+  /// يتحقق من صلاحية الموقع فقط (بدون بدء أي تتبع)، ويطلبها إذا كانت مرفوضة.
+  /// يجب استدعاؤها ومعرفة نتيجتها *قبل* تفعيل حالة "متاح"،
+  /// حتى لا يصبح السائق متاحاً بدون صلاحية موقع فعلية.
+  Future<LocationPermissionCheckResult> ensureLocationPermissionGranted() async {
+    // تحقق أولاً أن خدمة الموقع (GPS) نفسها مفعّلة على الجهاز
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return false;
+    if (!serviceEnabled) return LocationPermissionCheckResult.serviceDisabled;
 
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.deniedForever) {
-    
-      return false;
+      // المستخدم رفض نهائياً - النظام ما بيسمح بديالوج تاني، لازم إعدادات التطبيق
+      return LocationPermissionCheckResult.deniedForever;
     }
 
     if (permission == LocationPermission.denied) {
+      // هون رح يطلع ديالوج النظام الأصلي (Allow/Deny) تلقائياً
       permission = await Geolocator.requestPermission();
     }
 
-    return permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always;
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      return LocationPermissionCheckResult.granted;
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return LocationPermissionCheckResult.deniedForever;
+    }
+
+    return LocationPermissionCheckResult.denied;
   }
 
   void toggleLocationTracking(bool isAvailable) async {
@@ -44,7 +63,9 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
   }
 
   Future<void> _startTracking() async {
-   
+    // ملاحظة: الصلاحية يُفترض أنها متحقّقة مسبقاً عبر ensureLocationPermissionGranted()
+    // (تُستدعى من AvailabilityToggle قبل تفعيل "متاح"). هنا فقط نبدأ التتبع الفعلي،
+    // ونطلب الموقع الحالي *مرة واحدة فقط* لتفادي ظهور Dialog دقة الموقع مرتين.
     final currentPosition = await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,

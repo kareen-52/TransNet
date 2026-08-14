@@ -32,14 +32,16 @@ class NotificationRepo {
   }
 
 
-  Future<ApiResult<int>> getNewNotificationsCount() async {
+  Future<ApiResult<int>> getNewNotificationsCount({
+    bool forceRefresh = false,
+  }) async {
     if (!ConnectivityHelper.isOnline) {
       final cached = HiveCacheService.getCachedNotificationCount();
       if (cached != null) return ApiResult.success(cached);
       return ApiResult.success(0);
     }
 
-    if (HiveCacheService.isNotifCountFresh()) {
+    if (!forceRefresh && HiveCacheService.isNotifCountFresh()) {
       final cached = HiveCacheService.getCachedNotificationCount();
       if (cached != null) return ApiResult.success(cached);
     }

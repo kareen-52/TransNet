@@ -94,7 +94,9 @@ class NotificationService {
       final data = message.data;
       final String title = notification?.title ?? data['title'] ?? '';
 
-      if (data.isNotEmpty) {
+      final bool isGenuineInstantOrder = title.contains('شحنة جديد');
+
+      if (data.isNotEmpty && isGenuineInstantOrder) {
         instantOrderStreamController.sink.add(message.data);
       }
 

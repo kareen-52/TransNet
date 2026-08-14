@@ -40,7 +40,11 @@ class SharedSettingsSection extends StatelessWidget {
                       context,
                       Routes.getAllNotifications,
                     ).then((_) {
-                      if (context.mounted) context.read<NotificationCubit>().fetchUnreadCount();
+                      if (context.mounted) {
+                        context.read<NotificationCubit>().fetchUnreadCount(
+                              forceRefresh: true,
+                            );
+                      }
                     }),
               ),
               const Divider(height: 1, indent: 70, endIndent: 60),

@@ -287,12 +287,14 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         ? AppColors.darkTextSecondary
         : AppColors.lightTextSecondary;
 
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+
     return Container(
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
       ),
-      padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, 32.h),
+      padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, bottomSafeArea),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

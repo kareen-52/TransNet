@@ -15,9 +15,11 @@ class NotificationCubit extends Cubit<NotificationState> {
 
 
 
-  Future<void> fetchUnreadCount() async {
+  Future<void> fetchUnreadCount({bool forceRefresh = false}) async {
     if (!ConnectivityHelper.isOnline) return; 
-    final result = await _repo.getNewNotificationsCount();
+    final result = await _repo.getNewNotificationsCount(
+      forceRefresh: forceRefresh,
+    );
     if (isClosed) return;
     result.when(
       success: (count) {

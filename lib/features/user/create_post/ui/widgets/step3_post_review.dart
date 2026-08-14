@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
-import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/shadow_card.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
@@ -52,32 +51,11 @@ class Step3PostReview extends StatelessWidget {
                 ],
               ),
               verticalSpace(16),
-              // if (cubit.insurance)
-              //   Container(
-              //     padding: EdgeInsets.all(16.w),
-              //     decoration: BoxDecoration(
-              //       color: theme.colorScheme.primary.withOpacity(0.2),
-              //       borderRadius: BorderRadius.circular(16.r),
-              //     ),
-              //     child: Row(
-              //       children: [
-              //         Icon(Icons.security, color: theme.colorScheme.primary),
-              //         horizontalSpace(8),
-              //         Text(
-              //           'خدمة التأمين على الشحنة مفعلة',
-              //           style: theme.textTheme.labelMedium?.copyWith(
-              //             color: theme.colorScheme.primary,
-              //             fontWeight: FontWeightHelper.bold,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // verticalSpace(8),
+  
               Text(
                 'أقصى موعد للتوصيل: ${cubit.lastDate?.year}/${cubit.lastDate?.month}/${cubit.lastDate?.day}',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
+                  color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
