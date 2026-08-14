@@ -76,10 +76,10 @@ class _AvailabilityToggleState extends State<AvailabilityToggle> {
         await showDialog(
           context: context,
           builder: (dialogContext) => AlertDialog(
-            title: const Text('خدمة الموقع مطفية'),
+            title: const Text('يجب تشغيل خدمة الموقع'),
             content: const Text(
-              'لازم تفعّل خدمة الموقع (GPS) بجهازك حتى تقدر تصير متاح '
-              'لاستقبال الطلبات.',
+              'يجب ان تقوم بتفعيل خدمة الموقع (GPS) على جهازك لكي تصبح قادر على تغيير حالتك الى متاح وتبدأ '
+              'باستقبال الطلبات الفورية.',
             ),
             actions: [
               TextButton(
