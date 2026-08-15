@@ -43,6 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     AppTextFormField(
                       controller: cubit.firstNameController,
                       hintText: 'الاسم',
+                      errorMaxLines: 2,
                       enabled: !isLoading,
                       prefixIcon: const Icon(
                         Icons.person_outline,
@@ -71,6 +72,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     AppTextFormField(
                       controller: cubit.lastNameController,
                       hintText: 'العائلة',
+                      errorMaxLines: 2,
                       enabled: !isLoading,
                       prefixIcon: const Icon(
                         Icons.person_outline,
@@ -222,7 +224,8 @@ class TermsAndConditionsCheckbox extends StatefulWidget {
   });
 
   @override
-  State<TermsAndConditionsCheckbox> createState() => _TermsAndConditionsCheckboxState();
+  State<TermsAndConditionsCheckbox> createState() =>
+      _TermsAndConditionsCheckboxState();
 }
 
 class _TermsAndConditionsCheckboxState
@@ -234,15 +237,10 @@ class _TermsAndConditionsCheckboxState
   void initState() {
     super.initState();
     _termsRecognizer = TapGestureRecognizer()
-      ..onTap = () => Navigator.pushNamed(
-            context,
-            Routes.termsAndConditionsScreen,
-          );
+      ..onTap = () =>
+          Navigator.pushNamed(context, Routes.termsAndConditionsScreen);
     _privacyRecognizer = TapGestureRecognizer()
-      ..onTap = () => Navigator.pushNamed(
-            context,
-            Routes.privacyPolicyScreen,
-          );
+      ..onTap = () => Navigator.pushNamed(context, Routes.privacyPolicyScreen);
   }
 
   @override
