@@ -58,14 +58,15 @@ void main() async {
   );
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (_) => MyGraduationProject(
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (_) => 
+      MyGraduationProject(
         appRouter: AppRouter(),
         initialTheme: _savedTheme,
         startRoute: _initialRoute,
       ),
-    ),
+    // ),
   );
 }
 

@@ -72,7 +72,7 @@ class ShippingSubmitButton extends StatelessWidget {
           ),
 
           noActiveShipment: () => AppTextButton(
-            text: 'بدء طلب شحن جديد',
+            text: 'طلب شحن فوري',
             backgroundColor: theme.colorScheme.secondary,
             textStyle: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSecondary,
@@ -104,7 +104,7 @@ class ShippingSubmitButton extends StatelessWidget {
           
 
           orElse: () => AppTextButton(
-            text: 'بدء طلب شحن جديد',
+            text: 'طلب شحن فوري',
             backgroundColor: theme.colorScheme.secondary,
             textStyle: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSecondary,

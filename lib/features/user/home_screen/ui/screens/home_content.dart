@@ -12,7 +12,13 @@ import 'package:graduation_progect/features/user/active_orders/logic/active_orde
 
 class HomeContent extends StatelessWidget {
   final bool isTablet;
-  const HomeContent({super.key, required this.isTablet});
+  final VoidCallback onNavigateToAds;
+
+  const HomeContent({
+    super.key,
+    required this.isTablet,
+    required this.onNavigateToAds,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,10 @@ class HomeContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const ShippingCard(),
+                  ShippingCard(
+                    isTablet: isTablet,
+                    onNavigateToAds: onNavigateToAds,
+                  ),
 
                   verticalSpace(isTablet ? 48 : 32),
 

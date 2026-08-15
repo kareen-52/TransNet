@@ -16,11 +16,14 @@ class TabletBody extends StatefulWidget {
 class _TabletBodyState extends State<TabletBody> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeContent(isTablet: true),
-    ClientPostsScreen(),
-    MyOrdersScreen(),
-    ProfileClientScreen(),
+  List<Widget> get _screens => [
+    HomeContent(
+      isTablet: true,
+      onNavigateToAds: () => setState(() => _currentIndex = 1),
+    ),
+    const ClientPostsScreen(),
+    const MyOrdersScreen(),
+    const ProfileClientScreen(),
   ];
 
   @override

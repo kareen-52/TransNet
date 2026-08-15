@@ -19,11 +19,14 @@ class MobileBody extends StatefulWidget {
 class _MobileBodyState extends State<MobileBody> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeContent(isTablet: false),
-    ClientPostsScreen(),
-    MyOrdersScreen(),
-    ProfileClientScreen(),
+  List<Widget> get _screens => [
+    HomeContent(
+      isTablet: false,
+      onNavigateToAds: () => setState(() => _currentIndex = 1),
+    ),
+    const ClientPostsScreen(),
+    const MyOrdersScreen(),
+    const ProfileClientScreen(),
   ];
 
   @override

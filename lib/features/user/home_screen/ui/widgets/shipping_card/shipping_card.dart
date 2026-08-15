@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/features/user/home_screen/ui/widgets/shipping_card/scheduled_shipment_button.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/widgets/shipping_card/shipping_card_header.dart';
 import 'package:graduation_progect/features/user/home_screen/ui/widgets/shipping_card/shipping_submit_button.dart';
 
-
 class ShippingCard extends StatelessWidget {
-  const ShippingCard({super.key,});
+  final bool isTablet;
+  final VoidCallback onNavigateToAds;
+
+  const ShippingCard({
+    super.key,
+    required this.isTablet,
+    required this.onNavigateToAds,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +38,30 @@ class ShippingCard extends StatelessWidget {
         children: [
           const ShippingCardHeader(),
           verticalSpace(24),
-          const ShippingSubmitButton(),
+          _buildActionButtons(),
         ],
       ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    if (isTablet) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Expanded(child: ShippingSubmitButton()),
+          horizontalSpace(16),
+          Expanded(child: ScheduledShipmentButton(onTap: onNavigateToAds)),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        const ShippingSubmitButton(),
+        verticalSpace(10),
+        ScheduledShipmentButton(onTap: onNavigateToAds),
+      ],
     );
   }
 }
