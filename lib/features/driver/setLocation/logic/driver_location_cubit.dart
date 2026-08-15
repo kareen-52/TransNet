@@ -16,29 +16,31 @@ enum LocationPermissionCheckResult {
 class DriverLocationCubit extends Cubit<DriverLocationState> {
   final DriverLocationRepo _repo;
   StreamSubscription<Position>? _positionStream;
+  StreamSubscription<ServiceStatus>? _serviceStatusStream;
   Timer? _hourlyTimer;
   DateTime? _lastSentTime;
   static const Duration _throttleDuration = Duration(seconds: 2);
 
+  final StreamController<void> _locationServiceDisabledController = StreamController<void>.broadcast();
+  Stream<void> get onLocationServiceDisabled => _locationServiceDisabledController.stream;
+
+
   DriverLocationCubit(this._repo) : super(const DriverLocationState.initial());
 
-  /// يتحقق من صلاحية الموقع فقط (بدون بدء أي تتبع)، ويطلبها إذا كانت مرفوضة.
-  /// يجب استدعاؤها ومعرفة نتيجتها *قبل* تفعيل حالة "متاح"،
-  /// حتى لا يصبح السائق متاحاً بدون صلاحية موقع فعلية.
+
   Future<LocationPermissionCheckResult> ensureLocationPermissionGranted() async {
-    // تحقق أولاً أن خدمة الموقع (GPS) نفسها مفعّلة على الجهاز
+
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return LocationPermissionCheckResult.serviceDisabled;
 
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.deniedForever) {
-      // المستخدم رفض نهائياً - النظام ما بيسمح بديالوج تاني، لازم إعدادات التطبيق
+
       return LocationPermissionCheckResult.deniedForever;
     }
 
     if (permission == LocationPermission.denied) {
-      // هون رح يطلع ديالوج النظام الأصلي (Allow/Deny) تلقائياً
       permission = await Geolocator.requestPermission();
     }
 
@@ -63,9 +65,6 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
   }
 
   Future<void> _startTracking() async {
-    // ملاحظة: الصلاحية يُفترض أنها متحقّقة مسبقاً عبر ensureLocationPermissionGranted()
-    // (تُستدعى من AvailabilityToggle قبل تفعيل "متاح"). هنا فقط نبدأ التتبع الفعلي،
-    // ونطلب الموقع الحالي *مرة واحدة فقط* لتفادي ظهور Dialog دقة الموقع مرتين.
     final currentPosition = await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -92,6 +91,21 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
       final pos = await Geolocator.getCurrentPosition();
       _sendLocationWithThrottle(pos.latitude, pos.longitude);
     });
+    _serviceStatusStream?.cancel();
+    _serviceStatusStream = Geolocator.getServiceStatusStream().listen((
+      ServiceStatus status,
+    ) {
+      if (status == ServiceStatus.disabled) {
+        _onLocationServiceDisabled();
+      }
+    });
+  }
+
+  Future<void> _onLocationServiceDisabled() async {
+    await _stopTracking();
+    if (!_locationServiceDisabledController.isClosed) {
+      _locationServiceDisabledController.add(null);
+    }
   }
 
   Future<void> _sendLocationWithThrottle(double lat, double lng) async {
@@ -117,6 +131,8 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
   Future<void> _stopTracking() async {
     await _positionStream?.cancel();
     _positionStream = null;
+    await _serviceStatusStream?.cancel();
+    _serviceStatusStream = null;
     _hourlyTimer?.cancel();
     _hourlyTimer = null;
   }
@@ -124,7 +140,9 @@ class DriverLocationCubit extends Cubit<DriverLocationState> {
   @override
   Future<void> close() {
     _positionStream?.cancel();
+    _serviceStatusStream?.cancel();
     _hourlyTimer?.cancel();
+    _locationServiceDisabledController.close();
     return super.close();
   }
 }

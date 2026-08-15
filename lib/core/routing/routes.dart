@@ -1,5 +1,4 @@
 class Routes {
-
   static const String onboardingScreens = '/onboardingScreens';
   static const String login = '/login';
   static const String register = '/register';
@@ -13,10 +12,10 @@ class Routes {
   static const String enterEmailScreen = '/enterEmailScreen';
 
   static const String createShipment = '/createShipment';
-  
+
   static const String mapScreen = '/mapScreen';
   static const String availableDriversScreen = '/availableDriversScreen';
-   
+
   static const String profileClientScreen = '/profileClientScreen';
   static const String profileDriverScreen = '/profileDriverScreen';
 
@@ -33,5 +32,7 @@ class Routes {
 
   static const String vehicleDetailsScreen = '/vehicleDetailsScreen';
 
+  static const String privacyPolicyScreen = '/privacyPolicyScreen';
+  static const String termsAndConditionsScreen = '/termsAndConditionsScreen';
 
 }

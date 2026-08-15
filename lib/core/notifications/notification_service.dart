@@ -138,7 +138,6 @@ class NotificationService {
 
         try {
           if (title.contains('استلام') || title.contains('تم تأكيد')) {
-            // getIt<HomeCubit>().checkActiveShipment();
             getIt<ActiveDriverShipmentsCubit>().silentRefresh();
             getIt<ActiveOrdersCubit>().silentRefresh();
           }

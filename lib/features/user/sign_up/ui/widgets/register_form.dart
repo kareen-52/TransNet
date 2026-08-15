@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/helpers/app_regex.dart';
 import 'package:graduation_progect/core/helpers/spacing.dart';
+import 'package:graduation_progect/core/routing/routes.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/core/widgets/app_text_form_field.dart';
@@ -209,7 +211,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-class TermsAndConditionsCheckbox extends StatelessWidget {
+class TermsAndConditionsCheckbox extends StatefulWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
@@ -218,6 +220,37 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
     required this.value,
     required this.onChanged,
   });
+
+  @override
+  State<TermsAndConditionsCheckbox> createState() => _TermsAndConditionsCheckboxState();
+}
+
+class _TermsAndConditionsCheckboxState
+    extends State<TermsAndConditionsCheckbox> {
+  late final TapGestureRecognizer _termsRecognizer;
+  late final TapGestureRecognizer _privacyRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _termsRecognizer = TapGestureRecognizer()
+      ..onTap = () => Navigator.pushNamed(
+            context,
+            Routes.termsAndConditionsScreen,
+          );
+    _privacyRecognizer = TapGestureRecognizer()
+      ..onTap = () => Navigator.pushNamed(
+            context,
+            Routes.privacyPolicyScreen,
+          );
+  }
+
+  @override
+  void dispose() {
+    _termsRecognizer.dispose();
+    _privacyRecognizer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +263,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
             width: 24.w,
             height: 24.w,
             child: Checkbox(
-              value: value,
+              value: widget.value,
               fillColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.selected)) {
                   return Theme.of(context).colorScheme.primary;
@@ -244,7 +277,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
               side: BorderSide(color: AppColors.lightGray, width: 1.5.w),
               onChanged: (newValue) {
                 if (newValue != null) {
-                  onChanged(newValue);
+                  widget.onChanged(newValue);
                 }
               },
             ),
@@ -269,7 +302,9 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                     text: 'الشروط والأحكام ',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
+                      decoration: TextDecoration.underline,
                     ),
+                    recognizer: _termsRecognizer,
                   ),
                   TextSpan(
                     text: 'و ',
@@ -281,7 +316,9 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                     text: 'سياسة الخصوصية',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
+                      decoration: TextDecoration.underline,
                     ),
+                    recognizer: _privacyRecognizer,
                   ),
                 ],
               ),

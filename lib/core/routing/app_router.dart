@@ -11,6 +11,8 @@ import 'package:graduation_progect/features/driver/profile/ui/screen/profile_dri
 import 'package:graduation_progect/features/shared_screens/change_password/logic/forgot_password_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/ui/screen/enter_email_screen.dart';
 import 'package:graduation_progect/features/shared_screens/change_password/ui/screen/reset_password_screen.dart';
+import 'package:graduation_progect/features/shared_screens/legal/screens/privacy_policy_screen.dart';
+import 'package:graduation_progect/features/shared_screens/legal/screens/terms_and_conditions_screen.dart';
 import 'package:graduation_progect/features/shared_screens/login/logic/login_cubit.dart';
 import 'package:graduation_progect/features/shared_screens/map/ui/screen/pick_location_screen.dart';
 import 'package:graduation_progect/features/shared_screens/notifications/ui/screens/notifications_screen.dart';
@@ -185,6 +187,23 @@ class AppRouter {
         final vehicle = arguments as VehicleTypeModel;
         return MaterialPageRoute(
           builder: (_) => VehicleDetailsScreen(vehicle: vehicle),
+        );
+
+      
+      case Routes.privacyPolicyScreen:
+        return MaterialPageRoute(
+          builder: (_) => const PrivacyPolicyScreen(
+            // title: 'سياسة الخصوصية',
+            // htmlAssetPath: 'assets/legal/privacy_policy.html',
+          ),
+        );
+
+      case Routes.termsAndConditionsScreen:
+        return MaterialPageRoute(
+          builder: (_) => const TermsAndConditionsScreen(
+            // title: 'الشروط والأحكام',
+            // htmlAssetPath: 'assets/legal/terms.html',
+          ),
         );
 
 

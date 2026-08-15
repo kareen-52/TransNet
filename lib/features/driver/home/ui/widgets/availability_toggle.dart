@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,11 +18,51 @@ class AvailabilityToggle extends StatefulWidget {
 class _AvailabilityToggleState extends State<AvailabilityToggle> {
   late bool _localAvailable;
   bool _isLoading = false;
+  StreamSubscription<void>? _serviceDisabledSub;
 
   @override
   void initState() {
     super.initState();
     _localAvailable = widget.isAvailable;
+    _serviceDisabledSub = context
+        .read<DriverLocationCubit>()
+        .onLocationServiceDisabled
+        .listen((_) => _handleLocationServiceDisabled());
+  }
+
+  @override
+  void dispose() {
+    _serviceDisabledSub?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _handleLocationServiceDisabled() async {
+    if (!mounted || !_localAvailable) return;
+    final homeCubit = context.read<DriverHomeCubit>();
+    setState(() => _isLoading = true);
+    await homeCubit.toggleAvailability();
+    if (!mounted) return;
+    setState(() {
+      _isLoading = false;
+      _localAvailable = homeCubit.isAvailable;
+    });
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('تم إيقاف خدمة الموقع'),
+        content: const Text(
+          'تم ايقاف تشغيل خدمة الموقع (GPS) فتم تحويل حالتك إلى "غير متاح" تلقائياً.\n\n'
+          'فعّل خدمة الموقع من جديد بعد ذلك اعد تغيير حالتك الى "متاح" لاستقبال الطلبات الفورية.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('حسناً'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -86,7 +127,7 @@ class _AvailabilityToggleState extends State<AvailabilityToggle> {
                 onPressed: () => Navigator.pop(dialogContext),
                 child: const Text('إلغاء'),
               ),
-              FilledButton(
+              TextButton(
                 onPressed: () async {
                   Navigator.pop(dialogContext);
                   await Geolocator.openLocationSettings();
