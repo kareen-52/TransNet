@@ -239,7 +239,7 @@ class PostDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final isFinished = data.isFinished;
     final statusColor = isFinished ? Colors.green : theme.colorScheme.primary;
-    final statusText = isFinished ? 'مكتمل - تم التوصيل' : 'مفتوح - بانتظار العروض';
+    final statusText = isFinished ? 'منتهي' : 'مفتوح - بانتظار العروض';
     final statusIcon = isFinished ? Icons.check_circle_rounded : Icons.pending_rounded;
 
     return Container(

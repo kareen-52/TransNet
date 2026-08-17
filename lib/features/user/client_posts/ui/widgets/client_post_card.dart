@@ -150,7 +150,7 @@ class _ClientPostCardState extends State<ClientPostCard> {
                         verticalSpace(4),
                         Text(
                           isFinished
-                              ? 'مكتمل - تم التوصيل'
+                              ? 'منتهي'
                               : 'مفتوح - بانتظار العروض',
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: statusColor,
