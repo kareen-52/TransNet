@@ -12,9 +12,9 @@ class AppColors {
   static const Color secondaryDark = Color(0xFF7C2D12);
 
   // LIGHT MODE
-  static const Color lightBackground = Color(0xFFF1F5F9);   // 0xFFF8FAFC
+  static const Color lightBackground = Color(0xFFF1F5F9);  
   static const Color lightSurface = Color(0xFFFFFFFF);
-  static const Color lightBorder = Color(0xFFE2E8F0);       // 0xFFBDC2C8
+  static const Color lightBorder = Color(0xFFE2E8F0);     
   static const Color lightTextPrimary = Color(0xFF0F172A);
   static const Color lightTextSecondary = Color(0xFF64748B);
   static const Color lightInputFill = Color(0xFFEAF2FD);

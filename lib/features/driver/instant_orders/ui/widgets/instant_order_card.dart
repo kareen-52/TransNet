@@ -139,9 +139,6 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     result.when(
       success: (response) {
         SnackBarHelper.showSuccess(context, response.message);
-        // نأخذ نسخة الـ Navigator قبل الحذف من القائمة، لأن حذف الطلب
-        // (onOrderProcessed) بيفكك هاد الكرت فورًا، وبعدها context ما يعود
-        // صالح للتنقل.
         final navigator = Navigator.of(context);
         widget.onOrderProcessed();
         _goToTracking(response, navigator);
@@ -158,11 +155,6 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
     NavigatorState navigator,
   ) {
     final shipmentsCubit = getIt<ActiveDriverShipmentsCubit>();
-
-    // إذا كانت البيانات الكاملة (رقم الشحنة + العميل) موجودة عندنا مسبقًا
-    // بالكاش، منستخدمها فورًا. غير هيك، منروح بشحنة مبدئية فيها بس الموقع
-    // (المتوفر برد "قبول الطلب") وننتقل فورًا بدون أي انتظار لتجنب تأخير
-    // الوصول لشاشة التتبع.
     ActiveDriverShipmentModel? cachedShipment;
     try {
       cachedShipment = shipmentsCubit.currentShipments.firstWhere(
@@ -428,37 +420,6 @@ class _InstantOrderCardState extends State<InstantOrderCard> {
             ),
           ),
         ),
-        // horizontalSpace(12),
-        // Expanded(
-        //   flex: 1,
-        //   child: Container(
-        //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-        //     decoration: BoxDecoration(
-        //       color: const Color(0xFFECFDF5),
-        //       borderRadius: BorderRadius.circular(8.r),
-        //     ),
-        //     child: Row(
-        //       children: [
-        //         Icon(Icons.check_circle, color: AppColors.success, size: 18.sp),
-        //         horizontalSpace(6),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     Text('تأمين', style: theme.textTheme.bodySmall),
-                //     Text(
-                //       widget.orderData.insurance ? 'نعم' : 'لا',
-                //       style: TextStyle(
-                //         color: const Color(0xFF065F46),
-                //         fontSize: 13.sp,
-                //         fontWeight: FontWeightHelper.bold,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

@@ -24,11 +24,11 @@ class ShipmentStatusHelper {
 
     switch (status) {
       case 'جارية':
-        return 1; // تم القبول (السائق في طريقه للاستلام)
+        return 1; 
       case 'قيد التوصيل':
-        return 2; // تم الاستلام (في الطريق للعميل)
+        return 2;
       default:
-        return 0; // تم الإرسال (في انتظار رد السائق)
+        return 0;
     }
   }
 }

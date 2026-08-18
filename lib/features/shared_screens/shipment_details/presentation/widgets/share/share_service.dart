@@ -34,9 +34,6 @@ abstract class ShareService {
       buf.writeln('━━━━━━━━━━━━━━━━━━━━');
       buf.writeln('💰 السعر: ${s.price} ل.س');
     }
-    // if (s.hasInsurance) {
-    //   buf.writeln('🛡 التأمين: مؤمَّن ✅');
-    // }
 
 
     if (s.deliveryDeadline != null) {

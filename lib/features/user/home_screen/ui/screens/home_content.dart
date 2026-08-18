@@ -26,8 +26,6 @@ class HomeContent extends StatelessWidget {
       color: Theme.of(context).colorScheme.primary,
       backgroundColor: Theme.of(context).colorScheme.surface,
       onRefresh: () async {
-        // await getIt<HomeCubit>().refreshQuietly();
-        // getIt<ActiveOrdersCubit>().fetchActiveOrders();
         await Future.wait([
           getIt<HomeCubit>().refreshQuietly(),
           getIt<ActiveOrdersCubit>().fetchActiveOrders(),

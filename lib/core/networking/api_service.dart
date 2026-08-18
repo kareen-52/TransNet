@@ -81,7 +81,7 @@ abstract class ApiService {
   Future<dynamic> deleteShipment();
 
   @PUT('shipmentRequest')
-  // Future<dynamic> updateShipment(@Body() Map<String, dynamic> body);
+
   Future<dynamic> updateShipment(@Body() CreateShipmentRequestBody body);
 
 

@@ -4,7 +4,6 @@ import 'package:graduation_progect/core/helpers/spacing.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/features/user/create_post/logic/create_post_cubit.dart';
 import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/dimensions_section.dart';
-import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/shipment_insurance_section.dart';
 import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/shipment_object_section.dart';
 
 class Step2PostDetails extends StatelessWidget {
@@ -89,12 +88,6 @@ class Step2PostDetails extends StatelessWidget {
             ),
           ),
 
-          // verticalSpace(16),
-
-          // ShipmentInsuranceSection(
-          //   isInsuranceActive: cubit.insurance,
-          //   onChanged: (val) => cubit.updateInsurance(val ?? false),
-          // ),
           verticalSpace(40),
 
           Row(

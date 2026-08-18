@@ -49,7 +49,6 @@ class ShipmentModel {
   final int? shipmentNumber;
   final String? width, height, length, weight;
   final String? object;
-  // final int? insurance;
   final int? price;
   final String? status;
   final int? success;
@@ -66,7 +65,6 @@ class ShipmentModel {
     this.length,
     this.weight,
     this.object,
-    // this.insurance,
     this.price,
     this.status,
     this.success,

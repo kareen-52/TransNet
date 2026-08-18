@@ -249,7 +249,6 @@ class DriverDetailsBottomSheet extends StatelessWidget {
               return Chip(label: Text(gov.name));
             }).toList(),
           ),
-          // verticalSpace(8),
         ],
       ),
     );

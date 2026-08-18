@@ -70,12 +70,11 @@ import 'package:graduation_progect/features/user/vehicle_types/logic/vehicle_typ
 final getIt = GetIt.instance;
 
 void setupGetIt() {
-  // ── Networking
   getIt.registerLazySingleton<ApiService>(
     () => ApiService(DioFactory.getDio()),
   );
 
-  // ── Auth
+  
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
 
@@ -96,7 +95,6 @@ void setupGetIt() {
     () => ForgotPasswordCubit(getIt()),
   );
 
-  // ── Shipments (Client) ─────────────────────────────────────────────────────
   getIt.registerLazySingleton<CreateShipmentRepo>(
     () => CreateShipmentRepo(getIt()),
   );
@@ -104,7 +102,6 @@ void setupGetIt() {
     () => CreateShipmentCubit(getIt()),
   );
 
-  // Client shipment history — separate from driver, separate box
   getIt.registerLazySingleton<ClientShipmentsRepo>(
     () => ClientShipmentsRepo(getIt()),
   );
@@ -112,13 +109,9 @@ void setupGetIt() {
     () => ClientShipmentsCubit(getIt()),
   );
 
-  // ── Home (Client) ──────────────────────────────────────────────────────────
-
-  // getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt()));
   getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt()));
 
 
-  // ── Available Drivers ──────────────────────────────────────────────────────
   getIt.registerLazySingleton<AvailableDriversRepo>(
     () => AvailableDriversRepo(getIt()),
   );
@@ -127,19 +120,15 @@ void setupGetIt() {
     () => AvailableDriversCubit(getIt(), getIt(), getIt()),
   );
 
-  // ── Vehicle Types ──────────────────────────────────────────────────────────
   getIt.registerLazySingleton<VehicleTypesRepo>(
     () => VehicleTypesRepo(getIt()),
   );
   getIt.registerFactory<VehicleTypesCubit>(() => VehicleTypesCubit(getIt()));
 
-  // ── Driver Details ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverDetailsRepo>(
     () => DriverDetailsRepo(getIt()),
   );
   getIt.registerFactory<DriverDetailsCubit>(() => DriverDetailsCubit(getIt()));
-
-  // ── Notifications ──────────────────────────────────────────────────────────
 
   getIt.registerLazySingleton<NotificationRepo>(
     () => NotificationRepo(getIt<ApiService>()),
@@ -149,26 +138,22 @@ void setupGetIt() {
     () => NotificationCubit(getIt()),
   );
 
-  // ── Profile ────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getIt()));
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
 
-  // ── Driver Home ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverHomeRepo>(() => DriverHomeRepo(getIt()));
 
   getIt.registerFactory<DriverHomeCubit>(() => DriverHomeCubit(getIt()));
 
   getIt.registerLazySingleton<DriverNavCubit>(() => DriverNavCubit());
 
-  // ── Instant Orders ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<InstantOrdersRepo>(
     () => InstantOrdersRepo(getIt()),
   );
-  // getIt.registerFactory<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
+
   getIt.registerLazySingleton<InstantOrdersCubit>(() => InstantOrdersCubit(getIt()));
 
 
-  // ── Driver Location ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverLocationRepo>(
     () => DriverLocationRepo(getIt()),
   );
@@ -176,7 +161,6 @@ void setupGetIt() {
     () => DriverLocationCubit(getIt()),
   );
 
-  // ── Driver Shipment History ────────────────────────────────────────────────
 
   getIt.registerLazySingleton<DriverShipmentsRepo>(
     () => DriverShipmentsRepo(getIt()),
@@ -185,7 +169,6 @@ void setupGetIt() {
     () => DriverShipmentsCubit(getIt()),
   );
 
-  // ── Shipment Details (Clean Architecture) ──────────────────────────────────
   getIt.registerLazySingleton<ShipmentDetailsRepository>(
     () => ShipmentDetailsRepositoryImpl(getIt()),
   );
@@ -196,13 +179,11 @@ void setupGetIt() {
     () => ShipmentDetailsCubit(getIt()),
   );
 
-  // ── Driver Reviews ─────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverReviewsRepo>(
     () => DriverReviewsRepo(getIt()),
   );
   getIt.registerFactory<DriverReviewsCubit>(() => DriverReviewsCubit(getIt()));
 
-  // ── Shipment Search ────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ShipmentSearchRepo>(
     () => ShipmentSearchRepo(getIt()),
   );
@@ -210,48 +191,40 @@ void setupGetIt() {
     () => SearchShipmentsCubit(getIt()),
   );
 
-  // ── Map ────────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<MapService>(() => MapService());
 
-  // ── Active Orders (Client) ─────────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveOrdersRepo>(
     () => ActiveOrdersRepo(getIt()),
   );
-  // getIt.registerFactory<ActiveOrdersCubit>(() => ActiveOrdersCubit(getIt()));
+
   getIt.registerLazySingleton<ActiveOrdersCubit>(
     () => ActiveOrdersCubit(getIt()),
   );
 
-  // ── Active Shipments (Driver) ──────────────────────────────────────────────
   getIt.registerLazySingleton<ActiveDriverShipmentsRepo>(
     () => ActiveDriverShipmentsRepo(getIt()),
   );
-  // getIt.registerFactory<ActiveDriverShipmentsCubit>(
-  //   () => ActiveDriverShipmentsCubit(getIt()),
-  // );
+
+
   getIt.registerLazySingleton<ActiveDriverShipmentsCubit>(
     () => ActiveDriverShipmentsCubit(getIt()),
   );
 
-  // ── Driver Tracking ────────────────────────────────────────────────────────
   getIt.registerLazySingleton(() => DriverTrackingRepo(getIt()));
   getIt.registerFactory(() => DriverTrackingCubit(getIt()));
 
-  // ── Review Driver ──────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ReviewDriverRepo>(
     () => ReviewDriverRepo(getIt()),
   );
   getIt.registerFactory<ReviewDriverCubit>(() => ReviewDriverCubit(getIt()));
 
-  // ── Profile (Client) ───────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientProfileRepo>(
     () => ClientProfileRepo(getIt()),
   );
   getIt.registerFactory<ClientProfileCubit>(() => ClientProfileCubit(getIt()));
 
-  // ── Client Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<ClientPostsRepo>(() => ClientPostsRepo(getIt()));
-  // getIt.registerFactory<ClientPostsCubit>(() => ClientPostsCubit(getIt()));
+
   getIt.registerLazySingleton<ClientPostsCubit>(() => ClientPostsCubit(getIt()),);
 
   getIt.registerLazySingleton<CreatePostRepo>(() => CreatePostRepo(getIt()));
@@ -264,9 +237,8 @@ void setupGetIt() {
     () => PostDetailsCubit(getIt<PostDetailsRepo>()),
   );
 
-  // ── Driver Posts ────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<DriverPostsRepo>(() => DriverPostsRepo(getIt()));
-  // getIt.registerFactory<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
+
   getIt.registerLazySingleton<DriverPostsCubit>(() => DriverPostsCubit(getIt()));
 
   getIt.registerLazySingleton<ApplyToPostRepo>(() => ApplyToPostRepo(getIt()));

@@ -114,7 +114,6 @@ class NotificationRouteHelper {
 
       else if (body.contains('تم إرسال طلب نقل شحنة')){
         if (kDebugMode) print("تم إرسال طلب نقل شحنة — توجيه لتفاصيل الإعلان: $postId");
-        // refreshHome();
         refreshClientActiveOrders();
         refreshDriverActiveShipments();
 

@@ -109,7 +109,6 @@ class DriverHomeCubit extends Cubit<DriverHomeState> {
             ),
           );
         }
-        // التعديل هنا: تمرير القيمة للـ State 👇
         emit(DriverHomeState.shipmentCountLoaded(_shipmentCount, _financialPrize));
       },
       failure: (error) => emit(DriverHomeState.error(error)),

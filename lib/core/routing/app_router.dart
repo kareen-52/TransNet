@@ -36,7 +36,6 @@ import 'package:graduation_progect/features/user/vehicle_types/ui/widgets/vehicl
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
-    //this arguments to be passed in any screen like this ( arguments as ClassName )
     final arguments = settings.arguments;
 
     switch (settings.name) {
@@ -193,16 +192,12 @@ class AppRouter {
       case Routes.privacyPolicyScreen:
         return MaterialPageRoute(
           builder: (_) => const PrivacyPolicyScreen(
-            // title: 'سياسة الخصوصية',
-            // htmlAssetPath: 'assets/legal/privacy_policy.html',
           ),
         );
 
       case Routes.termsAndConditionsScreen:
         return MaterialPageRoute(
           builder: (_) => const TermsAndConditionsScreen(
-            // title: 'الشروط والأحكام',
-            // htmlAssetPath: 'assets/legal/terms.html',
           ),
         );
 

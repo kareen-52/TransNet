@@ -4,16 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'font_weight_helper.dart';
 
-//مثال لاستخدام النصوص :
-//Text('عنوان', style: Theme.of(context).textTheme.headlineSmall)
-// Theme.of(context).textTheme.*
-
-// مثال لاستخدام حالة النجاح:
-//Text('نجاح', style: TextStyles.success(context))
-
-//للالوان:
-// Theme.of(context).colorSchema.*
-
 class TextStyles {
   static String get fontFamily => GoogleFonts.cairo().fontFamily!;
 

@@ -12,7 +12,6 @@ class InstantOrderModel {
   final double width;
   final double length;
   final String object;
-  // final bool insurance;
   
   final String fromLocation;
   final String toLocation;
@@ -23,7 +22,6 @@ class InstantOrderModel {
     required this.distanceToStart, required this.shipmentDistance,
     required this.weight, required this.height, required this.width,
     required this.length, required this.object, 
-    // required this.insurance,
     required this.fromLocation, required this.toLocation, required this.expiresAt,
   });
 
@@ -53,7 +51,6 @@ class InstantOrderModel {
       width: double.tryParse(shipment['width'].toString()) ?? 0.0,
       length: double.tryParse(shipment['length'].toString()) ?? 0.0,
       object: shipment['object'] ?? 'غير محدد',
-      // insurance: shipment['insurance'] == true || shipment['insurance'] == 'true' || shipment['insurance'] == 1,
       fromLocation: shipment['start_governorate'] ?? 'غير محدد',
       toLocation: shipment['end_governorate'] ?? 'غير محدد',
       expiresAt: data['expires_at'] ?? '',

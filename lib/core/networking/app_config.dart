@@ -1,9 +1,3 @@
-// dev:
-//   flutter run --dart-define=BASE_URL=http://10.140.20.190:8000/
-// production:
-//   flutter build apk \
-//     --dart-define=BASE_URL=https://api.transnet.app/ \
-//     --dart-define=ORS_API_KEY=your_key_here
 
 class AppConfig {
   AppConfig._();

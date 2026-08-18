@@ -290,7 +290,6 @@ class _ApplyPostBottomSheetState extends State<ApplyPostBottomSheet> {
                       );
                     },
                   ),
-                  // verticalSpace(32),
                 ],
               ),
             ),

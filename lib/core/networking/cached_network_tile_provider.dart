@@ -94,7 +94,6 @@ class _CachedNetworkTileImage extends ImageProvider<_CachedNetworkTileImage> {
       bytes = Uint8List.fromList(response.data ?? []);
       if (bytes.isEmpty) throw Exception('Empty tile response');
 
-      // خزّن بدون انتظار حتى لا نؤخر عرض التايل
       unawaited(MapTileCacheService.saveTile(z, x, y, bytes));
     } catch (_) {
       bytes = _emptyTileBytes;

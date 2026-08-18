@@ -51,37 +51,6 @@ class PostCargoCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // if (post.insurance == 1)
-              //   Container(
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: 10.w,
-              //       vertical: 6.h,
-              //     ),
-              //     decoration: BoxDecoration(
-              //       color: Colors.green.withOpacity(0.1),
-              //       borderRadius: BorderRadius.circular(10.r),
-              //       border: Border.all(color: Colors.green.withOpacity(0.3)),
-              //     ),
-              //     child: Row(
-              //       mainAxisSize: MainAxisSize.min,
-              //       children: [
-              //         Icon(
-              //           Icons.shield_rounded,
-              //           color: Colors.green,
-              //           size: 16.sp,
-              //         ),
-              //         horizontalSpace(4),
-              //         Text(
-              //           'مؤمن',
-              //           style: TextStyle(
-              //             color: Colors.green,
-              //             fontSize: 12.sp,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
             ],
           ),
           verticalSpace(20),

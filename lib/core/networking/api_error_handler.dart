@@ -37,12 +37,6 @@ class ApiErrorHandler {
   static ApiErrorModel _handleError(dynamic data, int? statusCode) {
     print('API Error - Status: $statusCode, Data: $data');
 
-    // if (statusCode == 404) {
-    //   return ApiErrorModel(
-    //     code: 404,
-    //     message: "هذا الطلب لم يعد متاحاً أو تم حذفه.",
-    //   );
-    // }
 
     if (data != null && data is Map<String, dynamic>) {
       if (data.containsKey('message') || data.containsKey('exception') || data.containsKey('errors')) {

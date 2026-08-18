@@ -46,7 +46,6 @@ class HomeContent extends StatelessWidget {
             await Future.wait([
               context.read<DriverHomeCubit>().fetchShipmentCountAndStatus(),
               context.read<ProfileCubit>().getProfileData(),
-              // getIt<DriverPostsCubit>().fetchSuitablePosts(),
             ]);
 
             if (isAvailable) {

@@ -4,7 +4,6 @@ import 'package:graduation_progect/core/theming/font_weight_helper.dart';
 import 'package:graduation_progect/core/widgets/app_text_button.dart';
 import 'package:graduation_progect/features/user/create_shipment/logic/create_shipment_cubit.dart';
 import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/dimensions_section.dart';
-import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/shipment_insurance_section.dart';
 import 'package:graduation_progect/features/user/create_shipment/ui/widgets/step2/shipment_object_section.dart';
 
 class Step2Details extends StatelessWidget {
@@ -30,13 +29,6 @@ class Step2Details extends StatelessWidget {
             widthController: cubit.widthController,
             heightController: cubit.heightController,
           ),
-
-          // verticalSpace(16),
-
-          // ShipmentInsuranceSection(
-          //   isInsuranceActive: cubit.insurance,
-          //   onChanged: (val) => cubit.updateInsurance(val ?? false),
-          // ),
 
           verticalSpace(40),
 

@@ -29,15 +29,6 @@ class CreateShipmentRepo {
   }
 
 
-
-  // Future<ApiResult<dynamic>> updateShipment(Map<String, dynamic> body) async {
-  //   try {
-  //     final response = await _apiService.updateShipment(body);
-  //     return ApiResult.success(response['message'] ?? 'تم التعديل بنجاح');
-  //   } catch (error) {
-  //     return ApiResult.failure(ApiErrorHandler.handle(error));
-  //   }
-  // }
   Future<ApiResult<dynamic>> updateShipment(CreateShipmentRequestBody body) async {
     try {
       final response = await _apiService.updateShipment(body);

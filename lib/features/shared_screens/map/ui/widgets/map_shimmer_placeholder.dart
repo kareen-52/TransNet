@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
-/// Skeleton يظهر أثناء تحديد موقع المستخدم أو تحميل أول إطار من الخريطة،
-/// بدل شاشة فارغة أو مؤشر تحميل دائري بسيط.
 class MapShimmerPlaceholder extends StatelessWidget {
   final double? height;
   final double borderRadius;
@@ -37,7 +35,6 @@ class MapShimmerPlaceholder extends StatelessWidget {
   }
 }
 
-/// خطوط رفيعة تحاكي شكل شوارع الخريطة أثناء التحميل.
 class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

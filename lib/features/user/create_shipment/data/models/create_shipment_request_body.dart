@@ -8,7 +8,6 @@ class CreateShipmentRequestBody {
   final double width;
   final double length;
   final String object;
-  // final bool insurance;
   @JsonKey(name: 'start_position_lat')
   final double startPositionLat;
   @JsonKey(name: 'start_position_lng')
@@ -28,7 +27,6 @@ class CreateShipmentRequestBody {
     required this.width,
     required this.length,
     required this.object,
-    // required this.insurance,
     required this.startPositionLat,
     required this.startPositionLng,
     required this.endPositionLat,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_progect/core/theming/app_colors.dart';
 
-/// شارة صغيرة تظهر أعلى الخريطة عند فقدان الاتصال، لتوضيح أن الخريطة
-/// المعروضة هي نسخة محفوظة مسبقاً وليست حيّة.
 class MapOfflineBadge extends StatelessWidget {
   const MapOfflineBadge({super.key});
 

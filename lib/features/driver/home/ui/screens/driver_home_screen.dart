@@ -28,7 +28,6 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   void initState() {
     super.initState();
     _driverIdFuture = _getDriverId();
-    //  getIt<DriverNavCubit>().changeTab(0);
   }
 
   Future<int> _getDriverId() async {
