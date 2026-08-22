@@ -1,3 +1,4 @@
+import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/live_tracking_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/models/party_model.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/data/models/route_geometry_model.dart';
@@ -37,5 +38,6 @@ class ShipmentDetailsResponseModel {
         routeGeometry: routeGeometry?.toEntity(),
         driver: driver?.toEntity(),
         client: client?.toEntity(),
+        liveTracking: LiveTrackingEntity.fromDynamic(liveTracking),
       );
 }

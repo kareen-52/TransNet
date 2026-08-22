@@ -4,6 +4,7 @@ import 'package:graduation_progect/core/responsive/responsive_layout.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/domain/entities/shipment_details_entity.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_cargo_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_header_card.dart';
+import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_live_tracking_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_party_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_route_card.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/widgets/cards/shipment_status_card.dart';
@@ -72,6 +73,19 @@ class _MobileBody extends StatelessWidget {
                 isDark: isDark,
               ),
               SizedBox(height: 14.h),
+              if (data.hasLiveTracking) ...[
+                SectionHeader(
+                  label: 'التتبع الحي',
+                  icon: Icons.near_me_outlined,
+                  color: theme.colorScheme.primary,
+                ),
+                SizedBox(height: 8.h),
+                ShipmentLiveTrackingCard(
+                  liveTracking: data.liveTracking!,
+                  isDark: isDark,
+                ),
+                SizedBox(height: 14.h),
+              ],
               SectionHeader(
                 label: 'تفاصيل الشحنة',
                 icon: Icons.inventory_2_outlined,
@@ -239,6 +253,20 @@ class _TabletBody extends StatelessWidget {
                             isDark: isDark,
                           ),
                           SizedBox(height: 20.h),
+
+                          if (data.hasLiveTracking) ...[
+                            SectionHeader(
+                              label: 'التتبع الحي',
+                              icon: Icons.near_me_outlined,
+                              color: theme.colorScheme.primary,
+                            ),
+                            SizedBox(height: 8.h),
+                            ShipmentLiveTrackingCard(
+                              liveTracking: data.liveTracking!,
+                              isDark: isDark,
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
 
                           SectionHeader(
                             label: 'حالة الشحنة',

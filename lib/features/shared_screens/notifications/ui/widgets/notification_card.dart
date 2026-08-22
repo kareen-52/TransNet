@@ -31,7 +31,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bool isUnread = notification.status == 0; //  0 = غير مقروء
+    final bool isUnread = notification.status == 0;
     final icon = _getIconForTitle(notification.title);
 
     return Container(

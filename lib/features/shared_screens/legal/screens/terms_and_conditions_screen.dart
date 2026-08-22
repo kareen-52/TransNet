@@ -85,9 +85,31 @@ class TermsAndConditionsScreen extends StatelessWidget {
                 'سداد الأجرة المتفق عليها عند إتمام عملية التوصيل.',
               ],
             ),
-
+            
             LegalSection(
               number: 4,
+              icon: Icons.warning_amber_rounded,
+              title: 'الإقرار بمشروعية البضاعة وإخلاء المسؤولية',
+              body:
+                  'يقرّ العميل ومالك البضاعة، بمجرد استخدام التطبيق لإنشاء '
+                  'طلب شحن، بأن البضاعة المطلوب نقلها مشروعة تماماً، ولا '
+                  'تخالف أي قانون أو نظام معمول به، وأنها لا تتضمن أي '
+                  'مواد محظورة أو مسروقة أو خطرة أو مخالفة لأحكام القانون '
+                  '\n\n'
+                  'يتحمّل العميل ومالك البضاعة وحده كامل المسؤولية '
+                  'القانونية عن طبيعة البضاعة ومحتواها ومدى مشروعية '
+                  'حيازتها ونقلها، ولا تتحمّل إدارة TransNet ولا السائق '
+                  'المنفِّذ للشحنة أي مسؤولية عن أي مخالفة قانونية '
+                  'متعلقة بالبضاعة المنقولة، باعتبار التطبيق مجرد وسيط '
+                  'تقني لا يفحص أو يتحقق من محتوى الشحنات.\n\n'
+                  'وفي حال تبيّن أن شحنة ما تحتوي على مواد مخالفة '
+                  'للقانون، يحق لإدارة TransNet حظر حساب العميل المعني '
+                  'فوراً، والتعاون مع الجهات المختصة إن اقتضى الأمر، '
+                  'دون أن يترتب على ذلك أي مسؤولية تقع على عاتق التطبيق.',
+            ),
+
+            LegalSection(
+              number: 5,
               icon: Icons.person_pin_circle_outlined,
               title: 'التزامات السائق',
               bullets: const [
@@ -99,7 +121,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
 
             LegalSection(
-              number: 5,
+              number: 6,
               icon: Icons.payments_outlined,
               title: 'التسعير والدفع',
               body:
@@ -115,7 +137,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
 
             LegalSection(
-              number: 6,
+              number: 7,
               icon: Icons.balance_outlined,
               title: 'حدود المسؤولية',
               body:
@@ -144,7 +166,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
 
             LegalSection(
-              number: 7,
+              number: 8,
               icon: Icons.block_outlined,
               title: 'حظر أو تجميد الحساب',
               body:

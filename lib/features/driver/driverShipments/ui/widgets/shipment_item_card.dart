@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/driverShipments/data/driver_shipments_response.dart';
 import 'package:graduation_progect/features/shared_screens/shipment_details/presentation/screens/shipment_details_screen.dart';
 

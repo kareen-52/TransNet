@@ -10,8 +10,3 @@ class FontWeightHelper {
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w900;
 }
-
-// Display  عناوين كبيرة
-// Title  عناوين الأقسام
-// Body  النصوص
-// Caption  التفاصيل الصغيرة

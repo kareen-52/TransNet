@@ -58,7 +58,7 @@ class SharedPrefHelper {
     await _secureStorage.delete(key: key);
   }
 
-  //logout
+
   static Future<void> clearAllSecuredData() async {
     debugPrint('SecureStorage : all secured data cleared');
     await _secureStorage.deleteAll();

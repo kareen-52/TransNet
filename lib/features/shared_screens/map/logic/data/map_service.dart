@@ -70,7 +70,6 @@ class MapService {
         options: Options(
           headers: {
             'User-Agent': ApiConstants.userAgent,
-            // 'User-Agent': 'GraduationProjectApp/1.0', 
           },
         ),
       );

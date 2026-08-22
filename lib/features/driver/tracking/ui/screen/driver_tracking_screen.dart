@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,6 @@ import 'package:graduation_progect/core/di/dependency_injection.dart';
 import 'package:graduation_progect/features/shared_screens/map/logic/data/map_service.dart';
 import 'package:graduation_progect/features/shared_screens/map/ui/widgets/my_location_button.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:graduation_progect/core/theming/app_colors.dart';
 import 'package:graduation_progect/features/driver/active_shipments_driver/data/models/active_driver_shipment_model.dart';
 import 'package:graduation_progect/features/driver/tracking/ui/widgets/tracking_bottom_sheet.dart';
 
@@ -22,14 +22,16 @@ class DriverTrackingScreen extends StatefulWidget {
 class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
   LatLng? _driverCurrentLocation;
   final MapController _mapController = MapController();
+  StreamSubscription<Position>? _positionStreamSubscription;
+  bool _didCenterMapOnce = false;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    _startLiveLocationTracking();
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<void> _startLiveLocationTracking() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) return;
@@ -38,19 +40,49 @@ class _DriverTrackingScreenState extends State<DriverTrackingScreen> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) return;
       }
-      Position position = await Geolocator.getCurrentPosition(
+      if (permission == LocationPermission.deniedForever) return;
+
+      final initialPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      if (mounted) {
-        setState(() {
-          _driverCurrentLocation = LatLng(
-            position.latitude,
-            position.longitude,
-          );
-        });
-        _mapController.move(_driverCurrentLocation!, 14.0);
-      }
-    } catch (e) {    }
+      _updateDriverLocation(initialPosition, shouldCenterMap: true);
+
+      const locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5,
+      );
+
+      _positionStreamSubscription = Geolocator.getPositionStream(
+        locationSettings: locationSettings,
+      ).listen((Position position) {
+        _updateDriverLocation(position, shouldCenterMap: false);
+      });
+    } catch (e) {
+    }
+  }
+
+  void _updateDriverLocation(
+    Position position, {
+    required bool shouldCenterMap,
+  }) {
+    if (!mounted) return;
+
+    final newLocation = LatLng(position.latitude, position.longitude);
+
+    setState(() {
+      _driverCurrentLocation = newLocation;
+    });
+
+    if (shouldCenterMap && !_didCenterMapOnce) {
+      _didCenterMapOnce = true;
+      _mapController.move(newLocation, 14.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _positionStreamSubscription?.cancel();
+    super.dispose();
   }
 
   @override
